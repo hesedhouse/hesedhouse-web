@@ -1,0 +1,454 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { authors, categories } from "../data/blog";
+
+interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  updatedDate?: Date;
+  category: string;
+  author: string;
+  tags?: string[];
+}
+
+const { title, description, pubDate, updatedDate, category, author, tags = [] } = Astro.props;
+const authorInfo = authors[author];
+const categoryInfo = categories[category];
+
+const pubDateStr = pubDate.toLocaleDateString("ko-KR", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+const updatedDateStr = updatedDate?.toLocaleDateString("ko-KR", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+
+const jsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: title,
+  description,
+  datePublished: pubDate.toISOString(),
+  dateModified: (updatedDate || pubDate).toISOString(),
+  author: {
+    "@type": "Organization",
+    name: "헤세드코퍼레이션",
+    url: "https://hesedhouse.net",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "헤세드코퍼레이션",
+    url: "https://hesedhouse.net",
+  },
+});
+---
+
+<BaseLayout title={title} description={description}>
+  <Header />
+  <main class="blog-post-page">
+    <!-- Hero -->
+    <section class="post-hero">
+      <div class="post-hero-inner">
+        <div class="post-meta-top">
+          <a href="/blog" class="back-link">← 궁궐 서고</a>
+          <span class="meta-sep">·</span>
+          <span class="post-category" style={`background: ${categoryInfo?.colorLight}; color: ${categoryInfo?.color}`}>
+            {categoryInfo?.label || category}
+          </span>
+        </div>
+        <h1 class="post-title">{title}</h1>
+        <p class="post-description">{description}</p>
+        <div class="post-author-bar">
+          {authorInfo && (
+            <div class="author-card">
+              <img src={authorInfo.image} alt={authorInfo.name} class="author-avatar" />
+              <div class="author-detail">
+                <span class="author-name">{authorInfo.name} <span class="author-hanja">{authorInfo.hanja}</span></span>
+                <span class="author-team">{authorInfo.team} · {authorInfo.role}</span>
+              </div>
+            </div>
+          )}
+          <div class="date-info">
+            <time datetime={pubDate.toISOString()}>{pubDateStr}</time>
+            {updatedDateStr && <span class="updated">(수정: {updatedDateStr})</span>}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Content -->
+    <article class="post-content">
+      <div class="post-content-inner">
+        <slot />
+      </div>
+
+      <!-- Tags -->
+      {tags.length > 0 && (
+        <div class="post-tags">
+          {tags.map((tag) => (
+            <span class="tag">#{tag}</span>
+          ))}
+        </div>
+      )}
+
+      <!-- Author quote -->
+      {authorInfo && (
+        <div class="author-quote-box" style={`border-left-color: ${categoryInfo?.color || '#1E3A6E'}`}>
+          <img src={authorInfo.image} alt={authorInfo.name} class="quote-avatar" />
+          <div>
+            <p class="quote-text">"{authorInfo.quote}"</p>
+            <p class="quote-name">— {authorInfo.name} ({authorInfo.hanja}), {authorInfo.team}</p>
+          </div>
+        </div>
+      )}
+
+      <!-- CTA -->
+      <div class="post-cta">
+        <p>프로젝트 문의나 협업 제안이 있으시면 편하게 연락해 주세요.</p>
+        <a href="/contact" class="cta-btn">문의하기 →</a>
+      </div>
+    </article>
+  </main>
+  <Footer />
+  <script type="application/ld+json" set:html={jsonLd} />
+</BaseLayout>
+
+<style>
+  .blog-post-page {
+    background: #F5F1E8;
+    min-height: 100vh;
+  }
+
+  /* ── Hero ── */
+  .post-hero {
+    background: #1A1614;
+    padding: 96px 22px 56px;
+    color: #fff;
+  }
+
+  .post-hero-inner {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .post-meta-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  .back-link {
+    font-size: 0.8125rem;
+    color: rgba(255,255,255,0.6);
+    transition: color 0.15s;
+  }
+
+  .back-link:hover {
+    color: #C89B2A;
+  }
+
+  .meta-sep {
+    color: rgba(255,255,255,0.24);
+  }
+
+  .post-category {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 3px 12px;
+    border-radius: 50px;
+  }
+
+  .post-title {
+    font-size: 2.25rem;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.5px;
+    margin-bottom: 16px;
+  }
+
+  .post-description {
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.72);
+    margin-bottom: 32px;
+  }
+
+  .post-author-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .author-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .author-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255,255,255,0.15);
+  }
+
+  .author-detail {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .author-name {
+    font-size: 0.9375rem;
+    font-weight: 600;
+  }
+
+  .author-hanja {
+    font-weight: 400;
+    color: rgba(255,255,255,0.48);
+    margin-left: 4px;
+  }
+
+  .author-team {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.48);
+  }
+
+  .date-info {
+    font-size: 0.8125rem;
+    color: rgba(255,255,255,0.48);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+  }
+
+  .updated {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.32);
+  }
+
+  /* ── Content ── */
+  .post-content {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 48px 22px 80px;
+  }
+
+  .post-content-inner {
+    background: #fff;
+    border-radius: 12px;
+    padding: 48px 40px;
+    box-shadow:
+      0 0 0.5px rgba(26,22,20,0.14),
+      0 1px 1px rgba(26,22,20,0.22);
+    line-height: 1.85;
+    font-size: 1rem;
+    color: rgba(26,22,20,0.92);
+  }
+
+  .post-content-inner :global(h2) {
+    font-size: 1.375rem;
+    font-weight: 600;
+    margin-top: 40px;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #F5F1E8;
+    color: #1E3A6E;
+  }
+
+  .post-content-inner :global(h3) {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-top: 28px;
+    margin-bottom: 12px;
+    color: rgba(26,22,20,0.92);
+  }
+
+  .post-content-inner :global(p) {
+    margin-bottom: 16px;
+  }
+
+  .post-content-inner :global(ul),
+  .post-content-inner :global(ol) {
+    margin-bottom: 16px;
+    padding-left: 24px;
+  }
+
+  .post-content-inner :global(li) {
+    margin-bottom: 6px;
+    list-style: disc;
+  }
+
+  .post-content-inner :global(ol li) {
+    list-style: decimal;
+  }
+
+  .post-content-inner :global(strong) {
+    font-weight: 600;
+    color: #1A1614;
+  }
+
+  .post-content-inner :global(blockquote) {
+    border-left: 3px solid #C89B2A;
+    padding: 12px 20px;
+    margin: 24px 0;
+    background: #FAF6EA;
+    border-radius: 0 8px 8px 0;
+    font-style: italic;
+    color: rgba(26,22,20,0.72);
+  }
+
+  .post-content-inner :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0;
+    font-size: 0.875rem;
+  }
+
+  .post-content-inner :global(th) {
+    background: #1E3A6E;
+    color: #fff;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+  }
+
+  .post-content-inner :global(td) {
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(26,22,20,0.08);
+  }
+
+  .post-content-inner :global(tr:nth-child(even)) {
+    background: #F5F1E8;
+  }
+
+  .post-content-inner :global(code) {
+    font-size: 0.875em;
+    background: rgba(26,22,20,0.06);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  .post-content-inner :global(img) {
+    border-radius: 8px;
+    margin: 24px 0;
+  }
+
+  /* ── Tags ── */
+  .post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 32px;
+  }
+
+  .tag {
+    font-size: 0.8125rem;
+    color: rgba(26,22,20,0.52);
+    background: rgba(26,22,20,0.05);
+    padding: 4px 12px;
+    border-radius: 50px;
+  }
+
+  /* ── Author quote box ── */
+  .author-quote-box {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    margin-top: 40px;
+    padding: 24px;
+    background: #fff;
+    border-left: 4px solid;
+    border-radius: 0 12px 12px 0;
+    box-shadow: 0 1px 3px rgba(26,22,20,0.08);
+  }
+
+  .quote-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  .quote-text {
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: rgba(26,22,20,0.72);
+    font-style: italic;
+    margin-bottom: 4px;
+  }
+
+  .quote-name {
+    font-size: 0.75rem;
+    color: rgba(26,22,20,0.42);
+  }
+
+  /* ── CTA ── */
+  .post-cta {
+    margin-top: 40px;
+    padding: 32px;
+    background: #1A1614;
+    border-radius: 12px;
+    text-align: center;
+    color: rgba(255,255,255,0.8);
+  }
+
+  .post-cta p {
+    font-size: 0.9375rem;
+    margin-bottom: 16px;
+    color: rgba(255,255,255,0.72);
+  }
+
+  .cta-btn {
+    display: inline-block;
+    padding: 10px 28px;
+    background: #C89B2A;
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: background 0.15s;
+  }
+
+  .cta-btn:hover {
+    background: #8F6E1C;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .post-hero {
+      padding: 72px 16px 40px;
+    }
+
+    .post-title {
+      font-size: 1.625rem;
+    }
+
+    .post-content-inner {
+      padding: 28px 20px;
+    }
+
+    .author-quote-box {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .date-info {
+      align-items: flex-start;
+    }
+  }
+</style>

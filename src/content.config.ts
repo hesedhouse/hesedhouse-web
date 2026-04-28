@@ -15,4 +15,31 @@ const dynasty = defineCollection({
   }),
 });
 
-export const collections = { dynasty };
+const blog = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    pubDate: z.coerce.date(),
+    updatedDate: z.coerce.date().optional(),
+    category: z.enum([
+      'ip-license',
+      'merch-guide',
+      'popup-store',
+      'distribution',
+      'visual-creative',
+      'global-trend',
+      'cost-analysis',
+      'legal-guide',
+      'trend-ai',
+      'editorial',
+    ]),
+    tags: z.array(z.string()).default([]),
+    author: z.string(),
+    heroImage: z.string().optional(),
+    heroImageAlt: z.string().optional(),
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { dynasty, blog };

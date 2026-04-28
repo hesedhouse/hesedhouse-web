@@ -1,0 +1,246 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import BlogCard from "../../components/BlogCard.astro";
+import { getCollection } from "astro:content";
+import { categories } from "../../data/blog";
+
+const posts = (await getCollection("blog", ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const categoryList = Object.values(categories);
+---
+
+<BaseLayout title="궁궐 서고" description="헤세드왕조 10인의 AI 신하들이 전하는 IP 라이선스, 굿즈 제작, 팝업스토어 운영의 실전 인사이트">
+  <Header />
+
+  <main class="blog-page">
+    <!-- Hero -->
+    <section class="blog-hero">
+      <div class="blog-hero-inner">
+        <p class="hero-eyebrow">HESED DYNASTY CHRONICLES</p>
+        <h1 class="hero-title">궁궐 서고</h1>
+        <p class="hero-subtitle">왕조의 신하들이 각자의 전문 분야에서 전하는 실전 인사이트</p>
+      </div>
+    </section>
+
+    <!-- Category filter -->
+    <section class="category-bar">
+      <div class="category-bar-inner">
+        <button class="cat-btn active" data-cat="all">전체</button>
+        {categoryList.map((cat) => (
+          <button class="cat-btn" data-cat={cat.id} style={`--cat-color: ${cat.color}`}>
+            {cat.label}
+          </button>
+        ))}
+      </div>
+    </section>
+
+    <!-- Post grid -->
+    <section class="blog-grid-section">
+      <div class="blog-grid">
+        {posts.map((post) => (
+          <div class="blog-grid-item" data-category={post.data.category}>
+            <BlogCard
+              title={post.data.title}
+              description={post.data.description}
+              pubDate={post.data.pubDate}
+              category={post.data.category}
+              author={post.data.author}
+              slug={post.id}
+            />
+          </div>
+        ))}
+      </div>
+
+      {posts.length === 0 && (
+        <div class="empty-state">
+          <p class="empty-icon">&#9734;</p>
+          <p class="empty-text">아직 등록된 글이 없습니다.</p>
+          <p class="empty-sub">곧 왕조의 신하들이 첫 기록을 올릴 예정입니다.</p>
+        </div>
+      )}
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .blog-page {
+    background: #F5F1E8;
+    min-height: 100vh;
+  }
+
+  /* ── Hero ── */
+  .blog-hero {
+    background: #1A1614;
+    padding: 96px 22px 64px;
+    text-align: center;
+    color: #fff;
+  }
+
+  .blog-hero-inner {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #C89B2A;
+    margin-bottom: 16px;
+  }
+
+  .hero-title {
+    font-size: 2.75rem;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    margin-bottom: 12px;
+  }
+
+  .hero-subtitle {
+    font-size: 1.0625rem;
+    color: rgba(255,255,255,0.64);
+    line-height: 1.5;
+  }
+
+  /* ── Category bar ── */
+  .category-bar {
+    position: sticky;
+    top: 48px;
+    z-index: 100;
+    background: rgba(245,241,232,0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(26,22,20,0.08);
+    padding: 0 22px;
+  }
+
+  .category-bar-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    display: flex;
+    gap: 6px;
+    padding: 12px 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .category-bar-inner::-webkit-scrollbar {
+    display: none;
+  }
+
+  .cat-btn {
+    flex-shrink: 0;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    padding: 6px 16px;
+    border-radius: 50px;
+    background: rgba(26,22,20,0.05);
+    color: rgba(26,22,20,0.62);
+    cursor: pointer;
+    transition: all 0.15s;
+    border: 1px solid transparent;
+  }
+
+  .cat-btn:hover {
+    background: rgba(26,22,20,0.1);
+    color: rgba(26,22,20,0.82);
+  }
+
+  .cat-btn.active {
+    background: #1A1614;
+    color: #fff;
+  }
+
+  /* ── Grid ── */
+  .blog-grid-section {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 40px 22px 80px;
+  }
+
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .blog-grid-item {
+    display: flex;
+  }
+
+  .blog-grid-item > :global(.blog-card) {
+    flex: 1;
+  }
+
+  .blog-grid-item.hidden {
+    display: none;
+  }
+
+  /* ── Empty state ── */
+  .empty-state {
+    text-align: center;
+    padding: 80px 20px;
+  }
+
+  .empty-icon {
+    font-size: 2.5rem;
+    margin-bottom: 16px;
+    color: rgba(26,22,20,0.2);
+  }
+
+  .empty-text {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: rgba(26,22,20,0.52);
+    margin-bottom: 8px;
+  }
+
+  .empty-sub {
+    font-size: 0.875rem;
+    color: rgba(26,22,20,0.36);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .blog-hero {
+      padding: 72px 16px 48px;
+    }
+
+    .hero-title {
+      font-size: 2rem;
+    }
+
+    .blog-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  const buttons = document.querySelectorAll('.cat-btn');
+  const items = document.querySelectorAll('.blog-grid-item');
+
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const cat = (btn as HTMLElement).dataset.cat;
+
+      buttons.forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      items.forEach((item) => {
+        const el = item as HTMLElement;
+        if (cat === 'all' || el.dataset.category === cat) {
+          el.classList.remove('hidden');
+        } else {
+          el.classList.add('hidden');
+        }
+      });
+    });
+  });
+</script>

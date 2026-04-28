@@ -1,0 +1,161 @@
+---
+import { authors, categories } from "../data/blog";
+
+interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  category: string;
+  author: string;
+  slug: string;
+}
+
+const { title, description, pubDate, category, author, slug } = Astro.props;
+const authorInfo = authors[author];
+const categoryInfo = categories[category];
+
+const dateStr = pubDate.toLocaleDateString("ko-KR", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+---
+
+<a href={`/blog/${slug}`} class="blog-card">
+  <div class="card-pillar" style={`background: ${categoryInfo?.color || '#1E3A6E'}`}></div>
+  <div class="card-body">
+    <div class="card-meta">
+      <span class="card-category" style={`background: ${categoryInfo?.colorLight || '#D9E0EC'}; color: ${categoryInfo?.color || '#1E3A6E'}`}>
+        {categoryInfo?.label || category}
+      </span>
+      <span class="card-date">{dateStr}</span>
+    </div>
+    <h3 class="card-title">{title}</h3>
+    <p class="card-desc">{description}</p>
+    <div class="card-author">
+      {authorInfo && (
+        <>
+          <img src={authorInfo.image} alt={authorInfo.name} class="author-avatar" />
+          <div class="author-info">
+            <span class="author-name">{authorInfo.name} <span class="author-hanja">{authorInfo.hanja}</span></span>
+            <span class="author-role">{authorInfo.team}</span>
+          </div>
+        </>
+      )}
+    </div>
+  </div>
+</a>
+
+<style>
+  .blog-card {
+    display: flex;
+    background: var(--white, #fff);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow:
+      0 0 0.5px rgba(26,22,20,0.14),
+      0 1px 1px rgba(26,22,20,0.22);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .blog-card:hover {
+    transform: translateY(-3px);
+    box-shadow:
+      0 4px 16px rgba(26,22,20,0.12),
+      0 8px 24px rgba(26,22,20,0.08);
+  }
+
+  .card-pillar {
+    width: 5px;
+    flex-shrink: 0;
+  }
+
+  .card-body {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .card-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .card-category {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 50px;
+    letter-spacing: 0.02em;
+  }
+
+  .card-date {
+    font-size: 0.75rem;
+    color: rgba(26,22,20,0.42);
+  }
+
+  .card-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.4;
+    color: rgba(26,22,20,0.92);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-desc {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: rgba(26,22,20,0.62);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-author {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid rgba(26,22,20,0.06);
+  }
+
+  .author-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .author-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .author-name {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: rgba(26,22,20,0.92);
+  }
+
+  .author-hanja {
+    font-weight: 400;
+    color: rgba(26,22,20,0.42);
+    margin-left: 4px;
+  }
+
+  .author-role {
+    font-size: 0.6875rem;
+    color: rgba(26,22,20,0.42);
+  }
+</style>
