@@ -1,0 +1,190 @@
+---
+/* Logo intro animation — fullscreen overlay that plays once then reveals the page */
+---
+
+<div class="intro" id="logo-intro" aria-hidden="true">
+  <div class="intro-bg"></div>
+
+  <!-- Orange glow orb -->
+  <div class="glow"></div>
+
+  <!-- Logo mark -->
+  <div class="logo-wrap">
+    <img
+      src="/dynasty/hesedcorp-logo-white.png"
+      alt=""
+      class="logo-img"
+      width="180"
+      height="180"
+    />
+  </div>
+
+  <!-- Wordmark -->
+  <div class="wordmark">
+    <span class="letter" style="--i:0">H</span><span class="letter" style="--i:1">E</span><span class="letter" style="--i:2">S</span><span class="letter" style="--i:3">E</span><span class="letter" style="--i:4">D</span><span class="letter" style="--i:5">C</span><span class="letter" style="--i:6">O</span><span class="letter" style="--i:7">R</span><span class="letter" style="--i:8">P</span><span class="letter dot" style="--i:9">.</span>
+  </div>
+
+  <!-- Tagline -->
+  <p class="tagline">IP Business Partner</p>
+</div>
+
+<script>
+  // Skip intro on revisit within same session
+  const key = 'hesed-intro-seen';
+  const intro = document.getElementById('logo-intro');
+  if (!intro) throw new Error('no intro');
+
+  if (sessionStorage.getItem(key)) {
+    intro.remove();
+  } else {
+    // Lock scroll
+    document.documentElement.style.overflow = 'hidden';
+
+    // After animation completes (~3.6s), slide overlay up
+    setTimeout(() => {
+      intro.classList.add('exit');
+      document.documentElement.style.overflow = '';
+      sessionStorage.setItem(key, '1');
+    }, 3400);
+
+    // Remove DOM element after exit transition
+    setTimeout(() => {
+      intro.remove();
+    }, 4400);
+  }
+</script>
+
+<style>
+  .intro {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+
+  /* Solid dark background */
+  .intro-bg {
+    position: absolute;
+    inset: 0;
+    background: #000;
+    z-index: -1;
+  }
+
+  /* Exit: slide everything up */
+  .intro.exit .intro-bg {
+    animation: slideUp 0.9s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+  }
+  .intro.exit .logo-wrap,
+  .intro.exit .wordmark,
+  .intro.exit .tagline,
+  .intro.exit .glow {
+    animation: fadeUp 0.5s ease forwards;
+  }
+
+  /* ── Orange glow orb ── */
+  .glow {
+    position: absolute;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(243,152,0,0.25) 0%, transparent 70%);
+    filter: blur(60px);
+    opacity: 0;
+    animation: glowPulse 2.8s ease 0.3s forwards;
+  }
+
+  @keyframes glowPulse {
+    0%   { opacity: 0; transform: scale(0.6); }
+    30%  { opacity: 1; transform: scale(1); }
+    60%  { opacity: 0.7; transform: scale(1.15); }
+    100% { opacity: 0.4; transform: scale(1.3); }
+  }
+
+  /* ── Logo image ── */
+  .logo-wrap {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 28px;
+  }
+
+  .logo-img {
+    width: 140px;
+    height: auto;
+    opacity: 0;
+    filter: blur(20px);
+    transform: scale(0.7);
+    animation: logoReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+  }
+
+  @keyframes logoReveal {
+    0%   { opacity: 0; filter: blur(20px); transform: scale(0.7); }
+    50%  { opacity: 1; filter: blur(4px);  transform: scale(1.04); }
+    100% { opacity: 1; filter: blur(0);    transform: scale(1); }
+  }
+
+  /* ── Wordmark letters ── */
+  .wordmark {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    gap: 2px;
+    margin-bottom: 12px;
+  }
+
+  .letter {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: #fff;
+    opacity: 0;
+    transform: translateY(12px);
+    animation: letterIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: calc(1.2s + var(--i) * 0.06s);
+  }
+
+  .letter.dot {
+    color: #f39800;
+  }
+
+  @keyframes letterIn {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Tagline ── */
+  .tagline {
+    position: relative;
+    z-index: 1;
+    font-family: var(--font-text);
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    opacity: 0;
+    animation: fadeIn 0.8s ease 2.2s forwards;
+  }
+
+  @keyframes fadeIn {
+    to { opacity: 1; }
+  }
+
+  /* ── Exit animations ── */
+  @keyframes slideUp {
+    to { transform: translateY(-100%); }
+  }
+
+  @keyframes fadeUp {
+    to { opacity: 0; transform: translateY(-40px); }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .intro { display: none; }
+  }
+</style>
