@@ -1,0 +1,46 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import Hero from '../components/Hero.astro';
+import CTABanner from '../components/CTABanner.astro';
+---
+<PageLayout title="WORKS - MERCHANDISING" description="헤세드코퍼레이션의 MD 상품 기획 및 제작 포트폴리오">
+  <Hero dark={false} eyebrow="WORKS" title="MERCHANDISING" subtitle="MD 상품 기획 및 제작 포트폴리오" />
+  <section class="portfolio">
+    <div class="portfolio-inner">
+      <div class="portfolio-grid">
+        <div class="port-card">
+          <div class="port-thumb"></div>
+          <div class="port-info">
+            <span class="port-client">Client A</span>
+            <h3 class="port-title">캐릭터 굿즈 기획 및 제작</h3>
+            <span class="port-year">2026</span>
+          </div>
+        </div>
+        <div class="port-card">
+          <div class="port-thumb"></div>
+          <div class="port-info">
+            <span class="port-client">Client B</span>
+            <h3 class="port-title">프리미엄 MD 패키지</h3>
+            <span class="port-year">2026</span>
+          </div>
+        </div>
+      </div>
+      <p class="coming-soon">More projects coming soon.</p>
+    </div>
+  </section>
+  <CTABanner title="프로젝트를 함께 만들어요" buttonText="CONTACT US" buttonHref="/contact" />
+</PageLayout>
+<style>
+  .portfolio { padding: 72px 20px; }
+  .portfolio-inner { max-width: var(--content-max); margin: 0 auto; }
+  .portfolio-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .port-card { border-radius: var(--r-md); overflow: hidden; border: 1px solid rgba(0,0,0,0.06); transition: transform 0.2s, box-shadow 0.2s; }
+  .port-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.08); }
+  .port-thumb { height: 240px; background: var(--hc-gray-50); display: flex; align-items: center; justify-content: center; color: rgba(0,0,0,0.2); font-size: 14px; }
+  .port-info { padding: 20px; }
+  .port-client { font-size: 12px; color: var(--hc-orange); font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase; }
+  .port-title { font-size: 17px; font-weight: 600; margin: 6px 0; color: var(--hc-ink); }
+  .port-year { font-size: 12px; color: rgba(0,0,0,0.48); }
+  .coming-soon { text-align: center; color: rgba(0,0,0,0.32); font-size: 14px; margin-top: 40px; }
+  @media (max-width: 768px) { .portfolio-grid { grid-template-columns: 1fr; } }
+</style>

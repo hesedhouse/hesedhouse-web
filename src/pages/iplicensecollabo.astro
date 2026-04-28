@@ -1,0 +1,38 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import Hero from '../components/Hero.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import CTABanner from '../components/CTABanner.astro';
+---
+
+<PageLayout title="IP LICENSE & COLLABO" description="IP 라이선스 확보부터 브랜드 콜라보레이션까지">
+  <Hero dark title="IP LICENSE & COLLABO" subtitle="IP 라이선스 확보부터 브랜드 콜라보레이션까지" />
+
+  <section class="service-detail">
+    <div class="detail-inner">
+      <p class="detail-text">IP의 가치를 극대화하는 전략적 파트너십을 설계합니다. 원작의 세계관을 깊이 이해하고, 최적의 라이선스 구조와 콜라보 모델을 제안합니다.</p>
+    </div>
+  </section>
+
+  <section class="sub-services">
+    <div class="sub-inner">
+      <div class="sub-grid">
+        <ServiceCard eyebrow="01" title="License Acquisition" description="IP 라이선스 계약 체결 및 권리 확보" />
+        <ServiceCard eyebrow="02" title="Brand Collaboration" description="브랜드 간 콜라보레이션 기획 및 실행" />
+        <ServiceCard eyebrow="03" title="IP Consulting" description="IP 가치 분석 및 비즈니스 모델 설계" />
+      </div>
+    </div>
+  </section>
+
+  <CTABanner title="IP 비즈니스, 함께 설계합니다." subtitle="라이선스부터 콜라보까지 원스톱으로." buttonText="문의하기" buttonHref="/contact" />
+</PageLayout>
+
+<style>
+  .service-detail { padding: 72px 20px; }
+  .detail-inner { max-width: var(--content-max); margin: 0 auto; }
+  .detail-text { font-size: 1.3125rem; line-height: 1.5; max-width: 680px; color: var(--hc-ink); }
+  .sub-services { padding: 0 20px 72px; }
+  .sub-inner { max-width: var(--content-max); margin: 0 auto; }
+  .sub-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  @media (max-width: 768px) { .sub-grid { grid-template-columns: 1fr; } }
+</style>

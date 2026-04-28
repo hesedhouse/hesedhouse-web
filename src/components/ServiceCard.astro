@@ -1,0 +1,73 @@
+---
+interface Props {
+  eyebrow: string;
+  title: string;
+  description: string;
+  href?: string;
+  dark?: boolean;
+  accent?: boolean;
+}
+
+const { eyebrow, title, description, href, dark = false, accent = false } = Astro.props;
+const Tag = href ? "a" : "div";
+---
+
+<Tag class:list={["tile", { dark, accent }]} href={href || undefined}>
+  <p class="tile-eyebrow">{eyebrow}</p>
+  <h3 class="tile-title">{title}</h3>
+  <p class="tile-desc">{description}</p>
+</Tag>
+
+<style>
+  .tile {
+    display: block;
+    border-radius: var(--r-xl);
+    padding: 40px 32px;
+    background: var(--hc-gray-50);
+    color: var(--fg-primary);
+    transition: transform 0.25s var(--ease-std), box-shadow 0.25s var(--ease-std);
+  }
+
+  a.tile:hover {
+    transform: scale(1.015);
+    box-shadow: var(--shadow-float);
+  }
+
+  .tile.dark {
+    background: var(--hc-surface-d1);
+    color: var(--fg-on-dark);
+  }
+
+  .tile.accent {
+    background: var(--hc-navy);
+    color: var(--fg-on-dark);
+  }
+
+  .tile-eyebrow {
+    font-size: var(--t-micro-size);
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--hc-orange);
+    margin-bottom: 12px;
+  }
+
+  .tile-title {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 600;
+    line-height: 1.14;
+    margin-bottom: 12px;
+  }
+
+  .tile-desc {
+    font-size: var(--t-body-size);
+    line-height: var(--t-body-lh);
+    opacity: 0.78;
+  }
+
+  .tile.dark .tile-desc,
+  .tile.accent .tile-desc {
+    opacity: 0.72;
+  }
+</style>

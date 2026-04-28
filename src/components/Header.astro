@@ -1,0 +1,277 @@
+---
+import { services, works } from "../data/navigation";
+---
+
+<header class="gnb">
+  <nav class="gnb-inner container">
+    <a class="brand" href="/">HESEDCORP<span class="dot">.</span></a>
+
+    <!-- Desktop nav -->
+    <ul class="nav-links">
+      <li><a href="/about">ABOUT</a></li>
+      <li class="has-dropdown">
+        <a href="/services">SERVICE</a>
+        <ul class="dropdown">
+          {services.map((s) => (
+            <li><a href={s.href}>{s.label}</a></li>
+          ))}
+        </ul>
+      </li>
+      <li class="has-dropdown">
+        <a href="/works">WORKS</a>
+        <ul class="dropdown">
+          {works.map((w) => (
+            <li><a href={w.href}>{w.label}</a></li>
+          ))}
+        </ul>
+      </li>
+      <li><a href="/contact">CONTACT</a></li>
+    </ul>
+
+    <!-- Mobile hamburger -->
+    <button class="burger" aria-label="메뉴 열기" aria-expanded="false">
+      <span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- Mobile overlay -->
+  <div class="mobile-overlay" aria-hidden="true">
+    <div class="mobile-nav">
+      <a class="mobile-brand" href="/">HESEDCORP<span class="dot">.</span></a>
+      <ul class="mobile-links">
+        <li><a href="/about">ABOUT</a></li>
+        <li>
+          <span class="mobile-group-label">SERVICE</span>
+          <ul>
+            {services.map((s) => (
+              <li><a href={s.href}>{s.label}</a></li>
+            ))}
+          </ul>
+        </li>
+        <li>
+          <span class="mobile-group-label">WORKS</span>
+          <ul>
+            {works.map((w) => (
+              <li><a href={w.href}>{w.label}</a></li>
+            ))}
+          </ul>
+        </li>
+        <li><a href="/contact">CONTACT</a></li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+<style>
+  /* ── Sticky bar ── */
+  .gnb {
+    position: sticky;
+    top: 0;
+    z-index: 9000;
+    height: 48px;
+    background: rgba(0, 0, 0, 0.80);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+  }
+
+  .gnb-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+  }
+
+  /* ── Brand ── */
+  .brand,
+  .mobile-brand {
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--hc-white);
+    letter-spacing: -0.3px;
+  }
+
+  .dot {
+    color: var(--hc-orange);
+  }
+
+  /* ── Desktop links ── */
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+  }
+
+  .nav-links > li > a {
+    font-family: var(--font-display);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--hc-white-80);
+    letter-spacing: 0.5px;
+    transition: color 0.2s var(--ease-std);
+    padding: 14px 0;
+    display: block;
+  }
+
+  .nav-links > li > a:hover {
+    color: var(--hc-white);
+  }
+
+  /* ── Dropdown ── */
+  .has-dropdown {
+    position: relative;
+  }
+
+  .dropdown {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 220px;
+    background: rgba(0, 0, 0, 0.88);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-radius: var(--r-md);
+    padding: 8px 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.18s var(--ease-std), visibility 0.18s;
+    pointer-events: none;
+  }
+
+  .has-dropdown:hover .dropdown {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .dropdown li a {
+    display: block;
+    padding: 8px 20px;
+    font-size: 0.8125rem;
+    font-weight: 400;
+    color: var(--hc-white-80);
+    transition: color 0.15s, background 0.15s;
+  }
+
+  .dropdown li a:hover {
+    color: var(--hc-orange);
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  /* ── Burger (mobile) ── */
+  .burger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 36px;
+    height: 36px;
+    padding: 8px 6px;
+  }
+
+  .burger span {
+    display: block;
+    height: 1.5px;
+    background: var(--hc-white);
+    border-radius: 1px;
+    transition: transform 0.3s var(--ease-std), opacity 0.2s;
+  }
+
+  /* ── Mobile overlay ── */
+  .mobile-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 8999;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s var(--ease-std), visibility 0.3s;
+    overflow-y: auto;
+  }
+
+  .mobile-overlay[aria-hidden="false"] {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .mobile-nav {
+    padding: 72px 28px 48px;
+  }
+
+  .mobile-brand {
+    display: block;
+    font-size: 1.5rem;
+    margin-bottom: 40px;
+  }
+
+  .mobile-links > li {
+    margin-bottom: 28px;
+  }
+
+  .mobile-links > li > a {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--hc-white);
+  }
+
+  .mobile-group-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--hc-white-48);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .mobile-links ul {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-left: 4px;
+  }
+
+  .mobile-links ul a {
+    font-size: 1.0625rem;
+    font-weight: 400;
+    color: var(--hc-white-80);
+  }
+
+  .mobile-links ul a:hover {
+    color: var(--hc-orange);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .nav-links {
+      display: none;
+    }
+    .burger {
+      display: flex;
+    }
+  }
+</style>
+
+<script>
+  const burger = document.querySelector('.burger') as HTMLButtonElement;
+  const overlay = document.querySelector('.mobile-overlay') as HTMLDivElement;
+
+  burger?.addEventListener('click', () => {
+    const isOpen = overlay.getAttribute('aria-hidden') === 'false';
+    overlay.setAttribute('aria-hidden', isOpen ? 'true' : 'false');
+    burger.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+    document.body.style.overflow = isOpen ? '' : 'hidden';
+  });
+
+  // Close on link click
+  overlay?.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => {
+      overlay.setAttribute('aria-hidden', 'true');
+      burger.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    });
+  });
+</script>

@@ -1,0 +1,275 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import Hero from '../components/Hero.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import CTABanner from '../components/CTABanner.astro';
+import { getCollection } from 'astro:content';
+
+const crew = (await getCollection('dynasty')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<PageLayout title="AI SOLUTION" description="AI로 업무를 설계하고, 비즈니스를 자동화합니다.">
+  <Hero
+    dark
+    eyebrow="SERVICE"
+    title="AI SOLUTION"
+    subtitle="AI로 업무를 설계하고, 비즈니스를 자동화합니다. 헤세드코퍼레이션은 자체 AI 조직 운영 경험을 바탕으로 기업 맞춤형 AI 솔루션을 제공합니다."
+  />
+
+  <!-- Service Cards: 2-col grid, first card spans 2 -->
+  <section class="ai-services">
+    <div class="ai-services-inner">
+      <div class="ai-grid">
+        <ServiceCard
+          eyebrow="AI WORKFLOW"
+          title="AI Workflow Automation"
+          description="반복 업무를 AI 에이전트로 자동화합니다. 문서 작성, 데이터 처리, 고객 응대까지 — 사람은 판단에 집중하고, AI가 실행합니다."
+          accent
+        />
+        <ServiceCard
+          eyebrow="AI CONTENT"
+          title="AI Content Production"
+          description="홍보 영상, SNS 콘텐츠, 디자인 시안까지. AI 툴을 활용한 빠르고 비용 효율적인 콘텐츠 제작을 지원합니다."
+          dark
+        />
+        <ServiceCard
+          eyebrow="AI CONSULTING"
+          title="AI Consulting & Integration"
+          description="어디서부터 AI를 도입해야 할지 모르겠다면. 업무 분석부터 AI 에이전트 설계, 도입, 운영까지 함께합니다."
+          dark
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Hesed Dynasty Section -->
+  <section class="dynasty">
+    <div class="dynasty-inner">
+      <div class="dynasty-header">
+        <span class="dynasty-badge">HESED DYNASTY</span>
+        <h2 class="dynasty-title">왕조를 세우다.</h2>
+        <p class="dynasty-sub">AI 10인과 함께 일하는 회사</p>
+        <p class="dynasty-body">
+          헤세드코퍼레이션은 10명의 AI 직원으로 구성된 자체 AI 조직 '헤세드 다이너스티(Hesed Dynasty)'를
+          운영하고 있습니다. 기획, 제작, 세일즈, 홍보, 재무, 법무, HR까지 — 실제 업무 현장에서 AI 에이전트가
+          사람과 함께 일하며, 이 경험이 곧 고객에게 제공하는 AI 솔루션의 기반이 됩니다.
+        </p>
+      </div>
+
+      <!-- AI Crew Grid -->
+      <div class="crew-grid">
+        {crew.map((member) => (
+          <div class="crew-card">
+            <img class="crew-avatar" src={member.data.image} alt={member.data.name} width="80" height="80" />
+            <p class="crew-name">{member.data.name} <span class="crew-hanja">{member.data.hanja}</span></p>
+            <p class="crew-role">{member.data.role}</p>
+            <span class="crew-team">{member.data.team}</span>
+            <p class="crew-quote">"{member.data.quote}"</p>
+            <span class="crew-mbti">{member.data.personality}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CTABanner
+    title="AI, 어디서부터 시작해야 할지 고민이라면."
+    subtitle="헤세드코퍼레이션이 함께 설계합니다."
+    buttonText="문의하기"
+    buttonHref="/contact"
+  />
+</PageLayout>
+
+<style>
+  /* ── AI Services Section ── */
+  .ai-services {
+    padding: 72px 20px;
+  }
+
+  .ai-services-inner {
+    max-width: var(--content-max);
+    margin: 0 auto;
+  }
+
+  .ai-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .ai-grid > :first-child {
+    grid-column: 1 / -1;
+  }
+
+  @media (max-width: 768px) {
+    .ai-grid {
+      grid-template-columns: 1fr;
+    }
+    .ai-grid > :first-child {
+      grid-column: auto;
+    }
+  }
+
+  /* ── Dynasty Section ── */
+  .dynasty {
+    padding: 96px 20px;
+    background: var(--hc-gray-50);
+  }
+
+  .dynasty-inner {
+    max-width: var(--content-max);
+    margin: 0 auto;
+  }
+
+  .dynasty-header {
+    text-align: center;
+    margin-bottom: 64px;
+  }
+
+  .dynasty-badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--hc-orange);
+    background: rgba(243, 152, 0, 0.08);
+    padding: 6px 16px;
+    border-radius: var(--r-pill);
+    margin-bottom: 20px;
+  }
+
+  .dynasty-title {
+    font-family: var(--font-display);
+    font-size: 2.75rem;
+    font-weight: 600;
+    line-height: 1.15;
+    color: var(--hc-ink);
+    margin-bottom: 12px;
+  }
+
+  .dynasty-sub {
+    font-size: 1.3125rem;
+    color: var(--hc-ink);
+    opacity: 0.7;
+    margin-bottom: 24px;
+  }
+
+  .dynasty-body {
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    color: var(--hc-ink);
+    opacity: 0.75;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  /* ── Crew Grid ── */
+  .crew-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+  }
+
+  .crew-card {
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    padding: 28px 16px 24px;
+    text-align: center;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .crew-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  }
+
+  .crew-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 14px;
+  }
+
+  .crew-name {
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--hc-ink);
+    margin-bottom: 2px;
+  }
+
+  .crew-hanja {
+    font-weight: 400;
+    font-size: 0.8125rem;
+    opacity: 0.5;
+  }
+
+  .crew-role {
+    font-size: 0.8125rem;
+    color: var(--hc-navy);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  .crew-team {
+    display: inline-block;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: var(--hc-orange);
+    background: rgba(243, 152, 0, 0.08);
+    padding: 3px 10px;
+    border-radius: var(--r-pill);
+    margin-bottom: 12px;
+  }
+
+  .crew-quote {
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    color: var(--hc-ink);
+    opacity: 0.6;
+    font-style: italic;
+    margin-bottom: 10px;
+  }
+
+  .crew-mbti {
+    display: inline-block;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: var(--hc-navy);
+    background: rgba(0, 54, 104, 0.06);
+    padding: 2px 8px;
+    border-radius: var(--r-pill);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 1024px) {
+    .crew-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .dynasty {
+      padding: 64px 20px;
+    }
+
+    .dynasty-title {
+      font-size: 2rem;
+    }
+
+    .crew-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .crew-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,38 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import Hero from '../components/Hero.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import CTABanner from '../components/CTABanner.astro';
+---
+
+<PageLayout title="DISTRIBUTION" description="온·오프라인을 아우르는 글로벌 유통">
+  <Hero dark title="DISTRIBUTION" subtitle="온·오프라인을 아우르는 글로벌 유통" />
+
+  <section class="service-detail">
+    <div class="detail-inner">
+      <p class="detail-text">국내외 유통 채널을 통해 IP 상품의 시장 접근성을 극대화합니다.</p>
+    </div>
+  </section>
+
+  <section class="sub-services">
+    <div class="sub-inner">
+      <div class="sub-grid">
+        <ServiceCard eyebrow="01" title="Online Distribution" description="자사몰, 오픈마켓, 위탁판매 운영" />
+        <ServiceCard eyebrow="02" title="Offline Distribution" description="편집숍, 백화점, 전문매장 입점" />
+        <ServiceCard eyebrow="03" title="Global Export" description="해외 바이어 매칭, 수출입 실무" />
+      </div>
+    </div>
+  </section>
+
+  <CTABanner title="유통의 모든 채널, 함께 열어갑니다." subtitle="온라인부터 글로벌까지." buttonText="문의하기" buttonHref="/contact" />
+</PageLayout>
+
+<style>
+  .service-detail { padding: 72px 20px; }
+  .detail-inner { max-width: var(--content-max); margin: 0 auto; }
+  .detail-text { font-size: 1.3125rem; line-height: 1.5; max-width: 680px; color: var(--hc-ink); }
+  .sub-services { padding: 0 20px 72px; }
+  .sub-inner { max-width: var(--content-max); margin: 0 auto; }
+  .sub-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  @media (max-width: 768px) { .sub-grid { grid-template-columns: 1fr; } }
+</style>

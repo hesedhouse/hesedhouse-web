@@ -1,0 +1,137 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+import Hero from "../components/Hero.astro";
+import CTABanner from "../components/CTABanner.astro";
+
+const stats = [
+  { value: "6+", label: "Services" },
+  { value: "50+", label: "Projects" },
+  { value: "10+", label: "Partners" },
+  { value: "Global", label: "Reach" },
+];
+---
+
+<PageLayout title="ABOUT" description="IP 비즈니스 솔루션, 상품 제작, 글로벌 유통 및 전시운영 전문 기업">
+  <Hero
+    dark
+    eyebrow="ABOUT"
+    title="HESEDCORP."
+    subtitle="IP 비즈니스 솔루션, 상품 제작, 글로벌 유통 및 전시운영 전문 기업"
+  />
+
+  <section class="intro-section">
+    <div class="intro-inner">
+      <h2 class="intro-heading">IP의 가치를 현실로,<br />글로벌 문화 생태계를 설계하다</h2>
+      <p class="intro-body">
+        헤세드코퍼레이션은 IP 라이선스, 상품 기획/제작, 글로벌 유통, 팝업스토어 운영까지
+        IP 비즈니스의 전 과정을 아우르는 전문 기업입니다. 크리에이터와 브랜드의 IP를
+        현실의 상품과 경험으로 전환하여, 팬과 소비자에게 새로운 가치를 전달합니다.
+      </p>
+    </div>
+  </section>
+
+  <section class="stats-section">
+    <div class="stats-inner">
+      {stats.map((s) => (
+        <div class="stat-item">
+          <span class="stat-value">{s.value}</span>
+          <span class="stat-label">{s.label}</span>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <CTABanner
+    title="함께 만들어갈 다음 프로젝트가 있으신가요?"
+    buttonText="CONTACT US"
+    buttonHref="/contact"
+  />
+</PageLayout>
+
+<style>
+  /* ── Intro Section ── */
+  .intro-section {
+    padding: 80px 20px;
+    background: var(--bg-page, #fff);
+  }
+
+  .intro-inner {
+    max-width: var(--content-max);
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .intro-heading {
+    font-family: var(--font-display);
+    font-size: 2.25rem;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--hc-ink);
+    margin-bottom: 24px;
+  }
+
+  .intro-body {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: var(--fg-secondary, #6e6e73);
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  /* ── Stats Section ── */
+  .stats-section {
+    padding: 72px 20px;
+    background: var(--hc-navy);
+  }
+
+  .stats-inner {
+    max-width: var(--content-max);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    text-align: center;
+  }
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .stat-value {
+    font-family: var(--font-display);
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--hc-orange);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.72);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .intro-heading {
+      font-size: 1.75rem;
+    }
+
+    .intro-body {
+      font-size: 1rem;
+    }
+
+    .stats-inner {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 40px 24px;
+    }
+
+    .stat-value {
+      font-size: 2.25rem;
+    }
+  }
+</style>

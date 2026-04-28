@@ -1,0 +1,94 @@
+---
+interface Props {
+  eyebrow?: string;
+  title: string;
+  subtitle?: string;
+  dark?: boolean;
+  accentWord?: string;
+}
+
+const { eyebrow, title, subtitle, dark = true, accentWord } = Astro.props;
+
+function renderTitle(text: string, accent?: string) {
+  if (!accent) return text;
+  const idx = text.indexOf(accent);
+  if (idx === -1) return text;
+  return `${text.slice(0, idx)}<span class="accent">${accent}</span>${text.slice(idx + accent.length)}`;
+}
+
+const titleHtml = renderTitle(title, accentWord);
+---
+
+<section class:list={["hero", { dark }]}>
+  <div class="container hero-inner">
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    <h1 class="title" set:html={titleHtml} />
+    {subtitle && <p class="subtitle">{subtitle}</p>}
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding: var(--sp-96) 0 72px;
+    text-align: center;
+    background: var(--bg-page);
+    color: var(--fg-primary);
+  }
+
+  .hero.dark {
+    background: var(--bg-section-dark);
+    color: var(--fg-on-dark);
+  }
+
+  .hero-inner {
+    max-width: 820px;
+  }
+
+  .eyebrow {
+    font-size: var(--t-micro-size);
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--hc-orange);
+    margin-bottom: 16px;
+  }
+
+  .title {
+    font-family: var(--font-display);
+    font-size: 3.5rem;
+    font-weight: 600;
+    line-height: 1.07;
+    letter-spacing: -0.5px;
+  }
+
+  .title :global(.accent) {
+    color: var(--hc-orange);
+  }
+
+  .subtitle {
+    font-size: 1.3125rem;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-top: 20px;
+    opacity: 0.82;
+  }
+
+  .hero:not(.dark) .subtitle {
+    color: var(--fg-secondary);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .hero {
+      padding: 64px 0 48px;
+    }
+
+    .title {
+      font-size: 2.25rem;
+    }
+
+    .subtitle {
+      font-size: 1.0625rem;
+    }
+  }
+</style>

@@ -1,0 +1,26 @@
+---
+import "../assets/styles/global.css";
+import SEOHead from "../components/SEOHead.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const {
+  title,
+  description = "HESED CORP. - IP License, Merchandising, Pop-up Operation",
+  ogImage,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <SEOHead title={title} description={description} ogImage={ogImage} />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

@@ -1,0 +1,279 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+import Hero from "../components/Hero.astro";
+
+const contactInfo = [
+  { label: "전화", value: "031.994.7740", href: "tel:0319947740" },
+  { label: "이메일", value: "hesed@hesedhouse.net", href: "mailto:hesed@hesedhouse.net" },
+  { label: "카카오톡", value: "@헤세드하우스", href: "https://pf.kakao.com/_hesedhouse" },
+  { label: "주소", value: "경기도 고양시 덕양구 향동로 217, 1734-35호" },
+  { label: "운영시간", value: "평일 10:00 - 17:00" },
+];
+
+const inquiryTypes = [
+  "IP 라이선스 문의",
+  "굿즈/MD 제작 문의",
+  "팝업스토어 운영 문의",
+  "유통/납품 문의",
+  "AI 솔루션 문의",
+  "파트너십 제안",
+  "기타",
+];
+---
+
+<PageLayout title="CONTACT" description="프로젝트 문의부터 파트너십 제안까지, 편하게 연락주세요.">
+  <Hero
+    dark={false}
+    eyebrow="CONTACT"
+    title="Get in Touch"
+    subtitle="프로젝트 문의부터 파트너십 제안까지, 편하게 연락주세요."
+  />
+
+  <section class="contact-section">
+    <div class="contact-inner">
+      <!-- Left: Contact Info -->
+      <div class="contact-info">
+        <h2 class="info-heading">연락처 정보</h2>
+        <ul class="info-list">
+          {contactInfo.map((item) => (
+            <li class="info-item">
+              <span class="info-label">{item.label}</span>
+              {item.href ? (
+                <a class="info-value info-link" href={item.href}>{item.value}</a>
+              ) : (
+                <span class="info-value">{item.value}</span>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Right: Contact Form -->
+      <div class="contact-form-wrap">
+        <h2 class="form-heading">문의하기</h2>
+        <form class="contact-form" action="#" method="post">
+          <div class="form-row">
+            <div class="form-field">
+              <label for="company">회사명</label>
+              <input type="text" id="company" name="company" placeholder="회사명을 입력하세요" />
+            </div>
+            <div class="form-field">
+              <label for="name">담당자명 <span class="required">*</span></label>
+              <input type="text" id="name" name="name" placeholder="담당자명을 입력하세요" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-field">
+              <label for="email">이메일 <span class="required">*</span></label>
+              <input type="email" id="email" name="email" placeholder="이메일을 입력하세요" required />
+            </div>
+            <div class="form-field">
+              <label for="phone">전화번호</label>
+              <input type="tel" id="phone" name="phone" placeholder="전화번호를 입력하세요" />
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="type">문의유형</label>
+            <select id="type" name="type">
+              <option value="" disabled selected>문의유형을 선택하세요</option>
+              {inquiryTypes.map((t) => (
+                <option value={t}>{t}</option>
+              ))}
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="message">문의내용 <span class="required">*</span></label>
+            <textarea id="message" name="message" rows="5" placeholder="문의 내용을 입력하세요" required></textarea>
+          </div>
+
+          <button type="submit" class="submit-btn">문의 보내기</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  /* ── Contact Section ── */
+  .contact-section {
+    padding: 72px 20px 96px;
+    background: var(--bg-page, #fff);
+  }
+
+  .contact-inner {
+    max-width: var(--content-max);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 64px;
+    align-items: start;
+  }
+
+  /* ── Contact Info ── */
+  .info-heading,
+  .form-heading {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--hc-ink);
+    margin-bottom: 32px;
+  }
+
+  .info-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--hc-gray-50);
+  }
+
+  .info-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .info-label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--fg-secondary, #6e6e73);
+  }
+
+  .info-value {
+    font-size: 1.0625rem;
+    color: var(--hc-ink);
+    line-height: 1.5;
+  }
+
+  .info-link {
+    color: var(--hc-navy);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .info-link:hover {
+    color: var(--hc-orange);
+  }
+
+  /* ── Contact Form ── */
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .form-field label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--hc-ink);
+  }
+
+  .required {
+    color: var(--hc-orange);
+  }
+
+  .form-field input,
+  .form-field select,
+  .form-field textarea {
+    font-family: inherit;
+    font-size: 1rem;
+    color: var(--hc-ink);
+    background: transparent;
+    border: none;
+    border-bottom: 1.5px solid #d2d2d7;
+    padding: 10px 0;
+    outline: none;
+    transition: border-color 0.2s;
+    border-radius: 0;
+  }
+
+  .form-field input::placeholder,
+  .form-field textarea::placeholder {
+    color: #a1a1a6;
+  }
+
+  .form-field input:focus,
+  .form-field select:focus,
+  .form-field textarea:focus {
+    border-bottom-color: var(--hc-navy);
+  }
+
+  .form-field select {
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%236e6e73' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0 center;
+  }
+
+  .form-field textarea {
+    resize: vertical;
+    min-height: 100px;
+    border: 1.5px solid #d2d2d7;
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+
+  .form-field textarea:focus {
+    border-color: var(--hc-navy);
+  }
+
+  .submit-btn {
+    align-self: flex-start;
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    background: var(--hc-navy);
+    border: none;
+    border-radius: var(--r-pill, 100px);
+    padding: 14px 40px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+  }
+
+  .submit-btn:hover {
+    background: var(--hc-ink);
+    transform: scale(1.03);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .contact-inner {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+
+    .form-row {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+  }
+</style>

@@ -1,0 +1,111 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+import Hero from "../components/Hero.astro";
+import ServiceCard from "../components/ServiceCard.astro";
+import CTABanner from "../components/CTABanner.astro";
+
+const services = [
+  {
+    eyebrow: "01",
+    title: "IP LICENSE & COLLABO",
+    description: "IP 라이선스 확보부터 브랜드 콜라보레이션까지, 최적의 파트너십을 설계합니다.",
+    href: "/iplicensecollabo",
+  },
+  {
+    eyebrow: "02",
+    title: "MERCHANDISING",
+    description: "트렌디한 굿즈와 MD 상품을 기획, 디자인, 생산합니다.",
+    href: "/merchandising",
+  },
+  {
+    eyebrow: "03",
+    title: "DISTRIBUTION",
+    description: "온·오프라인 유통 채널을 통해 글로벌 마켓에 진출합니다.",
+    href: "/distribution",
+  },
+  {
+    eyebrow: "04",
+    title: "POP-UP OPERATION",
+    description: "팝업스토어, 전시, 이벤트의 기획부터 운영까지 원스톱으로.",
+    href: "/popupoperation",
+  },
+  {
+    eyebrow: "05",
+    title: "VISUAL STUDIO",
+    description: "브랜드 아이덴티티를 완성하는 비주얼 콘텐츠를 제작합니다.",
+    href: "/visualstudio",
+  },
+  {
+    eyebrow: "06",
+    title: "AI SOLUTION",
+    description: "AI로 업무를 설계하고, 비즈니스를 자동화합니다.",
+    href: "/ai-solution",
+    accent: true,
+  },
+];
+---
+
+<PageLayout title="HESEDCORP. | IP비즈니스 파트너" description="IP 비즈니스 솔루션, 상품 제작, 글로벌 유통 및 전시운영 전문 기업">
+  <Hero
+    dark
+    eyebrow="HESEDCORP."
+    title="IP의 가치를 현실로"
+    subtitle="글로벌 문화 생태계를 설계합니다"
+  />
+
+  <section class="services-section">
+    <div class="services-inner">
+      <h2 class="services-title">Services</h2>
+      <div class="services-grid">
+        {services.map((s) => (
+          <ServiceCard
+            eyebrow={s.eyebrow}
+            title={s.title}
+            description={s.description}
+            href={s.href}
+            accent={s.accent ?? false}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CTABanner
+    title="프로젝트를 함께 시작하세요"
+    subtitle="IP 비즈니스의 A to Z, 헤세드코퍼레이션이 함께합니다."
+    buttonText="CONTACT US"
+    buttonHref="/contact"
+  />
+</PageLayout>
+
+<style>
+  .services-section {
+    padding: 72px 20px;
+    background: var(--hc-gray-50);
+  }
+
+  .services-inner {
+    max-width: var(--content-max);
+    margin: 0 auto;
+  }
+
+  .services-title {
+    font-size: 2.5rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 40px;
+    color: var(--hc-ink);
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  @media (max-width: 768px) {
+    .services-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
