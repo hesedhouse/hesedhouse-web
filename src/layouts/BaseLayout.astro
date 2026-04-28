@@ -6,19 +6,28 @@ interface Props {
   title: string;
   description?: string;
   ogImage?: string;
+  ogType?: string;
+  article?: {
+    publishedTime?: string;
+    modifiedTime?: string;
+    author?: string;
+    tags?: string[];
+  };
 }
 
 const {
   title,
   description = "HESED CORP. - IP License, Merchandising, Pop-up Operation",
   ogImage,
+  ogType,
+  article,
 } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="ko">
   <head>
-    <SEOHead title={title} description={description} ogImage={ogImage} />
+    <SEOHead title={title} description={description} ogImage={ogImage} ogType={ogType} article={article} />
   </head>
   <body>
     <slot />

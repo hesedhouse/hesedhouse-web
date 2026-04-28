@@ -49,7 +49,7 @@ const jsonLd = JSON.stringify({
 });
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} ogType="article" article={{ publishedTime: pubDate.toISOString(), modifiedTime: (updatedDate || pubDate).toISOString(), author: authorInfo?.name || "헤세드코퍼레이션", tags }}>
   <Header />
   <main class="blog-post-page">
     <!-- Hero -->
