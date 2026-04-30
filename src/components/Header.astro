@@ -1,8 +1,14 @@
 ---
 import { services, works } from "../data/navigation";
+
+interface Props {
+  transparent?: boolean;
+}
+
+const { transparent = false } = Astro.props;
 ---
 
-<header class="gnb">
+<header class:list={["gnb", { "gnb--transparent": transparent }]} data-transparent={transparent ? "true" : "false"}>
   <nav class="gnb-inner container">
     <a class="brand" href="/">HESEDCORP<span class="dot">.</span></a>
 
@@ -67,10 +73,27 @@ import { services, works } from "../data/navigation";
 <style>
   /* ── Sticky bar ── */
   .gnb {
-    position: sticky;
+    position: fixed;
     top: 0;
+    left: 0;
+    right: 0;
     z-index: 9000;
     height: 48px;
+    background: rgba(0, 0, 0, 0.80);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    transition: background 0.35s var(--ease-std), backdrop-filter 0.35s;
+  }
+
+  /* Transparent mode (over hero image) */
+  .gnb--transparent {
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  /* Scrolled state — dark bar fades in */
+  .gnb--transparent.gnb--scrolled {
     background: rgba(0, 0, 0, 0.80);
     backdrop-filter: saturate(180%) blur(20px);
     -webkit-backdrop-filter: saturate(180%) blur(20px);
@@ -258,9 +281,24 @@ import { services, works } from "../data/navigation";
 </style>
 
 <script>
+  const header = document.querySelector('.gnb') as HTMLElement;
   const burger = document.querySelector('.burger') as HTMLButtonElement;
   const overlay = document.querySelector('.mobile-overlay') as HTMLDivElement;
 
+  // Scroll handling for transparent header
+  if (header?.dataset.transparent === 'true') {
+    const onScroll = () => {
+      if (window.scrollY > 60) {
+        header.classList.add('gnb--scrolled');
+      } else {
+        header.classList.remove('gnb--scrolled');
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+
+  // Mobile menu
   burger?.addEventListener('click', () => {
     const isOpen = overlay.getAttribute('aria-hidden') === 'false';
     overlay.setAttribute('aria-hidden', isOpen ? 'true' : 'false');
@@ -268,7 +306,6 @@ import { services, works } from "../data/navigation";
     document.body.style.overflow = isOpen ? '' : 'hidden';
   });
 
-  // Close on link click
   overlay?.querySelectorAll('a').forEach((link) => {
     link.addEventListener('click', () => {
       overlay.setAttribute('aria-hidden', 'true');

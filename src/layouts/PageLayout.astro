@@ -7,15 +7,22 @@ interface Props {
   title: string;
   description?: string;
   ogImage?: string;
+  transparentHeader?: boolean;
 }
 
-const { title, description, ogImage } = Astro.props;
+const { title, description, ogImage, transparentHeader = false } = Astro.props;
 ---
 
 <BaseLayout title={title} description={description} ogImage={ogImage}>
-  <Header />
-  <main>
+  <Header transparent={transparentHeader} />
+  <main class:list={[{ "main--with-header-offset": !transparentHeader }]}>
     <slot />
   </main>
   <Footer />
 </BaseLayout>
+
+<style>
+  .main--with-header-offset {
+    padding-top: 48px;
+  }
+</style>
