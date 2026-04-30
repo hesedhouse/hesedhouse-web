@@ -1,0 +1,215 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import Hero from '../components/Hero.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import CTABanner from '../components/CTABanner.astro';
+---
+
+<PageLayout title="INVESTMENT & BIZ DEV" description="IP·콘텐츠·테크 분야의 성장 가능성을 발굴하고, 전략적 투자와 사업개발로 가치를 만듭니다.">
+  <Hero
+    dark
+    eyebrow="SERVICE"
+    title="INVESTMENT & BIZ DEV"
+    subtitle="IP·콘텐츠·테크 분야의 성장 가능성을 발굴하고, 전략적 투자와 사업개발로 새로운 가치를 만듭니다."
+  />
+
+  <section class="invest-services">
+    <div class="invest-inner">
+      <div class="invest-grid">
+        <ServiceCard
+          eyebrow="STRATEGIC INVESTMENT"
+          title="전략적 투자"
+          description="IP, 콘텐츠, AI 기술 분야에서 성장 잠재력이 높은 사업과 파트너에 투자합니다. 단순 자금 투입이 아닌, 헤세드의 사업 역량과 네트워크를 결합한 전략적 투자를 지향합니다."
+          accent
+        />
+        <ServiceCard
+          eyebrow="BIZ DEVELOPMENT"
+          title="신사업 개발"
+          description="팬덤 이코노미, AI 커머스, 글로벌 라이선싱 등 새로운 비즈니스 모델을 발굴하고 사업화합니다. 시장 리서치부터 사업계획, 파일럿 런칭까지 전 과정을 수행합니다."
+          dark
+        />
+        <ServiceCard
+          eyebrow="PARTNERSHIP"
+          title="파트너십 · JV"
+          description="IP 홀더, 제조사, 유통사, 테크 기업과의 전략적 파트너십 및 조인트벤처를 구축합니다. 각자의 강점을 결합해 단독으로는 불가능한 규모의 비즈니스를 실현합니다."
+          dark
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="invest-focus">
+    <div class="invest-focus-inner">
+      <div class="focus-header">
+        <span class="focus-badge">INVESTMENT FOCUS</span>
+        <h2 class="focus-title">투자 관심 분야</h2>
+        <p class="focus-sub">헤세드코퍼레이션이 주목하는 성장 영역</p>
+      </div>
+
+      <div class="focus-grid">
+        <div class="focus-card">
+          <span class="focus-icon">🎯</span>
+          <h3 class="focus-card-title">IP · 콘텐츠</h3>
+          <p class="focus-card-desc">캐릭터, 웹툰, 애니메이션 등 IP 기반 비즈니스와 팬덤 플랫폼</p>
+        </div>
+        <div class="focus-card">
+          <span class="focus-icon">🤖</span>
+          <h3 class="focus-card-title">AI · 테크</h3>
+          <p class="focus-card-desc">AI 에이전트, 자동화 솔루션, 커머스 테크놀로지</p>
+        </div>
+        <div class="focus-card">
+          <span class="focus-icon">🌏</span>
+          <h3 class="focus-card-title">글로벌 유통</h3>
+          <p class="focus-card-desc">크로스보더 커머스, 해외 라이선싱, 글로벌 팬덤 비즈니스</p>
+        </div>
+        <div class="focus-card">
+          <span class="focus-icon">🏪</span>
+          <h3 class="focus-card-title">리테일 · D2C</h3>
+          <p class="focus-card-desc">팝업스토어, 셀렉트샵, D2C 브랜드 커머스</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTABanner
+    title="함께 성장할 파트너를 찾습니다."
+    subtitle="투자 · 사업 제휴 · JV 제안을 환영합니다."
+    buttonText="제안하기"
+    buttonHref="/contact"
+  />
+</PageLayout>
+
+<style>
+  /* ── Services Section ── */
+  .invest-services {
+    padding: 72px 20px;
+  }
+
+  .invest-inner {
+    max-width: var(--content-max);
+    margin: 0 auto;
+  }
+
+  .invest-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .invest-grid > :first-child {
+    grid-column: 1 / -1;
+  }
+
+  @media (max-width: 768px) {
+    .invest-grid {
+      grid-template-columns: 1fr;
+    }
+    .invest-grid > :first-child {
+      grid-column: auto;
+    }
+  }
+
+  /* ── Focus Section ── */
+  .invest-focus {
+    padding: 96px 20px;
+    background: var(--hc-gray-50);
+  }
+
+  .invest-focus-inner {
+    max-width: var(--content-max);
+    margin: 0 auto;
+  }
+
+  .focus-header {
+    text-align: center;
+    margin-bottom: 56px;
+  }
+
+  .focus-badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--hc-orange);
+    background: rgba(243, 152, 0, 0.08);
+    padding: 6px 16px;
+    border-radius: var(--r-pill);
+    margin-bottom: 20px;
+  }
+
+  .focus-title {
+    font-family: var(--font-display);
+    font-size: 2.75rem;
+    font-weight: 600;
+    line-height: 1.15;
+    color: var(--hc-ink);
+    margin-bottom: 12px;
+  }
+
+  .focus-sub {
+    font-size: 1.3125rem;
+    color: var(--hc-ink);
+    opacity: 0.7;
+  }
+
+  .focus-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+
+  .focus-card {
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    padding: 32px 24px;
+    text-align: center;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .focus-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  }
+
+  .focus-icon {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 16px;
+  }
+
+  .focus-card-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--hc-ink);
+    margin-bottom: 8px;
+  }
+
+  .focus-card-desc {
+    font-size: 0.875rem;
+    line-height: 1.55;
+    color: var(--hc-ink);
+    opacity: 0.65;
+  }
+
+  @media (max-width: 1024px) {
+    .focus-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .invest-focus {
+      padding: 64px 20px;
+    }
+
+    .focus-title {
+      font-size: 2rem;
+    }
+
+    .focus-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
