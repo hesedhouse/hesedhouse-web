@@ -1,0 +1,103 @@
+{
+  "startDate": "2026-04-26",
+  "rotation": [
+    { "day": 1, "author": "cheongha", "category": "ip-license",      "label": "IP 라이선스" },
+    { "day": 2, "author": "mangchi",  "category": "merch-guide",     "label": "굿즈 제작" },
+    { "day": 3, "author": "ilgak",    "category": "popup-store",     "label": "팝업스토어" },
+    { "day": 4, "author": "geumbi",   "category": "distribution",    "label": "유통 전략" },
+    { "day": 5, "author": "pilbong",  "category": "visual-creative", "label": "비주얼" },
+    { "day": 6, "author": "baram",    "category": "global-trend",    "label": "글로벌" },
+    { "day": 7, "author": "jupan",    "category": "cost-analysis",   "label": "비용 분석" },
+    { "day": 8, "author": "songsa",   "category": "legal-guide",     "label": "계약 법률" },
+    { "day": 9, "author": "indeok",   "category": "trend-ai",        "label": "트렌드 & AI" },
+    { "day": 10, "author": "oksu",    "category": "editorial",       "label": "편집장 기고" }
+  ],
+  "topicPool": {
+    "ip-license": [
+      "캐릭터 IP 라이선스 수익 구조 완벽 분석",
+      "MG(최소보장금) vs 로열티 - 어떤 조건이 유리한가",
+      "IP 콜라보레이션 성공 사례 5가지",
+      "라이선스 계약 전 반드시 확인할 감수 프로세스",
+      "서브 라이선스와 직접 라이선스의 차이",
+      "IP 포트폴리오 구성 전략 - 소규모 기업편"
+    ],
+    "merch-guide": [
+      "포토카드 인쇄 품질 비교 - 옵셋 vs 디지털",
+      "캐릭터 인형 제작 가이드 - 패턴부터 봉제까지",
+      "굿즈 패키지 디자인이 매출에 미치는 영향",
+      "소량 굿즈 생산 전략 - MOQ 100개부터 시작하기",
+      "스티커/씰 제작 완벽 가이드",
+      "에코백/파우치 굿즈 제작 시 주의사항"
+    ],
+    "popup-store": [
+      "팝업스토어 매출 극대화를 위한 VMD 전략",
+      "팝업스토어 운영 인력 구성과 교육 방법",
+      "백화점 vs 복합몰 vs 독립매장 - 팝업 장소 비교",
+      "팝업스토어 POS 시스템 선택 가이드",
+      "성공적인 팝업 마케팅 - SNS 사전 홍보 전략",
+      "팝업스토어 철수 후 정산 프로세스"
+    ],
+    "distribution": [
+      "B2B 굿즈 납품 프로세스 A to Z",
+      "온라인 셀렉트샵 입점 전략",
+      "위탁판매 vs 사입판매 - 수익 구조 비교",
+      "재고 관리의 기본 - 소규모 굿즈 기업편",
+      "편의점/서점 캐릭터 굿즈 납품 가이드",
+      "물류 파트너 선정 체크리스트"
+    ],
+    "visual-creative": [
+      "굿즈 제품 촬영 세팅 가이드 - 스마트폰으로도 가능",
+      "캐릭터 굿즈 상세페이지 디자인 원칙",
+      "SNS용 굿즈 콘텐츠 제작 팁",
+      "브랜드 아이덴티티 구축 - 소규모 IP 기업편",
+      "팝업스토어 현장 포토존 디자인",
+      "인스타그램 피드 통일감 만들기"
+    ],
+    "global-trend": [
+      "일본 캐릭터 굿즈 시장 진출 가이드",
+      "동남아 K-캐릭터 수요 분석",
+      "해외 전시회 참가 준비 체크리스트",
+      "글로벌 캐릭터 라이선스 시장 규모와 트렌드",
+      "현지화 전략 - 같은 캐릭터 다른 굿즈",
+      "K-캐릭터 해외 팝업 성공 사례"
+    ],
+    "cost-analysis": [
+      "굿즈 원가 계산법 - 단가표 만들기",
+      "팝업스토어 손익분기점 분석",
+      "IP 라이선스 프로젝트 예산 편성 가이드",
+      "마진율 최적화 - 어디서 비용을 줄일 수 있는가",
+      "프로젝트 정산서 작성 실무 가이드",
+      "소규모 IP 기업의 현금흐름 관리법"
+    ],
+    "legal-guide": [
+      "IP 라이선스 계약서 필수 조항 해설",
+      "캐릭터 저작권 침해 대응 매뉴얼",
+      "상표권 등록 절차와 비용 안내",
+      "KC 인증이 필요한 굿즈 품목 정리",
+      "해외 IP 계약 시 준거법 선택 가이드",
+      "프리랜서/외주 계약 시 저작권 귀속 문제"
+    ],
+    "trend-ai": [
+      "AI로 굿즈 디자인 시안 빠르게 만들기",
+      "소규모 기업의 디지털 전환 첫걸음",
+      "AI 챗봇을 활용한 고객 응대 자동화",
+      "데이터 기반 굿즈 수요 예측",
+      "업무 자동화 도구 비교 - 어떤 것부터 도입할까",
+      "AI 시대 IP 사업의 변화와 기회"
+    ],
+    "editorial": [
+      "IP 산업 2026년 하반기 전망",
+      "소규모 IP 기업이 살아남는 법",
+      "팬덤 경제와 캐릭터 비즈니스의 미래",
+      "대표가 모든 걸 할 수 없는 이유 - AI 업무 위임의 현실",
+      "IP 사업 창업 1년 차가 알아야 할 것들",
+      "캐릭터 비즈니스 실패에서 배운 교훈"
+    ]
+  },
+  "publishedSlugs": [
+    "popup-store-planning-guide",
+    "ip-license-contract-checklist",
+    "acrylic-keyring-production-guide",
+    "ai-workflow-automation-for-ip-business"
+  ]
+}
