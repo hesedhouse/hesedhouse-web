@@ -40,35 +40,35 @@ const { transparent = false } = Astro.props;
       <span></span><span></span>
     </button>
   </nav>
-
-  <!-- Mobile overlay -->
-  <div class="mobile-overlay" aria-hidden="true">
-    <div class="mobile-nav">
-      <a class="mobile-brand" href="/">HESEDCORP<span class="dot">.</span></a>
-      <ul class="mobile-links">
-        <li><a href="/about">ABOUT</a></li>
-        <li>
-          <span class="mobile-group-label">SERVICE</span>
-          <ul>
-            {services.map((s) => (
-              <li><a href={s.href}>{s.label}</a></li>
-            ))}
-          </ul>
-        </li>
-        <li>
-          <span class="mobile-group-label">WORKS</span>
-          <ul>
-            {works.map((w) => (
-              <li><a href={w.href}>{w.label}</a></li>
-            ))}
-          </ul>
-        </li>
-        <li><a href="/blog">BLOG</a></li>
-        <li><a href="/contact">CONTACT</a></li>
-      </ul>
-    </div>
-  </div>
 </header>
+
+<!-- Mobile overlay (sibling of header — header's backdrop-filter creates a containing block that would trap a position:fixed child to the 48px header bounds) -->
+<div class="mobile-overlay" aria-hidden="true">
+  <div class="mobile-nav">
+    <a class="mobile-brand" href="/">HESEDCORP<span class="dot">.</span></a>
+    <ul class="mobile-links">
+      <li><a href="/about">ABOUT</a></li>
+      <li>
+        <span class="mobile-group-label">SERVICE</span>
+        <ul>
+          {services.map((s) => (
+            <li><a href={s.href}>{s.label}</a></li>
+          ))}
+        </ul>
+      </li>
+      <li>
+        <span class="mobile-group-label">WORKS</span>
+        <ul>
+          {works.map((w) => (
+            <li><a href={w.href}>{w.label}</a></li>
+          ))}
+        </ul>
+      </li>
+      <li><a href="/blog">BLOG</a></li>
+      <li><a href="/contact">CONTACT</a></li>
+    </ul>
+  </div>
+</div>
 
 <style>
   /* ── Sticky bar ── */
