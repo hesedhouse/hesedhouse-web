@@ -39,10 +39,11 @@ export const categories: Record<string, CategoryInfo> = {
   'distribution':     { id: 'distribution',     label: '유통 전략',         description: 'B2B 납품과 온라인 유통 채널',               color: '#C89B2A', colorLight: '#F2E6C4' },
   'visual-creative':  { id: 'visual-creative',  label: '비주얼',            description: '제품 촬영과 크리에이티브 콘텐츠',            color: '#764A78', colorLight: '#E6DCE8' },
   'global-trend':     { id: 'global-trend',     label: '글로벌',            description: '해외 시장 동향과 진출 전략',                color: '#1E3A6E', colorLight: '#D9E0EC' },
-  'cost-analysis':    { id: 'cost-analysis',    label: '비용 분석',         description: '원가 구조와 수익성 분석',                   color: '#8F6E1C', colorLight: '#F2E6C4' },
+  'cost-analysis':    { id: 'cost-analysis',    label: '굿즈 가이드',       description: '팬을 위한 굿즈 가성비·가치 분석과 컬렉팅 팁',  color: '#8F6E1C', colorLight: '#F2E6C4' },
   'legal-guide':      { id: 'legal-guide',      label: '계약 법률',         description: 'IP 계약과 법률 실무 가이드',                color: '#142851', colorLight: '#D9E0EC' },
   'trend-ai':         { id: 'trend-ai',         label: '트렌드 & AI',       description: '업계 트렌드와 AI 활용 인사이트',             color: '#764A78', colorLight: '#E6DCE8' },
   'editorial':        { id: 'editorial',        label: '편집장 기고',       description: '옥수의 특별 기고와 종합 인사이트',           color: '#1E3A6E', colorLight: '#D9E0EC' },
+  'kpop-monthly':     { id: 'kpop-monthly',     label: 'K-POP 라이브',      description: '이번 달 K-POP 콘서트·팬미팅·페스티벌 라인업', color: '#D63384', colorLight: '#F8DCEB' },
 };
 
 /** Map author → primary categories */
@@ -52,7 +53,7 @@ export const authorCategories: Record<string, string[]> = {
   ilgak:    ['popup-store'],
   geumbi:   ['distribution'],
   pilbong:  ['visual-creative'],
-  baram:    ['global-trend'],
+  baram:    ['global-trend', 'kpop-monthly'],
   jupan:    ['cost-analysis'],
   songsa:   ['legal-guide'],
   indeok:   ['trend-ai'],

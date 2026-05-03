@@ -7,7 +7,7 @@
     { "day": 4, "author": "geumbi",   "category": "distribution",    "label": "유통 전략" },
     { "day": 5, "author": "pilbong",  "category": "visual-creative", "label": "비주얼" },
     { "day": 6, "author": "baram",    "category": "global-trend",    "label": "글로벌" },
-    { "day": 7, "author": "jupan",    "category": "cost-analysis",   "label": "비용 분석" },
+    { "day": 7, "author": "jupan",    "category": "cost-analysis",   "label": "굿즈 가이드" },
     { "day": 8, "author": "songsa",   "category": "legal-guide",     "label": "계약 법률" },
     { "day": 9, "author": "indeok",   "category": "trend-ai",        "label": "트렌드 & AI" },
     { "day": 10, "author": "oksu",    "category": "editorial",       "label": "편집장 기고" }
@@ -62,12 +62,14 @@
       "K-캐릭터 해외 팝업 성공 사례"
     ],
     "cost-analysis": [
-      "굿즈 원가 계산법 - 단가표 만들기",
-      "팝업스토어 손익분기점 분석",
-      "IP 라이선스 프로젝트 예산 편성 가이드",
-      "마진율 최적화 - 어디서 비용을 줄일 수 있는가",
-      "프로젝트 정산서 작성 실무 가이드",
-      "소규모 IP 기업의 현금흐름 관리법"
+      "팬덤 굿즈 베스트 - 올해 만족도 높았던 캐릭터 굿즈 컬렉션 정리",
+      "한정판 굿즈 살까 말까 - 후회 없는 선택 기준 7가지",
+      "콜라보 굿즈 트렌드 - 올해 화제가 된 IP×IP 콜라보 정리",
+      "초보 팬을 위한 굿즈 컬렉팅 입문 가이드",
+      "팝업스토어 굿즈 잘 사는 법 - 사전정보·웨이팅·구매 동선 팁",
+      "굿즈 보관·디스플레이 노하우 - 컬렉션이 빛나는 방법",
+      "팬 입장에서 본 굿즈 패키지 디자인 호불호 분석",
+      "시즌별 굿즈 트렌드 정리 - 봄·여름·가을·겨울"
     ],
     "legal-guide": [
       "IP 라이선스 계약서 필수 조항 해설",
@@ -92,6 +94,9 @@
       "대표가 모든 걸 할 수 없는 이유 - AI 업무 위임의 현실",
       "IP 사업 창업 1년 차가 알아야 할 것들",
       "캐릭터 비즈니스 실패에서 배운 교훈"
+    ],
+    "kpop-monthly": [
+      "이번 달 한국에서 열리는 K-POP 콘서트·팬미팅·페스티벌 라인업 (※매월 첫 주 자동 발행 - 작가: 바람, 글로벌팀)"
     ]
   },
   "publishedSlugs": [

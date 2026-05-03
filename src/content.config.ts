@@ -33,6 +33,7 @@ const blog = defineCollection({
       'legal-guide',
       'trend-ai',
       'editorial',
+      'kpop-monthly',
     ]),
     tags: z.array(z.string()).default([]),
     author: z.string(),
