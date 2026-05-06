@@ -2,7 +2,7 @@
 title: "MG와 로열티, IP 라이선스 어떤 조건이 유리한가"
 description: "캐릭터 IP 라이선스 계약의 핵심인 MG(최소보장금)와 로열티의 차이를 상황별로 비교 분석합니다. 라이선시·라이선서 각각의 최적 조건 선택 기준을 정리했습니다."
 pubDate: 2026-05-06
-category: "ip-license"
+category: "ip-trend"
 author: "cheongha"
 tags: ["IP라이선스", "MG최소보장금", "로열티", "캐릭터라이선스", "라이선스계약"]
 draft: false

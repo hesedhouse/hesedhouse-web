@@ -33,29 +33,29 @@ export const authors: Record<string, AuthorInfo> = {
 };
 
 export const categories: Record<string, CategoryInfo> = {
-  'ip-license':       { id: 'ip-license',       label: 'IP 라이선스',       description: 'IP 라이선스 계약과 콜라보레이션 전략',      color: '#2E7850', colorLight: '#D6E8DD' },
-  'merch-guide':      { id: 'merch-guide',      label: '굿즈 제작',         description: '캐릭터 굿즈 기획부터 생산까지',             color: '#1D6478', colorLight: '#D4E4EA' },
-  'popup-store':      { id: 'popup-store',      label: '팝업스토어',        description: '팝업스토어 기획과 현장 운영',               color: '#B23A3A', colorLight: '#F2DDDD' },
-  'distribution':     { id: 'distribution',     label: '유통 전략',         description: 'B2B 납품과 온라인 유통 채널',               color: '#C89B2A', colorLight: '#F2E6C4' },
-  'visual-creative':  { id: 'visual-creative',  label: '비주얼',            description: '제품 촬영과 크리에이티브 콘텐츠',            color: '#764A78', colorLight: '#E6DCE8' },
-  'global-trend':     { id: 'global-trend',     label: '글로벌',            description: '해외 시장 동향과 진출 전략',                color: '#1E3A6E', colorLight: '#D9E0EC' },
-  'cost-analysis':    { id: 'cost-analysis',    label: '굿즈 가이드',       description: '팬을 위한 굿즈 가성비·가치 분석과 컬렉팅 팁',  color: '#8F6E1C', colorLight: '#F2E6C4' },
-  'legal-guide':      { id: 'legal-guide',      label: '계약 법률',         description: 'IP 계약과 법률 실무 가이드',                color: '#142851', colorLight: '#D9E0EC' },
-  'trend-ai':         { id: 'trend-ai',         label: '트렌드 & AI',       description: '업계 트렌드와 AI 활용 인사이트',             color: '#764A78', colorLight: '#E6DCE8' },
-  'editorial':        { id: 'editorial',        label: '편집장 기고',       description: '옥수의 특별 기고와 종합 인사이트',           color: '#1E3A6E', colorLight: '#D9E0EC' },
+  'ip-trend':         { id: 'ip-trend',         label: 'IP 트렌드',         description: 'IP 시장 동향과 캐릭터 산업 트렌드 분석',       color: '#2E7850', colorLight: '#D6E8DD' },
+  'goods-culture':    { id: 'goods-culture',    label: '굿즈 컬처',         description: '굿즈 문화 트렌드와 소비 심리 분석',            color: '#1D6478', colorLight: '#D4E4EA' },
+  'popup-retail':     { id: 'popup-retail',     label: '팝업 & 리테일',     description: '팝업스토어·리테일 트렌드와 사례 분석',         color: '#B23A3A', colorLight: '#F2DDDD' },
+  'market-insight':   { id: 'market-insight',   label: '마켓 인사이트',     description: '캐릭터 시장 데이터와 유통 트렌드 분석',        color: '#C89B2A', colorLight: '#F2E6C4' },
+  'brand-story':      { id: 'brand-story',      label: '브랜드 스토리',     description: '성공 브랜드 분석과 스토리텔링 인사이트',       color: '#764A78', colorLight: '#E6DCE8' },
+  'k-content-global': { id: 'k-content-global', label: 'K-콘텐츠 글로벌',   description: 'K-캐릭터·K-POP의 글로벌 확장 분석',           color: '#1E3A6E', colorLight: '#D9E0EC' },
+  'fan-economy':      { id: 'fan-economy',      label: '팬덤 이코노미',     description: '팬덤 경제학과 컬렉팅 문화 트렌드',            color: '#8F6E1C', colorLight: '#F2E6C4' },
+  'biz-legal':        { id: 'biz-legal',        label: '비즈니스 & 법률',   description: 'AI 저작권·IP 보호·계약 쟁점 분석',            color: '#142851', colorLight: '#D9E0EC' },
+  'ai-biz':           { id: 'ai-biz',           label: 'AI & 비즈니스',     description: 'AI가 비즈니스를 바꾸는 현장과 트렌드',        color: '#764A78', colorLight: '#E6DCE8' },
+  'editorial':        { id: 'editorial',        label: '인사이트 칼럼',     description: '옥수의 산업 전망과 경영 인사이트',            color: '#1E3A6E', colorLight: '#D9E0EC' },
   'kpop-monthly':     { id: 'kpop-monthly',     label: 'K-POP 라이브',      description: '이번 달 K-POP 콘서트·팬미팅·페스티벌 라인업', color: '#D63384', colorLight: '#F8DCEB' },
 };
 
 /** Map author → primary categories */
 export const authorCategories: Record<string, string[]> = {
-  cheongha: ['ip-license'],
-  mangchi:  ['merch-guide'],
-  ilgak:    ['popup-store'],
-  geumbi:   ['distribution'],
-  pilbong:  ['visual-creative'],
-  baram:    ['global-trend', 'kpop-monthly'],
-  jupan:    ['cost-analysis'],
-  songsa:   ['legal-guide'],
-  indeok:   ['trend-ai'],
+  cheongha: ['ip-trend'],
+  mangchi:  ['goods-culture'],
+  ilgak:    ['popup-retail'],
+  geumbi:   ['market-insight'],
+  pilbong:  ['brand-story'],
+  baram:    ['k-content-global', 'kpop-monthly'],
+  jupan:    ['fan-economy'],
+  songsa:   ['biz-legal'],
+  indeok:   ['ai-biz'],
   oksu:     ['editorial'],
 };

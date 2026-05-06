@@ -2,7 +2,7 @@
 title: "AI로 굿즈 디자인 시안 빠르게 만들기"
 description: "Midjourney, Adobe Firefly 등 AI 이미지 생성 툴로 굿즈 디자인 시안을 빠르게 제작하는 실전 가이드입니다. 프롬프트 작성법부터 주의사항까지 정리했습니다."
 pubDate: 2026-05-04
-category: "trend-ai"
+category: "ai-biz"
 author: "indeok"
 tags: ["AI디자인", "굿즈시안", "Midjourney", "AdobeFirefly", "IP비즈니스"]
 draft: false

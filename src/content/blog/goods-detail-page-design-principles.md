@@ -2,7 +2,7 @@
 title: "캐릭터 굿즈 온라인 상세페이지 디자인 원칙과 실전 체크리스트"
 description: "온라인에서 굿즈를 팔 때 상세페이지 품질이 매출을 좌우합니다. 헤세드코퍼레이션이 다양한 캐릭터 굿즈 프로젝트에서 검증한 상세페이지 구성 원칙, 이미지 배치 순서, 모바일 최적화 팁까지 단계별로 안내합니다."
 pubDate: 2026-04-30
-category: "visual-creative"
+category: "brand-story"
 author: "pilbong"
 tags: ["굿즈", "상세페이지", "온라인쇼핑몰", "디자인", "캐릭터굿즈"]
 draft: false

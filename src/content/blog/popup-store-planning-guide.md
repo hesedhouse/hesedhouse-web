@@ -2,7 +2,7 @@
 title: "팝업스토어 기획서 작성법 - 컨셉 설정부터 예산 편성까지"
 description: "캐릭터 IP 팝업스토어 기획서의 핵심 구성 요소를 정리했습니다. 장소 선정, 컨셉 기획, 예산 편성, 운영 계획까지 실전 가이드를 제공합니다."
 pubDate: 2026-04-26
-category: "popup-store"
+category: "popup-retail"
 author: "ilgak"
 tags: ["팝업스토어", "팝업기획", "캐릭터팝업", "현장운영", "기획서"]
 draft: false

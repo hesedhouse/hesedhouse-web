@@ -2,7 +2,7 @@
 title: "라부부 글로벌 열풍, IP 비즈니스로 읽는 성공 공식"
 description: "전 세계를 강타한 라부부 IP의 성공 비결을 팝마트·케이싱 룽의 전략으로 분석합니다. 국내 IP 기업이 배울 수 있는 핵심 인사이트를 정리했습니다."
 pubDate: 2026-05-01
-category: "global-trend"
+category: "k-content-global"
 author: "baram"
 tags: ["라부부", "팝마트", "글로벌IP", "캐릭터비즈니스", "IP라이선스"]
 draft: false

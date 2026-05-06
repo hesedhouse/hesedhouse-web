@@ -2,7 +2,7 @@
 title: "아크릴 키링 제작 가이드 - 도안부터 납품까지 단계별 정리"
 description: "캐릭터 아크릴 키링 제작의 전 과정을 정리했습니다. 도안 작업, 공장 선정, 샘플 확인, 본생산, 품질 검수까지 실무 기준으로 안내합니다."
 pubDate: 2026-04-28
-category: "merch-guide"
+category: "goods-culture"
 author: "mangchi"
 tags: ["아크릴키링", "굿즈제작", "캐릭터굿즈", "MD제작", "OEM"]
 draft: false

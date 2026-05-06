@@ -2,7 +2,7 @@
 title: "AI 업무 자동화로 견적서와 발주서 자동 생성하기 - 실제 도입 사례"
 description: "IP 굿즈 사업에서 AI 업무 자동화를 도입한 실제 사례를 소개합니다. 견적서, 발주서, 정산서 자동 생성부터 블로그 자동 발행까지의 과정을 안내합니다."
 pubDate: 2026-04-28
-category: "trend-ai"
+category: "ai-biz"
 author: "indeok"
 tags: ["AI자동화", "업무자동화", "견적서자동화", "IP사업", "디지털전환"]
 draft: false

@@ -2,7 +2,7 @@
 title: "굿즈 원가 계산법 - 단가표 작성 실전 가이드"
 description: "굿즈 제작 전 꼭 알아야 할 원가 계산 방법을 소개합니다. 품목별 원가 구성 요소부터 단가표 양식, 마진율 설정까지 실무 중심으로 정리했습니다."
 pubDate: 2026-05-02
-category: "cost-analysis"
+category: "fan-economy"
 author: "jupan"
 tags: ["굿즈 원가", "단가표", "마진율", "굿즈 제작 비용", "IP 비즈니스"]
 draft: false

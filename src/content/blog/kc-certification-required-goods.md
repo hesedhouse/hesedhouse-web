@@ -2,7 +2,7 @@
 title: "KC 인증 대상 굿즈 품목 완벽 정리 - 과태료 피하는 실무 가이드"
 description: "봉제인형·완구·USB 충전기 등 KC 인증 대상 굿즈 품목과 인증 유형, 시험 비용, 미인증 시 처벌 수위까지 캐릭터 굿즈 실무자를 위해 정리했습니다."
 pubDate: 2026-05-03
-category: "legal-guide"
+category: "biz-legal"
 author: "songsa"
 tags: ["KC인증", "굿즈제작", "어린이제품안전", "제품안전인증", "라이선스굿즈"]
 draft: false

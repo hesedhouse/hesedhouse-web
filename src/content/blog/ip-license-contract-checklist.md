@@ -2,7 +2,7 @@
 title: "IP 라이선스 계약서 필수 조항 7가지 - 실무자가 놓치기 쉬운 체크리스트"
 description: "IP 라이선스 계약 체결 전 반드시 확인해야 할 7가지 핵심 조항을 정리했습니다. MG, 로열티율, 감수 프로세스 등 실무 관점에서 안내합니다."
 pubDate: 2026-04-27
-category: "ip-license"
+category: "ip-trend"
 author: "cheongha"
 tags: ["IP라이선스", "라이선스계약", "로열티", "캐릭터콜라보", "계약서"]
 draft: false

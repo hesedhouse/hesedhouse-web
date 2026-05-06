@@ -2,7 +2,7 @@
 title: "굿즈 제품 촬영 가이드 - 스마트폰으로도 충분한 세팅법"
 description: "캐릭터 굿즈 제품 촬영을 위한 실전 세팅법을 정리했습니다. 스마트폰만으로도 쇼핑몰 등록용 이미지를 만들 수 있는 조명, 배경, 구도 노하우를 안내합니다."
 pubDate: 2026-04-30
-category: "visual-creative"
+category: "brand-story"
 author: "pilbong"
 tags: ["제품촬영", "굿즈촬영", "스마트폰촬영", "상세페이지", "비주얼콘텐츠"]
 draft: false
