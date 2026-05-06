@@ -42,6 +42,25 @@ const crew = (await getCollection('dynasty')).sort((a, b) => a.data.order - b.da
     </div>
   </section>
 
+  <!-- MindScope Section -->
+  <section class="mindscope">
+    <div class="mindscope-inner">
+      <div class="mindscope-content">
+        <span class="mindscope-badge">AI RESEARCH</span>
+        <h2 class="mindscope-title">MindScope Korea</h2>
+        <p class="mindscope-subtitle">AI 여론 리서치, 더 빠르고 정확하게.</p>
+        <p class="mindscope-body">
+          2,700건 이상의 한국 통계 데이터를 딥러닝으로 학습한 AI 리서치 엔진.
+          기존 여론조사 대비 빠르고 경제적인 소비자 인사이트를 제공합니다.
+          브랜드 전략 수립, 신제품 사전검증, 캠페인 효과 예측에 활용됩니다.
+        </p>
+        <a class="mindscope-cta" href="https://mindscopekorea.com" target="_blank" rel="noopener noreferrer">
+          mindscopekorea.com →
+        </a>
+      </div>
+    </div>
+  </section>
+
   <!-- Hesed Dynasty Section -->
   <section class="dynasty">
     <div class="dynasty-inner">
@@ -107,6 +126,86 @@ const crew = (await getCollection('dynasty')).sort((a, b) => a.data.order - b.da
     }
     .ai-grid > :first-child {
       grid-column: auto;
+    }
+  }
+
+  /* ── MindScope Section ── */
+  .mindscope {
+    padding: 96px 20px;
+    background: var(--hc-navy);
+  }
+
+  .mindscope-inner {
+    max-width: var(--content-max);
+    margin: 0 auto;
+  }
+
+  .mindscope-content {
+    text-align: center;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  .mindscope-badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--hc-orange);
+    background: rgba(243, 152, 0, 0.15);
+    padding: 6px 16px;
+    border-radius: var(--r-pill);
+    margin-bottom: 20px;
+  }
+
+  .mindscope-title {
+    font-family: var(--font-display);
+    font-size: 2.75rem;
+    font-weight: 600;
+    line-height: 1.15;
+    color: #fff;
+    margin-bottom: 12px;
+  }
+
+  .mindscope-subtitle {
+    font-size: 1.3125rem;
+    color: #fff;
+    opacity: 0.75;
+    margin-bottom: 28px;
+  }
+
+  .mindscope-body {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: #fff;
+    opacity: 0.65;
+    margin-bottom: 36px;
+  }
+
+  .mindscope-cta {
+    display: inline-block;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--hc-navy);
+    background: var(--hc-orange);
+    padding: 14px 36px;
+    border-radius: var(--r-pill);
+    text-decoration: none;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .mindscope-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(243, 152, 0, 0.3);
+  }
+
+  @media (max-width: 768px) {
+    .mindscope {
+      padding: 64px 20px;
+    }
+    .mindscope-title {
+      font-size: 2rem;
     }
   }
 
