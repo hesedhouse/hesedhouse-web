@@ -1,0 +1,244 @@
+---
+interface Props {
+  category: 'ip' | 'merch' | 'popup' | 'distribution' | 'vs' | 'ai';
+  client: string;
+  title: string;
+  description?: string;
+  year: string;
+  tag?: string;
+}
+
+const { category, client, title, description, year, tag } = Astro.props;
+
+const categoryLabels: Record<string, string> = {
+  ip: 'IP LICENSE',
+  merch: 'MERCHANDISE',
+  popup: 'POP-UP',
+  distribution: 'DISTRIBUTION',
+  vs: 'VISUAL',
+  ai: 'AI SOLUTION',
+};
+---
+
+<div class={`port-card cat-${category}`}>
+  <div class="port-thumb">
+    <div class="thumb-deco"></div>
+    <div class="thumb-deco-2"></div>
+    <span class="thumb-label">{categoryLabels[category]}</span>
+  </div>
+  <div class="port-info">
+    {tag && <span class="port-tag">{tag}</span>}
+    <span class="port-client">{client}</span>
+    <h3 class="port-title">{title}</h3>
+    {description && <p class="port-desc">{description}</p>}
+    <span class="port-year">{year}</span>
+  </div>
+</div>
+
+<style>
+  /* ── Card base ── */
+  .port-card {
+    border-radius: var(--r-md);
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    transition: transform 0.3s var(--ease-std), box-shadow 0.3s var(--ease-std);
+    background: var(--hc-white);
+  }
+  .port-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.10);
+  }
+
+  /* ── Thumbnail ── */
+  .port-thumb {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    padding: 20px;
+  }
+  .port-card:hover .port-thumb .thumb-deco {
+    transform: scale(1.08);
+  }
+  .port-card:hover .port-thumb .thumb-deco-2 {
+    transform: scale(1.05) rotate(3deg);
+  }
+
+  .thumb-deco,
+  .thumb-deco-2 {
+    position: absolute;
+    inset: 0;
+    transition: transform 0.5s var(--ease-std);
+    pointer-events: none;
+  }
+
+  .thumb-label {
+    position: relative;
+    z-index: 2;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  /* ── Info ── */
+  .port-info {
+    padding: 20px 20px 24px;
+  }
+  .port-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--hc-navy);
+    background: rgba(0, 54, 104, 0.07);
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+  }
+  .port-client {
+    display: block;
+    font-size: 12px;
+    color: var(--hc-orange);
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .port-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin: 4px 0;
+    color: var(--hc-ink);
+    line-height: 1.35;
+  }
+  .port-desc {
+    font-size: 13px;
+    line-height: 1.65;
+    color: rgba(0, 0, 0, 0.52);
+    margin: 8px 0 12px;
+  }
+  .port-year {
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.36);
+    font-weight: 500;
+  }
+
+  /* ================================================================
+     CATEGORY THUMB STYLES — pure CSS gradients + geometric patterns
+     ================================================================ */
+
+  /* ── IP LICENSE — interconnected nodes ── */
+  .cat-ip .port-thumb {
+    background: linear-gradient(135deg, #002547 0%, #003668 40%, #1B5E9C 100%);
+  }
+  .cat-ip .thumb-deco {
+    background:
+      radial-gradient(circle at 75% 25%, rgba(243, 152, 0, 0.20) 0%, transparent 40%),
+      radial-gradient(circle at 25% 70%, rgba(255, 255, 255, 0.06) 0%, transparent 35%);
+  }
+  .cat-ip .thumb-deco-2 {
+    background:
+      radial-gradient(circle 80px at 70% 30%, rgba(255, 255, 255, 0.08) 0%, transparent 100%),
+      radial-gradient(circle 60px at 30% 65%, rgba(255, 255, 255, 0.05) 0%, transparent 100%),
+      radial-gradient(circle 40px at 55% 50%, rgba(243, 152, 0, 0.10) 0%, transparent 100%),
+      radial-gradient(circle 2px at 70% 30%, rgba(255, 255, 255, 0.30) 0%, transparent 100%),
+      radial-gradient(circle 2px at 30% 65%, rgba(255, 255, 255, 0.25) 0%, transparent 100%),
+      radial-gradient(circle 2px at 55% 50%, rgba(243, 152, 0, 0.35) 0%, transparent 100%);
+  }
+
+  /* ── MERCHANDISING — subtle grid pattern ── */
+  .cat-merch .port-thumb {
+    background: linear-gradient(135deg, #002547 0%, #003668 30%, #1a4a6e 100%);
+  }
+  .cat-merch .thumb-deco {
+    background:
+      radial-gradient(circle at 80% 20%, rgba(243, 152, 0, 0.25) 0%, transparent 45%),
+      radial-gradient(circle at 20% 80%, rgba(243, 152, 0, 0.10) 0%, transparent 35%);
+  }
+  .cat-merch .thumb-deco-2 {
+    opacity: 0.4;
+    background-image:
+      radial-gradient(circle 1.5px at center, rgba(255, 255, 255, 0.25) 0%, transparent 100%);
+    background-size: 28px 28px;
+    background-position: 14px 14px;
+  }
+
+  /* ── POP-UP — dynamic diagonal energy ── */
+  .cat-popup .port-thumb {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 35%, #002547 100%);
+  }
+  .cat-popup .thumb-deco {
+    background:
+      radial-gradient(circle at 85% 15%, rgba(233, 69, 96, 0.30) 0%, transparent 40%),
+      radial-gradient(circle at 10% 90%, rgba(243, 152, 0, 0.18) 0%, transparent 40%);
+  }
+  .cat-popup .thumb-deco-2 {
+    opacity: 0.12;
+    background: repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 20px,
+      rgba(255, 255, 255, 0.15) 20px,
+      rgba(255, 255, 255, 0.15) 21px
+    );
+  }
+
+  /* ── DISTRIBUTION — flowing horizontal lines ── */
+  .cat-distribution .port-thumb {
+    background: linear-gradient(135deg, #002547 0%, #003668 35%, #0d5c4a 100%);
+  }
+  .cat-distribution .thumb-deco {
+    background:
+      radial-gradient(circle at 80% 30%, rgba(39, 174, 96, 0.22) 0%, transparent 45%),
+      radial-gradient(circle at 15% 75%, rgba(255, 255, 255, 0.05) 0%, transparent 35%);
+  }
+  .cat-distribution .thumb-deco-2 {
+    opacity: 0.10;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 14px,
+      rgba(255, 255, 255, 0.20) 14px,
+      rgba(255, 255, 255, 0.20) 15px
+    );
+  }
+
+  /* ── VISUAL STUDIO — concentric circles (lens) ── */
+  .cat-vs .port-thumb {
+    background: linear-gradient(135deg, #1a1a2e 0%, #2c1654 45%, #3d1c6e 100%);
+  }
+  .cat-vs .thumb-deco {
+    background:
+      radial-gradient(circle at 65% 40%, rgba(168, 85, 247, 0.22) 0%, transparent 45%),
+      radial-gradient(circle at 30% 75%, rgba(243, 152, 0, 0.12) 0%, transparent 35%);
+  }
+  .cat-vs .thumb-deco-2 {
+    opacity: 0.08;
+    background:
+      radial-gradient(circle 120px at 60% 45%, transparent 58%, rgba(255, 255, 255, 0.35) 59%, transparent 60%),
+      radial-gradient(circle 80px at 60% 45%, transparent 58%, rgba(255, 255, 255, 0.30) 59%, transparent 60%),
+      radial-gradient(circle 45px at 60% 45%, transparent 56%, rgba(255, 255, 255, 0.25) 58%, transparent 60%),
+      radial-gradient(circle 8px at 60% 45%, rgba(255, 255, 255, 0.15) 0%, transparent 100%);
+  }
+
+  /* ── AI SOLUTION — dot matrix / digital grid ── */
+  .cat-ai .port-thumb {
+    background: linear-gradient(135deg, #0a0e1a 0%, #002547 40%, #003668 100%);
+  }
+  .cat-ai .thumb-deco {
+    background:
+      radial-gradient(circle at 75% 25%, rgba(0, 201, 255, 0.22) 0%, transparent 45%),
+      radial-gradient(circle at 20% 80%, rgba(243, 152, 0, 0.12) 0%, transparent 40%);
+  }
+  .cat-ai .thumb-deco-2 {
+    opacity: 0.18;
+    background-image:
+      radial-gradient(circle 1px at center, rgba(0, 201, 255, 0.40) 0%, transparent 100%);
+    background-size: 20px 20px;
+  }
+</style>
