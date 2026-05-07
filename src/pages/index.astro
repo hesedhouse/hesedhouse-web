@@ -59,52 +59,68 @@ const services = [
 >
   <LogoIntro />
 
-  <!-- ── Custom CSS Hero ── -->
-  <section class="hero-main">
-    <!-- Background layers -->
+  <!-- ══════════════════════════════════════════
+       INTERACTIVE HERO — Canvas particle network
+       ══════════════════════════════════════════ -->
+  <section class="hero-main" id="hero">
+    <!-- Canvas for particle network -->
+    <canvas class="hero-canvas" id="heroCanvas"></canvas>
+
+    <!-- Mouse-following glow -->
+    <div class="hero-glow" id="heroGlow"></div>
+
+    <!-- Dark gradient base -->
     <div class="hero-bg"></div>
-    <div class="hero-grid"></div>
-    <div class="hero-orb hero-orb--orange"></div>
-    <div class="hero-orb hero-orb--blue"></div>
-    <div class="hero-line hero-line--1"></div>
-    <div class="hero-line hero-line--2"></div>
-    <div class="hero-line hero-line--3"></div>
 
     <!-- Content -->
     <div class="hero-content">
-      <p class="hero-eyebrow">HESEDCORP.</p>
-      <h1 class="hero-title">
+      <p class="hero-eyebrow" data-animate="fade">HESEDCORP.</p>
+
+      <h1 class="hero-title" data-animate="chars">
         <span class="hero-title-line">IP 비즈니스를</span>
         <span class="hero-title-line">AI로 <span class="hero-accent">설계</span>합니다</span>
       </h1>
-      <p class="hero-subtitle">라이선스부터 굿즈 제작, 유통, 팝업 운영까지 — AI가 함께하는 IP 비즈니스 풀체인</p>
-      <div class="hero-actions">
-        <a class="hero-btn hero-btn--primary" href="/contact">프로젝트 문의</a>
+
+      <p class="hero-subtitle" data-animate="fade">
+        라이선스부터 굿즈 제작, 유통, 팝업 운영까지<br class="mobile-br" />
+        AI가 함께하는 IP 비즈니스 풀체인
+      </p>
+
+      <div class="hero-actions" data-animate="fade">
+        <a class="hero-btn hero-btn--primary" href="/contact">
+          <span class="btn-pulse"></span>
+          프로젝트 문의
+        </a>
         <a class="hero-btn hero-btn--ghost" href="/ai-solution">AI Solution →</a>
       </div>
 
-      <!-- Stats bar -->
-      <div class="hero-stats">
+      <!-- Stats bar with count-up -->
+      <div class="hero-stats" data-animate="fade" id="heroStats">
         <div class="stat">
-          <span class="stat-num">500<span class="stat-plus">+</span></span>
+          <span class="stat-num"><span class="count-up" data-target="500">0</span><span class="stat-plus">+</span></span>
           <span class="stat-label">프로젝트</span>
         </div>
         <div class="stat-divider"></div>
         <div class="stat">
-          <span class="stat-num">50<span class="stat-plus">+</span></span>
+          <span class="stat-num"><span class="count-up" data-target="50">0</span><span class="stat-plus">+</span></span>
           <span class="stat-label">파트너사</span>
         </div>
         <div class="stat-divider"></div>
         <div class="stat">
-          <span class="stat-num">10<span class="stat-plus">+</span></span>
+          <span class="stat-num"><span class="count-up" data-target="10">0</span><span class="stat-plus">+</span></span>
           <span class="stat-label">AI 에이전트</span>
         </div>
         <div class="stat-divider"></div>
         <div class="stat">
-          <span class="stat-num">3<span class="stat-plus">yr</span></span>
+          <span class="stat-num"><span class="count-up" data-target="3">0</span><span class="stat-plus">yr</span></span>
           <span class="stat-label">IP 비즈니스</span>
         </div>
       </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="scroll-hint" data-animate="fade">
+      <div class="scroll-line"></div>
     </div>
   </section>
 
@@ -133,9 +149,256 @@ const services = [
   />
 </PageLayout>
 
+<!-- ═══════════════════════════════════════════
+     INTERACTIVE SCRIPTS
+     ═══════════════════════════════════════════ -->
+<script>
+  // ── 1. Particle Network Canvas ──
+  (function initParticles() {
+    const canvas = document.getElementById('heroCanvas') as HTMLCanvasElement;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let w = 0, h = 0;
+    let mouse = { x: -9999, y: -9999 };
+    let particles: Particle[] = [];
+    let raf: number;
+
+    const ORANGE = { r: 243, g: 152, b: 0 };
+    const CYAN   = { r: 100, g: 200, b: 255 };
+    const WHITE  = { r: 255, g: 255, b: 255 };
+
+    const COLORS = [ORANGE, CYAN, WHITE, WHITE, WHITE];
+    const CONNECT_DIST = 140;
+    const MOUSE_RADIUS = 200;
+    const PARTICLE_COUNT_FACTOR = 0.00008; // particles per px²
+
+    interface Particle {
+      x: number; y: number;
+      vx: number; vy: number;
+      r: number;
+      color: typeof ORANGE;
+      baseAlpha: number;
+    }
+
+    function resize() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = canvas.offsetWidth;
+      h = canvas.offsetHeight;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
+      initParticleArray();
+    }
+
+    function initParticleArray() {
+      const count = Math.min(Math.floor(w * h * PARTICLE_COUNT_FACTOR), 160);
+      particles = [];
+      for (let i = 0; i < count; i++) {
+        const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+        particles.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          vx: (Math.random() - 0.5) * 0.4,
+          vy: (Math.random() - 0.5) * 0.4,
+          r: Math.random() * 1.5 + 0.5,
+          color,
+          baseAlpha: color === WHITE ? 0.15 + Math.random() * 0.15 : 0.3 + Math.random() * 0.3,
+        });
+      }
+    }
+
+    function draw() {
+      ctx!.clearRect(0, 0, w, h);
+
+      // Update & draw particles
+      for (const p of particles) {
+        // Mouse repulsion / attraction
+        const dx = p.x - mouse.x;
+        const dy = p.y - mouse.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < MOUSE_RADIUS) {
+          const force = (1 - dist / MOUSE_RADIUS) * 0.02;
+          p.vx += dx * force;
+          p.vy += dy * force;
+        }
+
+        // Damping
+        p.vx *= 0.98;
+        p.vy *= 0.98;
+
+        p.x += p.vx;
+        p.y += p.vy;
+
+        // Wrap
+        if (p.x < -10) p.x = w + 10;
+        if (p.x > w + 10) p.x = -10;
+        if (p.y < -10) p.y = h + 10;
+        if (p.y > h + 10) p.y = -10;
+
+        // Draw particle
+        ctx!.beginPath();
+        ctx!.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx!.fillStyle = `rgba(${p.color.r},${p.color.g},${p.color.b},${p.baseAlpha})`;
+        ctx!.fill();
+      }
+
+      // Draw connections
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const a = particles[i], b = particles[j];
+          const dx = a.x - b.x, dy = a.y - b.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < CONNECT_DIST) {
+            const alpha = (1 - dist / CONNECT_DIST) * 0.12;
+            // Use the color of the brighter particle for lines
+            const c = a.color === WHITE ? b.color : a.color;
+            ctx!.beginPath();
+            ctx!.moveTo(a.x, a.y);
+            ctx!.lineTo(b.x, b.y);
+            ctx!.strokeStyle = `rgba(${c.r},${c.g},${c.b},${alpha})`;
+            ctx!.lineWidth = 0.6;
+            ctx!.stroke();
+          }
+        }
+      }
+
+      raf = requestAnimationFrame(draw);
+    }
+
+    // Mouse tracking
+    const hero = document.getElementById('hero')!;
+    hero.addEventListener('mousemove', (e) => {
+      const rect = hero.getBoundingClientRect();
+      mouse.x = e.clientX - rect.left;
+      mouse.y = e.clientY - rect.top;
+
+      // Move glow
+      const glow = document.getElementById('heroGlow');
+      if (glow) {
+        glow.style.left = `${mouse.x}px`;
+        glow.style.top = `${mouse.y}px`;
+        glow.style.opacity = '1';
+      }
+    });
+    hero.addEventListener('mouseleave', () => {
+      mouse.x = -9999;
+      mouse.y = -9999;
+      const glow = document.getElementById('heroGlow');
+      if (glow) glow.style.opacity = '0';
+    });
+
+    // Touch support
+    hero.addEventListener('touchmove', (e) => {
+      const rect = hero.getBoundingClientRect();
+      const touch = e.touches[0];
+      mouse.x = touch.clientX - rect.left;
+      mouse.y = touch.clientY - rect.top;
+    }, { passive: true });
+    hero.addEventListener('touchend', () => {
+      mouse.x = -9999;
+      mouse.y = -9999;
+    });
+
+    window.addEventListener('resize', resize);
+    resize();
+    draw();
+
+    // Cleanup on navigation
+    document.addEventListener('astro:before-swap', () => {
+      cancelAnimationFrame(raf);
+    });
+  })();
+
+  // ── 2. Text char-split animation ──
+  (function initCharAnimations() {
+    const titleEl = document.querySelector('[data-animate="chars"]') as HTMLElement;
+    if (!titleEl) return;
+
+    const lines = titleEl.querySelectorAll('.hero-title-line');
+    let charIndex = 0;
+
+    lines.forEach((line) => {
+      const walker = document.createTreeWalker(line, NodeFilter.SHOW_TEXT);
+      const textNodes: Text[] = [];
+      let node: Text | null;
+      while ((node = walker.nextNode() as Text | null)) {
+        textNodes.push(node);
+      }
+
+      textNodes.forEach((textNode) => {
+        const text = textNode.textContent || '';
+        const frag = document.createDocumentFragment();
+        for (const char of text) {
+          const span = document.createElement('span');
+          span.className = 'char';
+          span.textContent = char === ' ' ? '\u00a0' : char;
+          span.style.setProperty('--ci', String(charIndex));
+          charIndex++;
+          frag.appendChild(span);
+        }
+        textNode.parentNode!.replaceChild(frag, textNode);
+      });
+    });
+
+    // Trigger animation
+    requestAnimationFrame(() => {
+      titleEl.classList.add('chars-ready');
+    });
+  })();
+
+  // ── 3. Fade-in animations with stagger ──
+  (function initFadeAnimations() {
+    const elements = document.querySelectorAll('[data-animate="fade"]');
+    let delay = 0.6; // Start after title animation
+    elements.forEach((el) => {
+      const htmlEl = el as HTMLElement;
+      htmlEl.style.opacity = '0';
+      htmlEl.style.transform = 'translateY(28px)';
+      setTimeout(() => {
+        htmlEl.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
+        htmlEl.style.opacity = '1';
+        htmlEl.style.transform = 'translateY(0)';
+      }, delay * 1000);
+      delay += 0.18;
+    });
+  })();
+
+  // ── 4. Count-up numbers ──
+  (function initCountUp() {
+    const counters = document.querySelectorAll('.count-up');
+    let started = false;
+
+    function animateCounters() {
+      if (started) return;
+      started = true;
+
+      counters.forEach((el) => {
+        const target = parseInt(el.getAttribute('data-target') || '0');
+        const duration = 1800;
+        const startTime = performance.now();
+
+        function update(now: number) {
+          const elapsed = now - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          // Ease out cubic
+          const eased = 1 - Math.pow(1 - progress, 3);
+          el.textContent = String(Math.floor(target * eased));
+          if (progress < 1) requestAnimationFrame(update);
+        }
+        requestAnimationFrame(update);
+      });
+    }
+
+    // Start count-up after hero animations complete
+    setTimeout(animateCounters, 1400);
+  })();
+</script>
+
 <style>
   /* ============================================
-     HERO — CSS-only premium dark hero
+     INTERACTIVE HERO
      ============================================ */
   .hero-main {
     position: relative;
@@ -145,89 +408,42 @@ const services = [
     justify-content: center;
     overflow: hidden;
     padding: 0 20px;
+    cursor: crosshair;
   }
 
-  /* ── Dark gradient background ── */
+  /* ── Canvas ── */
+  .hero-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  /* ── Mouse-following glow ── */
+  .hero-glow {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(243, 152, 0, 0.10) 0%, transparent 65%);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    filter: blur(30px);
+  }
+
+  /* ── Dark gradient base ── */
   .hero-bg {
     position: absolute;
     inset: 0;
-    background:
-      radial-gradient(ellipse 80% 60% at 50% 40%, #0a1628 0%, transparent 70%),
-      linear-gradient(180deg, #000810 0%, #001a33 40%, #002547 70%, #000a14 100%);
     z-index: 0;
-  }
-
-  /* ── Dot grid overlay ── */
-  .hero-grid {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    opacity: 0.12;
-    background-image: radial-gradient(circle 1px at center, rgba(255,255,255,0.5) 0%, transparent 100%);
-    background-size: 32px 32px;
-  }
-
-  /* ── Floating orbs ── */
-  .hero-orb {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(80px);
-    z-index: 1;
-    animation: orbFloat 8s ease-in-out infinite alternate;
-  }
-  .hero-orb--orange {
-    width: 500px;
-    height: 500px;
-    top: -10%;
-    right: -5%;
-    background: radial-gradient(circle, rgba(243, 152, 0, 0.18) 0%, transparent 70%);
-    animation-duration: 10s;
-  }
-  .hero-orb--blue {
-    width: 400px;
-    height: 400px;
-    bottom: -5%;
-    left: -8%;
-    background: radial-gradient(circle, rgba(41, 128, 185, 0.15) 0%, transparent 70%);
-    animation-duration: 12s;
-    animation-delay: -4s;
-  }
-
-  @keyframes orbFloat {
-    0%   { transform: translate(0, 0) scale(1); }
-    100% { transform: translate(30px, -20px) scale(1.1); }
-  }
-
-  /* ── Geometric accent lines ── */
-  .hero-line {
-    position: absolute;
-    z-index: 1;
-    opacity: 0.06;
-    pointer-events: none;
-  }
-  .hero-line--1 {
-    top: 18%;
-    left: 5%;
-    width: 200px;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(243,152,0,0.8), transparent);
-    transform: rotate(-15deg);
-  }
-  .hero-line--2 {
-    bottom: 25%;
-    right: 8%;
-    width: 300px;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
-    transform: rotate(20deg);
-  }
-  .hero-line--3 {
-    top: 55%;
-    left: 12%;
-    width: 150px;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(41,128,185,0.7), transparent);
-    transform: rotate(-8deg);
+    background:
+      radial-gradient(ellipse 80% 50% at 50% 45%, #0a1628 0%, transparent 70%),
+      linear-gradient(180deg, #000810 0%, #001020 35%, #001a33 60%, #000a14 100%);
   }
 
   /* ── Content ── */
@@ -238,6 +454,7 @@ const services = [
     text-align: center;
   }
 
+  /* ── Eyebrow ── */
   .hero-eyebrow {
     font-family: var(--font-display);
     font-size: 13px;
@@ -246,50 +463,76 @@ const services = [
     text-transform: uppercase;
     color: var(--hc-orange);
     margin-bottom: 24px;
-    opacity: 0;
-    animation: fadeInUp 0.8s ease 0.2s forwards;
   }
 
+  /* ── Title with char animation ── */
   .hero-title {
     font-family: var(--font-display);
     font-size: 3.8rem;
     font-weight: 800;
-    line-height: 1.15;
+    line-height: 1.18;
     letter-spacing: -1px;
     color: #fff;
     margin-bottom: 24px;
-    opacity: 0;
-    animation: fadeInUp 0.8s ease 0.4s forwards;
   }
   .hero-title-line {
     display: block;
   }
+
+  /* Individual char animation */
+  .hero-title :global(.char) {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(40px) rotateX(-40deg);
+    filter: blur(6px);
+    transition: none;
+  }
+  .hero-title.chars-ready :global(.char) {
+    opacity: 1;
+    transform: translateY(0) rotateX(0deg);
+    filter: blur(0);
+    transition:
+      opacity 0.5s ease,
+      transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+      filter 0.5s ease;
+    transition-delay: calc(0.3s + var(--ci) * 0.035s);
+  }
+
   .hero-accent {
     color: var(--hc-orange);
     position: relative;
   }
+  .hero-accent :global(.char) {
+    color: var(--hc-orange);
+  }
   .hero-accent::after {
     content: '';
     position: absolute;
-    bottom: 2px;
+    bottom: 4px;
     left: 0;
     right: 0;
     height: 3px;
     background: var(--hc-orange);
-    opacity: 0.4;
+    opacity: 0;
     border-radius: 2px;
+    animation: accentLine 0.6s ease 1.2s forwards;
   }
 
+  @keyframes accentLine {
+    from { opacity: 0; transform: scaleX(0); }
+    to   { opacity: 0.4; transform: scaleX(1); }
+  }
+
+  /* ── Subtitle ── */
   .hero-subtitle {
     font-family: var(--font-text);
     font-size: 1.15rem;
-    line-height: 1.6;
-    color: rgba(255, 255, 255, 0.58);
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.55);
     max-width: 560px;
     margin: 0 auto 36px;
-    opacity: 0;
-    animation: fadeInUp 0.8s ease 0.6s forwards;
   }
+  .mobile-br { display: none; }
 
   /* ── CTA buttons ── */
   .hero-actions {
@@ -298,10 +541,9 @@ const services = [
     justify-content: center;
     align-items: center;
     margin-bottom: 56px;
-    opacity: 0;
-    animation: fadeInUp 0.8s ease 0.8s forwards;
   }
   .hero-btn {
+    position: relative;
     display: inline-flex;
     align-items: center;
     font-family: var(--font-display);
@@ -310,6 +552,7 @@ const services = [
     padding: 14px 32px;
     border-radius: var(--r-pill);
     transition: all 0.25s var(--ease-std);
+    overflow: hidden;
   }
   .hero-btn--primary {
     background: var(--hc-orange);
@@ -317,17 +560,32 @@ const services = [
   }
   .hero-btn--primary:hover {
     background: var(--hc-orange-deep);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 32px rgba(243, 152, 0, 0.3);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 32px rgba(243, 152, 0, 0.35);
   }
+
+  /* Pulse ring on primary CTA */
+  .btn-pulse {
+    position: absolute;
+    inset: 0;
+    border-radius: var(--r-pill);
+    border: 2px solid var(--hc-orange);
+    opacity: 0;
+    animation: btnPulse 2.5s ease-in-out infinite 2s;
+  }
+  @keyframes btnPulse {
+    0%   { opacity: 0.6; transform: scale(1); }
+    100% { opacity: 0; transform: scale(1.3); }
+  }
+
   .hero-btn--ghost {
-    background: rgba(255, 255, 255, 0.06);
-    color: rgba(255, 255, 255, 0.85);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.82);
+    border: 1px solid rgba(255, 255, 255, 0.10);
     backdrop-filter: blur(8px);
   }
   .hero-btn--ghost:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.10);
     border-color: rgba(255, 255, 255, 0.22);
     transform: translateY(-2px);
   }
@@ -337,14 +595,11 @@ const services = [
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.07);
     border-radius: var(--r-lg);
     padding: 20px 8px;
-    backdrop-filter: blur(12px);
-    opacity: 0;
-    animation: fadeInUp 0.8s ease 1.0s forwards;
+    backdrop-filter: blur(16px);
   }
   .stat {
     flex: 1;
@@ -354,7 +609,7 @@ const services = [
   .stat-divider {
     width: 1px;
     height: 32px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.08);
     flex-shrink: 0;
   }
   .stat-num {
@@ -373,21 +628,28 @@ const services = [
   .stat-label {
     display: block;
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.42);
+    color: rgba(255, 255, 255, 0.38);
     letter-spacing: 0.5px;
     margin-top: 4px;
   }
 
-  /* ── Animation ── */
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(24px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  /* ── Scroll indicator ── */
+  .scroll-hint {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+  }
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.3), transparent);
+    animation: scrollBounce 2s ease-in-out infinite;
+  }
+  @keyframes scrollBounce {
+    0%, 100% { opacity: 0.4; transform: translateY(0); }
+    50%      { opacity: 1; transform: translateY(8px); }
   }
 
   /* ── Responsive ── */
@@ -403,6 +665,7 @@ const services = [
     .hero-subtitle {
       font-size: 1rem;
     }
+    .mobile-br { display: inline; }
     .hero-actions {
       flex-direction: column;
       gap: 10px;
@@ -412,27 +675,19 @@ const services = [
       justify-content: center;
     }
     .hero-stats {
-      flex-wrap: wrap;
-      gap: 0;
-      padding: 16px 8px;
+      padding: 16px 6px;
     }
     .stat {
-      padding: 0 12px;
-      min-width: 0;
+      padding: 0 10px;
     }
     .stat-num {
-      font-size: 1.3rem;
+      font-size: 1.25rem;
     }
     .stat-divider {
       height: 24px;
     }
-    .hero-orb--orange {
-      width: 300px;
-      height: 300px;
-    }
-    .hero-orb--blue {
-      width: 250px;
-      height: 250px;
+    .hero-glow {
+      display: none;
     }
   }
 
@@ -441,7 +696,7 @@ const services = [
       border-radius: var(--r-md);
     }
     .stat {
-      padding: 0 8px;
+      padding: 0 6px;
     }
     .stat-num {
       font-size: 1.1rem;
@@ -453,12 +708,14 @@ const services = [
 
   /* Reduced motion */
   @media (prefers-reduced-motion: reduce) {
-    .hero-orb { animation: none; }
-    .hero-eyebrow, .hero-title, .hero-subtitle,
-    .hero-actions, .hero-stats {
-      opacity: 1;
-      animation: none;
+    .hero-title :global(.char) {
+      opacity: 1 !important;
+      transform: none !important;
+      filter: none !important;
+      transition: none !important;
     }
+    .btn-pulse { animation: none; }
+    .scroll-line { animation: none; opacity: 0.4; }
   }
 
   /* ── Services section ── */
