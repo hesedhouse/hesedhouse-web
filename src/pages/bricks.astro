@@ -1,0 +1,1039 @@
+---
+// BRICKS Brand Development Hub — 비공개 페이지
+// sitemap 제외, 네비게이션 미노출
+---
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>BRICKS — Brand Development Hub</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <style>
+    /* ============================================
+       BRICKS Brand Hub — Dark Industrial Design
+       ============================================ */
+    :root {
+      --bk-bg: #0e0e0e;
+      --bk-surface: #1a1a1a;
+      --bk-card: rgba(200, 120, 80, 0.06);
+      --bk-card-border: rgba(200, 120, 80, 0.12);
+      --bk-brick: #C65D3E;
+      --bk-brick-light: #E07A5A;
+      --bk-warm: #E8A87C;
+      --bk-sand: #F5E6D3;
+      --bk-text: #ECECEC;
+      --bk-muted: #888888;
+      --bk-dim: #555555;
+      --bk-input-bg: #141414;
+      --bk-input-border: #2a2a2a;
+      --font: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bk-bg);
+      color: var(--bk-text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Subtle grain texture */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ---- PASSWORD GATE ---- */
+    #gate {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: var(--bk-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 32px;
+      transition: opacity 0.5s, visibility 0.5s;
+    }
+    #gate.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+    #gate .brand-mark {
+      font-size: 48px;
+      font-weight: 800;
+      letter-spacing: 16px;
+      color: var(--bk-brick);
+      text-indent: 16px;
+    }
+    #gate .brand-sub {
+      font-size: 13px;
+      letter-spacing: 6px;
+      color: var(--bk-dim);
+      text-transform: uppercase;
+      margin-top: -16px;
+    }
+
+    .gate-input-wrap {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .gate-input-wrap input {
+      width: 240px;
+      padding: 12px 16px;
+      border: 1px solid var(--bk-input-border);
+      border-radius: 8px;
+      background: var(--bk-input-bg);
+      color: var(--bk-text);
+      font-family: var(--font);
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .gate-input-wrap input:focus { border-color: var(--bk-brick); }
+    .gate-input-wrap input::placeholder { color: var(--bk-dim); }
+    .gate-input-wrap button {
+      padding: 12px 20px;
+      background: var(--bk-brick);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-family: var(--font);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .gate-input-wrap button:hover { background: var(--bk-brick-light); }
+    .gate-error {
+      font-size: 13px;
+      color: #e74c3c;
+      height: 18px;
+    }
+
+    /* ---- MAIN CONTENT ---- */
+    #app { display: none; }
+    #app.active { display: block; }
+
+    /* ---- HEADER BAR ---- */
+    .top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(14, 14, 14, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(200, 120, 80, 0.08);
+      padding: 14px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .top-bar-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .top-bar .logo-text {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 6px;
+      color: var(--bk-brick);
+      text-indent: 6px;
+    }
+    .top-bar .badge {
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--bk-muted);
+      background: rgba(200, 120, 80, 0.1);
+      padding: 4px 10px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+    .top-bar-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .author-select {
+      padding: 6px 12px;
+      background: var(--bk-input-bg);
+      border: 1px solid var(--bk-input-border);
+      border-radius: 6px;
+      color: var(--bk-text);
+      font-family: var(--font);
+      font-size: 13px;
+      cursor: pointer;
+      outline: none;
+    }
+    .author-select:focus { border-color: var(--bk-brick); }
+
+    .tool-btn {
+      padding: 6px 14px;
+      background: transparent;
+      border: 1px solid var(--bk-input-border);
+      border-radius: 6px;
+      color: var(--bk-muted);
+      font-family: var(--font);
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tool-btn:hover {
+      border-color: var(--bk-brick);
+      color: var(--bk-brick);
+    }
+
+    /* ---- HERO ---- */
+    .hero {
+      text-align: center;
+      padding: 100px 32px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      right: -100px;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(198, 93, 62, 0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero h1 {
+      font-size: clamp(56px, 10vw, 96px);
+      font-weight: 800;
+      letter-spacing: 20px;
+      color: var(--bk-brick);
+      text-indent: 20px;
+      margin-bottom: 16px;
+    }
+    .hero .tagline {
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--bk-muted);
+      letter-spacing: 4px;
+      margin-bottom: 8px;
+    }
+    .hero .tagline-kr {
+      font-size: 14px;
+      color: var(--bk-dim);
+      letter-spacing: 2px;
+    }
+
+    /* ---- SECTIONS ---- */
+    .section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 32px 80px;
+    }
+    .section-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      color: var(--bk-brick);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 32px;
+      color: var(--bk-text);
+    }
+    .divider {
+      width: 40px;
+      height: 2px;
+      background: var(--bk-brick);
+      margin-bottom: 40px;
+    }
+
+    /* ---- STORY CARD ---- */
+    .story-card {
+      background: var(--bk-card);
+      border: 1px solid var(--bk-card-border);
+      border-radius: 16px;
+      padding: 48px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .story-card p {
+      font-size: 16px;
+      line-height: 2;
+      color: var(--bk-text);
+      opacity: 0.9;
+    }
+    .story-card p + p { margin-top: 20px; }
+    .story-card .highlight {
+      color: var(--bk-warm);
+      font-weight: 600;
+    }
+    .story-card .philosophy {
+      margin-top: 32px;
+      padding-top: 32px;
+      border-top: 1px solid rgba(200, 120, 80, 0.1);
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--bk-warm);
+      text-align: center;
+      letter-spacing: 1px;
+      line-height: 1.8;
+    }
+
+    /* ---- SLOGAN GRID ---- */
+    .slogan-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .slogan-item {
+      background: var(--bk-card);
+      border: 1px solid var(--bk-card-border);
+      border-radius: 12px;
+      padding: 28px;
+      transition: border-color 0.3s;
+    }
+    .slogan-item:hover { border-color: rgba(200, 120, 80, 0.3); }
+    .slogan-item .usage {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: var(--bk-brick);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .slogan-item .text {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--bk-text);
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+    .slogan-item .desc {
+      font-size: 13px;
+      color: var(--bk-muted);
+      line-height: 1.6;
+    }
+
+    /* ---- DISCUSSION BOARD ---- */
+    .topic-card {
+      background: var(--bk-card);
+      border: 1px solid var(--bk-card-border);
+      border-radius: 16px;
+      margin-bottom: 20px;
+      overflow: hidden;
+      transition: border-color 0.3s;
+    }
+    .topic-card:hover { border-color: rgba(200, 120, 80, 0.2); }
+
+    .topic-header {
+      padding: 24px 28px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      user-select: none;
+    }
+    .topic-header:hover { background: rgba(200, 120, 80, 0.03); }
+    .topic-header-left {
+      flex: 1;
+    }
+    .topic-header h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--bk-text);
+      margin-bottom: 4px;
+    }
+    .topic-header .topic-desc {
+      font-size: 13px;
+      color: var(--bk-muted);
+    }
+    .topic-count {
+      font-size: 12px;
+      color: var(--bk-brick);
+      background: rgba(198, 93, 62, 0.15);
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+      margin-left: 16px;
+    }
+    .topic-arrow {
+      color: var(--bk-dim);
+      font-size: 18px;
+      margin-left: 12px;
+      transition: transform 0.3s;
+    }
+    .topic-card.open .topic-arrow { transform: rotate(180deg); }
+
+    .topic-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+    .topic-card.open .topic-body { max-height: 2000px; }
+
+    .topic-body-inner {
+      padding: 0 28px 24px;
+      border-top: 1px solid rgba(200, 120, 80, 0.06);
+    }
+
+    /* Notes list */
+    .notes-list { margin-top: 20px; }
+
+    .note-item {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-bottom: 10px;
+      position: relative;
+    }
+    .note-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .note-author {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--bk-warm);
+    }
+    .note-date {
+      font-size: 11px;
+      color: var(--bk-dim);
+    }
+    .note-content {
+      font-size: 14px;
+      color: var(--bk-text);
+      opacity: 0.85;
+      line-height: 1.7;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .note-delete {
+      position: absolute;
+      top: 12px;
+      right: 14px;
+      background: none;
+      border: none;
+      color: var(--bk-dim);
+      cursor: pointer;
+      font-size: 14px;
+      padding: 4px;
+      opacity: 0;
+      transition: opacity 0.2s, color 0.2s;
+    }
+    .note-item:hover .note-delete { opacity: 1; }
+    .note-delete:hover { color: #e74c3c; }
+
+    /* Note input */
+    .note-input-wrap {
+      margin-top: 16px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-end;
+    }
+    .note-input-wrap textarea {
+      flex: 1;
+      min-height: 60px;
+      max-height: 200px;
+      padding: 12px 16px;
+      background: var(--bk-input-bg);
+      border: 1px solid var(--bk-input-border);
+      border-radius: 10px;
+      color: var(--bk-text);
+      font-family: var(--font);
+      font-size: 14px;
+      line-height: 1.6;
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .note-input-wrap textarea:focus { border-color: var(--bk-brick); }
+    .note-input-wrap textarea::placeholder { color: var(--bk-dim); }
+    .note-submit {
+      padding: 12px 20px;
+      background: var(--bk-brick);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s;
+      flex-shrink: 0;
+    }
+    .note-submit:hover { background: var(--bk-brick-light); }
+    .note-submit:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .empty-notes {
+      text-align: center;
+      padding: 24px;
+      color: var(--bk-dim);
+      font-size: 13px;
+    }
+
+    /* ---- FOOTER ---- */
+    .hub-footer {
+      text-align: center;
+      padding: 48px 32px;
+      border-top: 1px solid rgba(200, 120, 80, 0.06);
+      margin-top: 40px;
+    }
+    .hub-footer p {
+      font-size: 12px;
+      color: var(--bk-dim);
+      letter-spacing: 1px;
+    }
+
+    /* ---- TOAST ---- */
+    .toast {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--bk-surface);
+      border: 1px solid var(--bk-card-border);
+      color: var(--bk-text);
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-family: var(--font);
+      z-index: 9000;
+      opacity: 0;
+      transition: all 0.3s;
+      pointer-events: none;
+    }
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* ---- FILE INPUT HIDDEN ---- */
+    #importInput { display: none; }
+
+    /* ---- RESPONSIVE ---- */
+    @media (max-width: 768px) {
+      .hero { padding: 64px 20px 48px; }
+      .hero h1 { letter-spacing: 10px; text-indent: 10px; }
+      .section { padding: 0 20px 56px; }
+      .story-card { padding: 28px; }
+      .top-bar { padding: 12px 16px; flex-wrap: wrap; gap: 8px; }
+      .top-bar-right { width: 100%; justify-content: flex-end; }
+      .slogan-grid { grid-template-columns: 1fr; }
+      .note-input-wrap { flex-direction: column; }
+      .note-submit { width: 100%; }
+      .topic-header { padding: 18px 20px; }
+      .topic-body-inner { padding: 0 20px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============ PASSWORD GATE ============ -->
+  <div id="gate">
+    <div class="brand-mark">BRICKS</div>
+    <div class="brand-sub">Brand Development Hub</div>
+    <div class="gate-input-wrap">
+      <input type="password" id="gatePassword" placeholder="Access code" autocomplete="off">
+      <button id="gateSubmit">Enter</button>
+    </div>
+    <div class="gate-error" id="gateError"></div>
+  </div>
+
+  <!-- ============ MAIN APP ============ -->
+  <div id="app">
+
+    <!-- TOP BAR -->
+    <header class="top-bar">
+      <div class="top-bar-left">
+        <span class="logo-text">BRICKS</span>
+        <span class="badge">Internal Only</span>
+      </div>
+      <div class="top-bar-right">
+        <select class="author-select" id="authorSelect">
+          <option value="">-- 이름 선택 --</option>
+          <option value="이현우">이현우</option>
+          <option value="김보림">김보림</option>
+          <option value="진민정">진민정</option>
+          <option value="곽지윤">곽지윤</option>
+        </select>
+        <button class="tool-btn" id="btnExport">내보내기</button>
+        <button class="tool-btn" id="btnImport">가져오기</button>
+      </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+      <h1>BRICKS</h1>
+      <div class="tagline">Brick by brick.</div>
+      <div class="tagline-kr">無너지지 않아.</div>
+    </section>
+
+    <!-- BRAND STORY -->
+    <section class="section">
+      <div class="section-label">Brand Story</div>
+      <h2 class="section-title">우리는 무너질 수 있다는 걸 안다.</h2>
+      <div class="divider"></div>
+      <div class="story-card">
+        <p>
+          누구나 한 번쯤은 흔들리고, 금이 가고, 주저앉는다.<br>
+          그래서 우리는 <span class="highlight">벽돌</span>을 생각했다.
+        </p>
+        <p>
+          한 장의 벽돌은 약하다.<br>
+          하지만 두 장이 만나면 버틴다.<br>
+          열 장이 쌓이면 벽이 된다.<br>
+          백 장이 모이면, <span class="highlight">무너지지 않는 집</span>이 된다.
+        </p>
+        <p>
+          브릭스는 그렇게 만들어진다.<br>
+          한 사람의 하루, 한 번의 선택, 한 벌의 옷.<br>
+          작고 단단한 것들이 모여 삶을 지탱한다.
+        </p>
+        <p>
+          늑대가 와도 무너지지 않는, 막내 돼지의 집처럼.
+        </p>
+        <div class="philosophy">
+          "무너질 수 있어.<br>하나씩 하나씩, 함께 쌓아나가보자."
+        </div>
+      </div>
+    </section>
+
+    <!-- SLOGAN SYSTEM -->
+    <section class="section">
+      <div class="section-label">Slogan System</div>
+      <h2 class="section-title">브릭스가 말하는 방식</h2>
+      <div class="divider"></div>
+      <div class="slogan-grid">
+        <div class="slogan-item">
+          <div class="usage">Global Main</div>
+          <div class="text">Brick by brick.</div>
+          <div class="desc">글로벌 태그라인. SNS 해시태그, 국제 커뮤니케이션에 사용</div>
+        </div>
+        <div class="slogan-item">
+          <div class="usage">Korean Main</div>
+          <div class="text">無너지지 않아.</div>
+          <div class="desc">한글+한자 타이포 장난. 인스타, 굿즈, 티셔츠 등 비주얼 아이덴티티</div>
+        </div>
+        <div class="slogan-item">
+          <div class="usage">Goods · Back Print</div>
+          <div class="text">무너져. 다시 쌓아.</div>
+          <div class="desc">명령형의 단호함. 후드 백프린트, 스트릿 무드</div>
+        </div>
+        <div class="slogan-item">
+          <div class="usage">Label · Package</div>
+          <div class="text">We were built to last.</div>
+          <div class="desc">헤리티지 무드. 라벨 안쪽, 패키지 내부 인쇄용</div>
+        </div>
+        <div class="slogan-item">
+          <div class="usage">Campaign · SNS</div>
+          <div class="text">흔들려도, 안 부서져.</div>
+          <div class="desc">라이프 카피. 시즌 캠페인, SNS 캡션 톤</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DISCUSSION BOARD -->
+    <section class="section">
+      <div class="section-label">Discussion Board</div>
+      <h2 class="section-title">함께 쌓아가는 브릭스</h2>
+      <div class="divider"></div>
+      <p style="font-size: 14px; color: var(--bk-muted); margin-bottom: 32px;">
+        각 주제별로 자유롭게 의견을 남겨주세요. 이름을 선택한 뒤 의견을 작성하면 자동 저장됩니다.<br>
+        다른 팀원의 의견을 보려면 <strong style="color:var(--bk-warm);">내보내기/가져오기</strong>로 파일을 공유하세요.
+      </p>
+
+      <div id="topicList"></div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="hub-footer">
+      <p>BRICKS Brand Development Hub &middot; HESED CORP. Internal</p>
+      <p style="margin-top: 8px; opacity: 0.5;">This page is not indexed and not accessible to the public.</p>
+    </footer>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <!-- HIDDEN FILE INPUT -->
+  <input type="file" id="importInput" accept=".json">
+
+  <script>
+    // ============================================
+    // BRICKS Brand Hub — App Logic
+    // ============================================
+
+    const PASS = 'bricks2026';
+    const STORAGE_KEY = 'bricks-hub-v1';
+
+    // ---- Topics Config ----
+    const TOPICS = [
+      {
+        id: 'color-palette',
+        title: '컬러 팔레트',
+        desc: '브릭스를 대표하는 색상은 무엇이어야 할까?',
+        placeholder: '예: 테라코타 + 차콜 베이스가 좋을 것 같아. 벽돌색 톤으로...'
+      },
+      {
+        id: 'target-customer',
+        title: '타겟 고객',
+        desc: '누구를 위한 브랜드인가? 연령대, 라이프스타일, 취향',
+        placeholder: '예: 25-35세, 스트릿 문화에 관심 있는 MZ세대...'
+      },
+      {
+        id: 'first-product',
+        title: '첫 제품 라인',
+        desc: '어떤 카테고리로 시작할까? 아우터? 가방? 캡? 잡화?',
+        placeholder: '예: 후드와 캡으로 시작하면 좋을 것 같아. 벽돌 로고가 잘 어울리는...'
+      },
+      {
+        id: 'price-position',
+        title: '가격 포지셔닝',
+        desc: '어디에 위치시킬 것인가? 프리미엄? 하이엔드? 럭셔리?',
+        placeholder: '예: 후드 기준 15-25만원대, 프리미엄 스트릿 포지션...'
+      },
+      {
+        id: 'distribution',
+        title: '유통 채널',
+        desc: '어디서 판매? 자사몰, 편집숍, 팝업, 마켓플레이스?',
+        placeholder: '예: 자사몰 + 무신사 입점으로 시작하고, 시즌 팝업으로...'
+      },
+      {
+        id: 'brand-visual',
+        title: '브랜드 비주얼',
+        desc: '로고 활용, 타이포그래피, 패키지, 라벨 방향',
+        placeholder: '예: 벽돌 로고를 심플하게 엠보싱으로 넣으면 고급스러울 것 같아...'
+      },
+      {
+        id: 'reference-brands',
+        title: '레퍼런스 브랜드',
+        desc: '참고하고 싶은 브랜드, 분위기, 무드가 있다면?',
+        placeholder: '예: Fear of God의 미니멀함 + Acne Studios의 스칸디 무드...'
+      },
+      {
+        id: 'free-opinion',
+        title: '자유 의견',
+        desc: '브릭스에 대한 모든 생각을 자유롭게',
+        placeholder: '브릭스에 대해 떠오르는 아이디어, 걱정, 기대 무엇이든...'
+      }
+    ];
+
+    // ---- Data Layer ----
+    function loadData() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : { author: '', notes: {} };
+      } catch {
+        return { author: '', notes: {} };
+      }
+    }
+
+    function saveData(data) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+
+    function addNote(topicId, content) {
+      const data = loadData();
+      if (!data.notes[topicId]) data.notes[topicId] = [];
+      const note = {
+        id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+        author: data.author,
+        content: content.trim(),
+        date: new Date().toISOString()
+      };
+      data.notes[topicId].push(note);
+      saveData(data);
+      return note;
+    }
+
+    function deleteNote(topicId, noteId) {
+      const data = loadData();
+      if (data.notes[topicId]) {
+        data.notes[topicId] = data.notes[topicId].filter(n => n.id !== noteId);
+        saveData(data);
+      }
+    }
+
+    function getNotes(topicId) {
+      const data = loadData();
+      return (data.notes[topicId] || []).sort((a, b) => new Date(a.date) - new Date(b.date));
+    }
+
+    function getTotalNoteCount() {
+      const data = loadData();
+      return Object.values(data.notes).reduce((sum, arr) => sum + arr.length, 0);
+    }
+
+    // ---- Toast ----
+    function showToast(msg) {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 2500);
+    }
+
+    // ---- Format Date ----
+    function formatDate(iso) {
+      const d = new Date(iso);
+      const mon = d.getMonth() + 1;
+      const day = d.getDate();
+      const h = d.getHours().toString().padStart(2, '0');
+      const m = d.getMinutes().toString().padStart(2, '0');
+      return `${mon}/${day} ${h}:${m}`;
+    }
+
+    // ---- Render ----
+    function renderTopics() {
+      const container = document.getElementById('topicList');
+      container.innerHTML = '';
+
+      TOPICS.forEach(topic => {
+        const notes = getNotes(topic.id);
+        const card = document.createElement('div');
+        card.className = 'topic-card';
+        card.innerHTML = `
+          <div class="topic-header" data-topic="${topic.id}">
+            <div class="topic-header-left">
+              <h3>${topic.title}</h3>
+              <div class="topic-desc">${topic.desc}</div>
+            </div>
+            ${notes.length > 0 ? `<span class="topic-count">${notes.length}개 의견</span>` : ''}
+            <span class="topic-arrow">&#9662;</span>
+          </div>
+          <div class="topic-body">
+            <div class="topic-body-inner">
+              <div class="notes-list" id="notes-${topic.id}">
+                ${notes.length === 0
+                  ? '<div class="empty-notes">아직 의견이 없습니다. 첫 번째 의견을 남겨보세요.</div>'
+                  : notes.map(n => renderNote(topic.id, n)).join('')
+                }
+              </div>
+              <div class="note-input-wrap">
+                <textarea id="input-${topic.id}" placeholder="${topic.placeholder}" rows="2"></textarea>
+                <button class="note-submit" data-topic="${topic.id}">등록</button>
+              </div>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+      // Event: toggle topics
+      document.querySelectorAll('.topic-header').forEach(header => {
+        header.addEventListener('click', () => {
+          header.closest('.topic-card').classList.toggle('open');
+        });
+      });
+
+      // Event: submit notes
+      document.querySelectorAll('.note-submit').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const topicId = btn.dataset.topic;
+          const textarea = document.getElementById(`input-${topicId}`);
+          const content = textarea.value.trim();
+          const data = loadData();
+
+          if (!data.author) {
+            showToast('상단에서 이름을 먼저 선택해주세요.');
+            return;
+          }
+          if (!content) return;
+
+          addNote(topicId, content);
+          textarea.value = '';
+          renderTopics();
+          // Re-open this topic
+          const cards = document.querySelectorAll('.topic-card');
+          cards.forEach(card => {
+            if (card.querySelector(`[data-topic="${topicId}"]`)) {
+              card.classList.add('open');
+            }
+          });
+          showToast('의견이 저장되었습니다.');
+        });
+      });
+
+      // Event: delete notes
+      document.querySelectorAll('.note-delete').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const { topic, note } = btn.dataset;
+          if (confirm('이 의견을 삭제할까요?')) {
+            deleteNote(topic, note);
+            renderTopics();
+            // Re-open this topic
+            const cards = document.querySelectorAll('.topic-card');
+            cards.forEach(card => {
+              if (card.querySelector(`[data-topic="${topic}"]`)) {
+                card.classList.add('open');
+              }
+            });
+            showToast('삭제되었습니다.');
+          }
+        });
+      });
+
+      // Enter key support (Ctrl+Enter or Cmd+Enter to submit)
+      document.querySelectorAll('.note-input-wrap textarea').forEach(textarea => {
+        textarea.addEventListener('keydown', (e) => {
+          if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+            const btn = textarea.parentElement.querySelector('.note-submit');
+            btn.click();
+          }
+        });
+      });
+    }
+
+    function renderNote(topicId, note) {
+      return `
+        <div class="note-item">
+          <div class="note-meta">
+            <span class="note-author">${note.author}</span>
+            <span class="note-date">${formatDate(note.date)}</span>
+          </div>
+          <div class="note-content">${escapeHtml(note.content)}</div>
+          <button class="note-delete" data-topic="${topicId}" data-note="${note.id}" title="삭제">&times;</button>
+        </div>
+      `;
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    // ---- Password Gate ----
+    function initGate() {
+      const gate = document.getElementById('gate');
+      const app = document.getElementById('app');
+      const input = document.getElementById('gatePassword');
+      const btn = document.getElementById('gateSubmit');
+      const error = document.getElementById('gateError');
+
+      // Check session
+      if (sessionStorage.getItem('bricks-auth') === 'ok') {
+        gate.classList.add('hidden');
+        app.classList.add('active');
+        return;
+      }
+
+      function tryAuth() {
+        if (input.value === PASS) {
+          sessionStorage.setItem('bricks-auth', 'ok');
+          gate.classList.add('hidden');
+          app.classList.add('active');
+        } else {
+          error.textContent = 'Access denied.';
+          input.value = '';
+          input.focus();
+          setTimeout(() => error.textContent = '', 2000);
+        }
+      }
+
+      btn.addEventListener('click', tryAuth);
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') tryAuth();
+      });
+      input.focus();
+    }
+
+    // ---- Author Select ----
+    function initAuthor() {
+      const select = document.getElementById('authorSelect');
+      const data = loadData();
+      if (data.author) select.value = data.author;
+
+      select.addEventListener('change', () => {
+        const data = loadData();
+        data.author = select.value;
+        saveData(data);
+        if (select.value) showToast(`${select.value}님으로 설정되었습니다.`);
+      });
+    }
+
+    // ---- Export / Import ----
+    function initTools() {
+      document.getElementById('btnExport').addEventListener('click', () => {
+        const data = loadData();
+        const total = getTotalNoteCount();
+        if (total === 0) {
+          showToast('내보낼 의견이 없습니다.');
+          return;
+        }
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        const dateStr = new Date().toISOString().split('T')[0];
+        a.href = url;
+        a.download = `bricks-notes-${data.author || 'unknown'}-${dateStr}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast(`${total}개 의견을 내보냈습니다.`);
+      });
+
+      document.getElementById('btnImport').addEventListener('click', () => {
+        document.getElementById('importInput').click();
+      });
+
+      document.getElementById('importInput').addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          try {
+            const imported = JSON.parse(ev.target.result);
+            const data = loadData();
+            let count = 0;
+
+            for (const [topic, notes] of Object.entries(imported.notes || {})) {
+              if (!data.notes[topic]) data.notes[topic] = [];
+              for (const note of notes) {
+                // Avoid duplicates by ID
+                if (!data.notes[topic].find(n => n.id === note.id)) {
+                  data.notes[topic].push(note);
+                  count++;
+                }
+              }
+            }
+
+            saveData(data);
+            renderTopics();
+            showToast(`${count}개 의견을 가져왔습니다.`);
+          } catch {
+            showToast('파일 형식이 올바르지 않습니다.');
+          }
+        };
+        reader.readAsText(file);
+        e.target.value = ''; // Reset input
+      });
+    }
+
+    // ---- Init ----
+    document.addEventListener('DOMContentLoaded', () => {
+      initGate();
+      initAuthor();
+      initTools();
+      renderTopics();
+    });
+  </script>
+</body>
+</html>
