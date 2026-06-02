@@ -1,6 +1,7 @@
 ---
 // BRICKS Brand Development Hub — 비공개 페이지
 // sitemap 제외, 네비게이션 미노출
+// Updated: 2026-06-02 — 컨셉 브랜드 포지셔닝 + 하이엔드 + 동양 전돌 헤리티지
 ---
 <!DOCTYPE html>
 <html lang="ko">
@@ -9,546 +10,733 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
   <title>BRICKS — Brand Development Hub</title>
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    /* ============================================
-       BRICKS Brand Hub — Dark Industrial Design
-       ============================================ */
     :root {
-      --bk-bg: #0e0e0e;
-      --bk-surface: #1a1a1a;
-      --bk-card: rgba(200, 120, 80, 0.06);
-      --bk-card-border: rgba(200, 120, 80, 0.12);
+      --bk-bg: #0b0a09;
+      --bk-surface: #141210;
+      --bk-card: rgba(180,120,70,0.04);
+      --bk-card-border: rgba(180,120,70,0.10);
+      --bk-card-hover: rgba(180,120,70,0.16);
       --bk-brick: #C65D3E;
-      --bk-brick-light: #E07A5A;
+      --bk-brick-light: #D4785E;
       --bk-warm: #E8A87C;
       --bk-sand: #F5E6D3;
-      --bk-text: #ECECEC;
-      --bk-muted: #888888;
-      --bk-dim: #555555;
-      --bk-input-bg: #141414;
-      --bk-input-border: #2a2a2a;
-      --font: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --bk-gold: #C9A96E;
+      --bk-celadon: #7BA298;
+      --bk-text: #E8E4DF;
+      --bk-muted: #8A8279;
+      --bk-dim: #5A544D;
+      --bk-input-bg: #110F0D;
+      --bk-input-border: #2A2520;
+      --font-display: 'DM Serif Display', Georgia, serif;
+      --font-body: 'Noto Sans KR', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+
+    html { scroll-behavior: smooth; }
 
     body {
-      font-family: var(--font);
+      font-family: var(--font-body);
       background: var(--bk-bg);
       color: var(--bk-text);
-      line-height: 1.7;
+      line-height: 1.8;
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
 
-    /* Subtle grain texture */
+    /* Grain overlay */
     body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      opacity: 0.03;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 9999;
+      content:'';
+      position:fixed; inset:0;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      pointer-events:none;
+      z-index:9999;
     }
 
-    /* ---- PASSWORD GATE ---- */
+    ::selection {
+      background: rgba(198,93,62,0.35);
+      color: var(--bk-sand);
+    }
+
+    /* ===== GATE ===== */
     #gate {
-      position: fixed;
-      inset: 0;
-      z-index: 1000;
+      position:fixed; inset:0; z-index:1000;
       background: var(--bk-bg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      gap: 32px;
-      transition: opacity 0.5s, visibility 0.5s;
+      display:flex; align-items:center; justify-content:center; flex-direction:column;
+      gap: 28px;
+      transition: opacity 0.6s ease, visibility 0.6s;
     }
-    #gate.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+    #gate.hidden { opacity:0; visibility:hidden; pointer-events:none; }
 
-    #gate .brand-mark {
-      font-size: 48px;
-      font-weight: 800;
-      letter-spacing: 16px;
+    .gate-brick {
+      width: 120px; height: 60px;
+      border: 2px solid var(--bk-brick);
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+    }
+    .gate-brick::before {
+      content: 'N\b0 01';
+      position: absolute; bottom: 4px; right: 6px;
+      font-family: var(--font-mono); font-size: 8px;
+      color: var(--bk-dim); letter-spacing: 1px;
+    }
+    .gate-brand {
+      font-family: var(--font-display);
+      font-size: 28px;
       color: var(--bk-brick);
-      text-indent: 16px;
+      letter-spacing: 8px;
     }
-    #gate .brand-sub {
-      font-size: 13px;
-      letter-spacing: 6px;
-      color: var(--bk-dim);
-      text-transform: uppercase;
-      margin-top: -16px;
+    .gate-sub {
+      font-size: 11px; letter-spacing: 5px;
+      color: var(--bk-dim); text-transform: uppercase;
+      margin-top: -12px;
     }
-
     .gate-input-wrap {
-      display: flex;
-      gap: 8px;
-      align-items: center;
+      display:flex; gap:8px; align-items:center;
     }
     .gate-input-wrap input {
-      width: 240px;
-      padding: 12px 16px;
-      border: 1px solid var(--bk-input-border);
-      border-radius: 8px;
-      background: var(--bk-input-bg);
-      color: var(--bk-text);
-      font-family: var(--font);
-      font-size: 14px;
-      outline: none;
-      transition: border-color 0.2s;
+      width:220px; padding:12px 16px;
+      border:1px solid var(--bk-input-border); border-radius:2px;
+      background:var(--bk-input-bg); color:var(--bk-text);
+      font-family:var(--font-body); font-size:14px; outline:none;
+      transition:border-color 0.2s;
     }
-    .gate-input-wrap input:focus { border-color: var(--bk-brick); }
-    .gate-input-wrap input::placeholder { color: var(--bk-dim); }
+    .gate-input-wrap input:focus { border-color:var(--bk-brick); }
+    .gate-input-wrap input::placeholder { color:var(--bk-dim); }
     .gate-input-wrap button {
-      padding: 12px 20px;
-      background: var(--bk-brick);
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      font-family: var(--font);
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s;
+      padding:12px 20px; background:var(--bk-brick); color:#fff;
+      border:none; border-radius:2px; font-family:var(--font-body);
+      font-size:14px; font-weight:500; cursor:pointer;
+      transition:background 0.2s;
     }
-    .gate-input-wrap button:hover { background: var(--bk-brick-light); }
-    .gate-error {
-      font-size: 13px;
-      color: #e74c3c;
-      height: 18px;
-    }
+    .gate-input-wrap button:hover { background:var(--bk-brick-light); }
+    .gate-error { font-size:12px; color:#c0392b; height:16px; }
 
-    /* ---- MAIN CONTENT ---- */
-    #app { display: none; }
-    #app.active { display: block; }
+    /* ===== APP ===== */
+    #app { display:none; }
+    #app.active { display:block; }
 
-    /* ---- HEADER BAR ---- */
+    /* ===== NAV ===== */
     .top-bar {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(14, 14, 14, 0.85);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(200, 120, 80, 0.08);
-      padding: 14px 32px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      position:sticky; top:0; z-index:100;
+      background:rgba(11,10,9,0.88);
+      backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px);
+      border-bottom:1px solid rgba(180,120,70,0.06);
+      padding:14px 40px;
+      display:flex; align-items:center; justify-content:space-between;
     }
-    .top-bar-left {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
+    .top-bar-left { display:flex; align-items:center; gap:16px; }
     .top-bar .logo-text {
-      font-size: 16px;
-      font-weight: 800;
-      letter-spacing: 6px;
-      color: var(--bk-brick);
-      text-indent: 6px;
+      font-family:var(--font-display); font-size:18px;
+      color:var(--bk-brick); letter-spacing:6px;
     }
     .top-bar .badge {
-      font-size: 10px;
-      letter-spacing: 2px;
-      color: var(--bk-muted);
-      background: rgba(200, 120, 80, 0.1);
-      padding: 4px 10px;
-      border-radius: 4px;
-      text-transform: uppercase;
+      font-size:9px; letter-spacing:2px; color:var(--bk-dim);
+      background:rgba(180,120,70,0.08); padding:4px 10px;
+      border-radius:2px; text-transform:uppercase;
+      font-family:var(--font-mono);
     }
-    .top-bar-right {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+    .top-bar-right { display:flex; align-items:center; gap:10px; }
     .author-select {
-      padding: 6px 12px;
-      background: var(--bk-input-bg);
-      border: 1px solid var(--bk-input-border);
-      border-radius: 6px;
-      color: var(--bk-text);
-      font-family: var(--font);
-      font-size: 13px;
-      cursor: pointer;
-      outline: none;
+      padding:6px 12px; background:var(--bk-input-bg);
+      border:1px solid var(--bk-input-border); border-radius:2px;
+      color:var(--bk-text); font-family:var(--font-body);
+      font-size:13px; cursor:pointer; outline:none;
     }
-    .author-select:focus { border-color: var(--bk-brick); }
-
+    .author-select:focus { border-color:var(--bk-brick); }
     .tool-btn {
-      padding: 6px 14px;
-      background: transparent;
-      border: 1px solid var(--bk-input-border);
-      border-radius: 6px;
-      color: var(--bk-muted);
-      font-family: var(--font);
-      font-size: 12px;
-      cursor: pointer;
-      transition: all 0.2s;
+      padding:6px 14px; background:transparent;
+      border:1px solid var(--bk-input-border); border-radius:2px;
+      color:var(--bk-muted); font-family:var(--font-mono);
+      font-size:11px; cursor:pointer; transition:all 0.2s;
+      letter-spacing:1px;
     }
-    .tool-btn:hover {
-      border-color: var(--bk-brick);
-      color: var(--bk-brick);
-    }
+    .tool-btn:hover { border-color:var(--bk-brick); color:var(--bk-brick); }
 
-    /* ---- HERO ---- */
+    /* ===== HERO ===== */
     .hero {
-      text-align: center;
-      padding: 100px 32px 80px;
-      position: relative;
-      overflow: hidden;
+      text-align:center;
+      padding:140px 40px 100px;
+      position:relative;
+      overflow:hidden;
     }
     .hero::before {
-      content: '';
-      position: absolute;
-      top: -100px;
-      right: -100px;
-      width: 400px;
-      height: 400px;
-      background: radial-gradient(circle, rgba(198, 93, 62, 0.12) 0%, transparent 70%);
-      pointer-events: none;
+      content:'';
+      position:absolute; top:0; left:50%; transform:translateX(-50%);
+      width:600px; height:600px;
+      background:radial-gradient(circle, rgba(198,93,62,0.06) 0%, transparent 70%);
+      pointer-events:none;
     }
+    /* Animated floating bricks */
+    .hero-bricks {
+      position:absolute; inset:0;
+      pointer-events:none; overflow:hidden;
+    }
+    .hero-bricks .float-brick {
+      position:absolute;
+      border:1px solid rgba(198,93,62,0.08);
+      animation: floatUp 20s linear infinite;
+      opacity:0;
+    }
+    @keyframes floatUp {
+      0% { opacity:0; transform:translateY(100px) rotate(0deg); }
+      10% { opacity:1; }
+      90% { opacity:1; }
+      100% { opacity:0; transform:translateY(-800px) rotate(8deg); }
+    }
+
     .hero h1 {
-      font-size: clamp(56px, 10vw, 96px);
-      font-weight: 800;
-      letter-spacing: 20px;
-      color: var(--bk-brick);
-      text-indent: 20px;
-      margin-bottom: 16px;
+      font-family:var(--font-display);
+      font-size:clamp(64px, 12vw, 120px);
+      color:var(--bk-brick);
+      letter-spacing:16px;
+      margin-bottom:24px;
+      position:relative;
     }
     .hero .tagline {
-      font-size: 18px;
-      font-weight: 500;
-      color: var(--bk-muted);
-      letter-spacing: 4px;
-      margin-bottom: 8px;
+      font-family:var(--font-display);
+      font-size:22px; font-style:italic;
+      color:var(--bk-muted); letter-spacing:3px;
+      margin-bottom:12px;
     }
     .hero .tagline-kr {
-      font-size: 14px;
-      color: var(--bk-dim);
-      letter-spacing: 2px;
+      font-size:14px; color:var(--bk-dim);
+      letter-spacing:4px; font-weight:300;
     }
+    .hero .scroll-hint {
+      margin-top:80px;
+      font-family:var(--font-mono); font-size:10px;
+      color:var(--bk-dim); letter-spacing:3px;
+      text-transform:uppercase;
+      animation: pulse 2.5s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:0.3;} 50%{opacity:0.8;} }
 
-    /* ---- SECTIONS ---- */
+    /* ===== SECTIONS ===== */
     .section {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 0 32px 80px;
+      max-width:860px; margin:0 auto;
+      padding:0 40px 100px;
+      opacity:0; transform:translateY(30px);
+      transition:opacity 0.8s ease, transform 0.8s ease;
+    }
+    .section.visible { opacity:1; transform:translateY(0); }
+
+    .section-num {
+      font-family:var(--font-mono);
+      font-size:11px; letter-spacing:3px;
+      color:var(--bk-dim); margin-bottom:8px;
     }
     .section-label {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 4px;
-      color: var(--bk-brick);
-      text-transform: uppercase;
-      margin-bottom: 12px;
+      font-family:var(--font-mono);
+      font-size:10px; font-weight:600; letter-spacing:4px;
+      color:var(--bk-brick); text-transform:uppercase;
+      margin-bottom:12px;
     }
     .section-title {
-      font-size: 28px;
-      font-weight: 700;
-      margin-bottom: 32px;
-      color: var(--bk-text);
+      font-family:var(--font-display);
+      font-size:32px; margin-bottom:12px;
+      color:var(--bk-text); line-height:1.4;
+    }
+    .section-subtitle {
+      font-size:14px; color:var(--bk-muted); line-height:1.8;
+      margin-bottom:40px; max-width:600px;
     }
     .divider {
-      width: 40px;
-      height: 2px;
-      background: var(--bk-brick);
-      margin-bottom: 40px;
+      width:48px; height:1px;
+      background:linear-gradient(90deg, var(--bk-brick), transparent);
+      margin-bottom:40px;
     }
 
-    /* ---- STORY CARD ---- */
+    /* ===== STORY CARD ===== */
     .story-card {
-      background: var(--bk-card);
-      border: 1px solid var(--bk-card-border);
-      border-radius: 16px;
-      padding: 48px;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background:var(--bk-card);
+      border:1px solid var(--bk-card-border);
+      border-radius:4px; padding:52px;
+      position:relative;
+    }
+    .story-card::before {
+      content:'';
+      position:absolute; top:0; right:0;
+      width:200px; height:200px;
+      background:radial-gradient(circle at top right, rgba(198,93,62,0.06), transparent 70%);
+      pointer-events:none;
     }
     .story-card p {
-      font-size: 16px;
-      line-height: 2;
-      color: var(--bk-text);
-      opacity: 0.9;
+      font-size:16px; line-height:2.2; color:var(--bk-text); opacity:0.88;
     }
-    .story-card p + p { margin-top: 20px; }
-    .story-card .highlight {
-      color: var(--bk-warm);
-      font-weight: 600;
-    }
+    .story-card p + p { margin-top:20px; }
+    .story-card .hl { color:var(--bk-warm); font-weight:500; }
+    .story-card .hl-celadon { color:var(--bk-celadon); font-weight:500; }
     .story-card .philosophy {
-      margin-top: 32px;
-      padding-top: 32px;
-      border-top: 1px solid rgba(200, 120, 80, 0.1);
-      font-size: 20px;
-      font-weight: 600;
-      color: var(--bk-warm);
-      text-align: center;
-      letter-spacing: 1px;
-      line-height: 1.8;
+      margin-top:36px; padding-top:36px;
+      border-top:1px solid rgba(180,120,70,0.08);
+      font-family:var(--font-display);
+      font-size:22px; font-style:italic;
+      color:var(--bk-warm);
+      text-align:center; line-height:1.8;
     }
 
-    /* ---- SLOGAN GRID ---- */
+    /* ===== DEFINITION BOX ===== */
+    .def-box {
+      background:linear-gradient(135deg, rgba(198,93,62,0.08), rgba(180,120,70,0.03));
+      border:1px solid rgba(198,93,62,0.15);
+      border-radius:4px; padding:44px;
+      text-align:center; margin-bottom:48px;
+      position:relative;
+    }
+    .def-box .def-label {
+      font-family:var(--font-mono);
+      font-size:10px; letter-spacing:4px;
+      color:var(--bk-brick); text-transform:uppercase;
+      margin-bottom:20px;
+    }
+    .def-box .def-text {
+      font-family:var(--font-display);
+      font-size:24px; line-height:1.7;
+      color:var(--bk-sand);
+    }
+    .def-box .def-sub {
+      font-size:14px; color:var(--bk-muted);
+      margin-top:16px; line-height:1.8;
+    }
+
+    /* ===== BRICK VISUAL ===== */
+    .brick-demo {
+      display:flex; flex-direction:column;
+      align-items:center; gap:48px;
+      margin-bottom:60px;
+    }
+    .brick-frame {
+      width:280px; height:140px;
+      border:2px solid var(--bk-brick);
+      position:relative;
+      display:flex; align-items:center; justify-content:center;
+      background:var(--bk-card);
+      transition:border-color 0.4s;
+    }
+    .brick-frame:hover { border-color:var(--bk-warm); }
+    .brick-frame .brick-content {
+      font-family:var(--font-display);
+      font-size:16px; color:var(--bk-dim);
+      letter-spacing:3px; font-style:italic;
+    }
+    .brick-frame .brick-n {
+      position:absolute; bottom:6px; right:10px;
+      font-family:var(--font-mono); font-size:9px;
+      color:var(--bk-dim); letter-spacing:1px;
+    }
+    .brick-frame .brick-corner {
+      position:absolute; top:6px; left:8px;
+      width:12px; height:12px;
+      border-top:1px solid rgba(198,93,62,0.3);
+      border-left:1px solid rgba(198,93,62,0.3);
+    }
+    .brick-frame .brick-mark {
+      position:absolute; bottom:6px; left:10px;
+      font-family:var(--font-mono); font-size:7px;
+      color:var(--bk-dim); letter-spacing:2px;
+      text-transform:uppercase;
+    }
+    .brick-desc {
+      text-align:center; font-size:13px;
+      color:var(--bk-muted); line-height:1.8; max-width:500px;
+    }
+
+    /* ===== COLLAB GRID ===== */
+    .collab-grid {
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:16px;
+      margin-bottom:48px;
+    }
+    .collab-brick {
+      aspect-ratio:2/1;
+      border:1px solid var(--bk-card-border);
+      border-radius:2px;
+      display:flex; align-items:center; justify-content:center;
+      position:relative;
+      overflow:hidden;
+      transition:all 0.4s ease;
+      cursor:default;
+    }
+    .collab-brick:hover {
+      border-color:var(--bk-brick);
+      transform:translateY(-3px);
+      box-shadow:0 12px 40px rgba(198,93,62,0.08);
+    }
+    .collab-brick .collab-inner {
+      font-size:13px; font-weight:500;
+      color:var(--bk-text); opacity:0.7;
+      letter-spacing:1px; text-align:center;
+      padding:8px;
+    }
+    .collab-brick .collab-n {
+      position:absolute; bottom:4px; right:6px;
+      font-family:var(--font-mono); font-size:7px;
+      color:var(--bk-dim); letter-spacing:1px;
+    }
+    .collab-brick .collab-tag {
+      position:absolute; top:6px; left:8px;
+      font-family:var(--font-mono); font-size:7px;
+      color:var(--bk-dim); letter-spacing:2px; text-transform:uppercase;
+    }
+    .collab-brick:nth-child(1) { background:linear-gradient(135deg, rgba(198,93,62,0.12), rgba(198,93,62,0.04)); }
+    .collab-brick:nth-child(2) { background:linear-gradient(135deg, rgba(123,162,152,0.12), rgba(123,162,152,0.04)); }
+    .collab-brick:nth-child(3) { background:linear-gradient(135deg, rgba(201,169,110,0.12), rgba(201,169,110,0.04)); }
+    .collab-brick:nth-child(4) { background:linear-gradient(135deg, rgba(180,140,200,0.10), rgba(180,140,200,0.03)); }
+    .collab-brick:nth-child(5) { background:linear-gradient(135deg, rgba(220,220,220,0.08), rgba(220,220,220,0.02)); }
+    .collab-brick:nth-child(6) { background:linear-gradient(135deg, rgba(100,140,200,0.10), rgba(100,140,200,0.03)); }
+
+    /* ===== SEASON FLOW ===== */
+    .season-flow {
+      display:flex; gap:0; margin-bottom:48px;
+      border:1px solid var(--bk-card-border);
+      border-radius:4px; overflow:hidden;
+    }
+    .season-step {
+      flex:1; padding:28px 20px;
+      text-align:center;
+      border-right:1px solid var(--bk-card-border);
+      background:var(--bk-card);
+      transition:background 0.3s;
+    }
+    .season-step:last-child { border-right:none; }
+    .season-step:hover { background:rgba(180,120,70,0.08); }
+    .season-step .step-num {
+      font-family:var(--font-mono); font-size:9px;
+      color:var(--bk-brick); letter-spacing:2px;
+      margin-bottom:10px;
+    }
+    .season-step .step-icon { font-size:24px; margin-bottom:10px; }
+    .season-step .step-name {
+      font-weight:700; font-size:14px;
+      color:var(--bk-text); margin-bottom:6px;
+    }
+    .season-step .step-desc {
+      font-size:11px; color:var(--bk-muted); line-height:1.6;
+    }
+
+    /* ===== PRINCIPLE TABLE ===== */
+    .principle-table {
+      width:100%; border-collapse:collapse;
+      margin-bottom:48px;
+    }
+    .principle-table th {
+      font-family:var(--font-mono);
+      font-size:10px; letter-spacing:2px;
+      text-transform:uppercase;
+      color:var(--bk-brick); text-align:left;
+      padding:12px 20px;
+      border-bottom:1px solid rgba(198,93,62,0.2);
+    }
+    .principle-table td {
+      font-size:14px; padding:14px 20px;
+      border-bottom:1px solid rgba(180,120,70,0.06);
+      color:var(--bk-text); line-height:1.6;
+    }
+    .principle-table tr:hover td { background:rgba(180,120,70,0.03); }
+    .principle-table .cell-change { color:var(--bk-warm); }
+    .principle-table .cell-fixed { color:var(--bk-celadon); }
+
+    /* ===== HERITAGE ===== */
+    .heritage-card {
+      display:grid; grid-template-columns:1fr 1fr;
+      gap:32px; margin-bottom:48px;
+    }
+    .heritage-item {
+      background:var(--bk-card);
+      border:1px solid var(--bk-card-border);
+      border-radius:4px; padding:36px;
+    }
+    .heritage-item .h-region {
+      font-family:var(--font-mono);
+      font-size:9px; letter-spacing:3px;
+      color:var(--bk-brick); text-transform:uppercase;
+      margin-bottom:12px;
+    }
+    .heritage-item .h-title {
+      font-family:var(--font-display);
+      font-size:20px; color:var(--bk-text);
+      margin-bottom:12px;
+    }
+    .heritage-item .h-body {
+      font-size:13px; color:var(--bk-muted); line-height:1.9;
+    }
+    .heritage-item .h-hl { color:var(--bk-warm); font-weight:500; }
+
+    /* ===== SLOGAN GRID ===== */
     .slogan-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 16px;
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+      gap:14px;
     }
     .slogan-item {
-      background: var(--bk-card);
-      border: 1px solid var(--bk-card-border);
-      border-radius: 12px;
-      padding: 28px;
-      transition: border-color 0.3s;
+      background:var(--bk-card);
+      border:1px solid var(--bk-card-border);
+      border-radius:4px; padding:28px;
+      transition:border-color 0.3s;
     }
-    .slogan-item:hover { border-color: rgba(200, 120, 80, 0.3); }
+    .slogan-item:hover { border-color:rgba(198,93,62,0.25); }
     .slogan-item .usage {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 3px;
-      color: var(--bk-brick);
-      text-transform: uppercase;
-      margin-bottom: 12px;
+      font-family:var(--font-mono);
+      font-size:9px; font-weight:600; letter-spacing:3px;
+      color:var(--bk-brick); text-transform:uppercase;
+      margin-bottom:12px;
     }
     .slogan-item .text {
-      font-size: 20px;
-      font-weight: 700;
-      color: var(--bk-text);
-      margin-bottom: 8px;
-      line-height: 1.4;
+      font-family:var(--font-display);
+      font-size:20px; color:var(--bk-text);
+      margin-bottom:8px; line-height:1.4;
     }
     .slogan-item .desc {
-      font-size: 13px;
-      color: var(--bk-muted);
-      line-height: 1.6;
+      font-size:12px; color:var(--bk-muted); line-height:1.7;
     }
 
-    /* ---- DISCUSSION BOARD ---- */
+    /* ===== CHECKLIST ===== */
+    .checklist {
+      list-style:none; margin-bottom:48px;
+    }
+    .checklist .cl-phase {
+      font-family:var(--font-mono);
+      font-size:10px; letter-spacing:3px;
+      color:var(--bk-brick); text-transform:uppercase;
+      padding:16px 0 8px;
+      border-bottom:1px solid rgba(198,93,62,0.15);
+      margin-bottom:12px;
+    }
+    .checklist .cl-item {
+      display:flex; align-items:flex-start; gap:12px;
+      padding:10px 0; font-size:14px; color:var(--bk-text);
+      line-height:1.6;
+    }
+    .checklist .cl-box {
+      width:16px; height:16px; flex-shrink:0;
+      border:1px solid var(--bk-dim); border-radius:2px;
+      margin-top:3px;
+    }
+    .checklist .cl-done .cl-box {
+      background:var(--bk-brick); border-color:var(--bk-brick);
+    }
+    .checklist .cl-done .cl-box::after {
+      content:'\2713'; display:block;
+      text-align:center; font-size:11px;
+      color:#fff; line-height:16px;
+    }
+    .checklist .cl-muted { color:var(--bk-muted); }
+
+    /* ===== POSITIONING GRID ===== */
+    .pos-grid {
+      display:grid; grid-template-columns:repeat(3, 1fr);
+      gap:14px; margin-bottom:48px;
+    }
+    .pos-card {
+      background:var(--bk-card);
+      border:1px solid var(--bk-card-border);
+      border-radius:4px; padding:32px 24px;
+      text-align:center;
+      transition:all 0.3s;
+    }
+    .pos-card:hover {
+      border-color:rgba(198,93,62,0.2);
+      transform:translateY(-2px);
+    }
+    .pos-card .pos-icon { font-size:28px; margin-bottom:14px; }
+    .pos-card .pos-label {
+      font-family:var(--font-mono);
+      font-size:9px; letter-spacing:2px;
+      color:var(--bk-brick); text-transform:uppercase;
+      margin-bottom:8px;
+    }
+    .pos-card .pos-text {
+      font-size:13px; color:var(--bk-muted); line-height:1.7;
+    }
+
+    /* ===== DISCUSSION BOARD ===== */
     .topic-card {
-      background: var(--bk-card);
-      border: 1px solid var(--bk-card-border);
-      border-radius: 16px;
-      margin-bottom: 20px;
-      overflow: hidden;
-      transition: border-color 0.3s;
+      background:var(--bk-card);
+      border:1px solid var(--bk-card-border);
+      border-radius:4px; margin-bottom:12px;
+      overflow:hidden; transition:border-color 0.3s;
     }
-    .topic-card:hover { border-color: rgba(200, 120, 80, 0.2); }
-
+    .topic-card:hover { border-color:rgba(180,120,70,0.18); }
     .topic-header {
-      padding: 24px 28px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      user-select: none;
+      padding:20px 28px; cursor:pointer;
+      display:flex; align-items:center; justify-content:space-between;
+      user-select:none;
     }
-    .topic-header:hover { background: rgba(200, 120, 80, 0.03); }
-    .topic-header-left {
-      flex: 1;
-    }
-    .topic-header h3 {
-      font-size: 17px;
-      font-weight: 700;
-      color: var(--bk-text);
-      margin-bottom: 4px;
-    }
-    .topic-header .topic-desc {
-      font-size: 13px;
-      color: var(--bk-muted);
-    }
+    .topic-header:hover { background:rgba(180,120,70,0.03); }
+    .topic-header-left { flex:1; }
+    .topic-header h3 { font-size:15px; font-weight:700; color:var(--bk-text); margin-bottom:2px; }
+    .topic-header .topic-desc { font-size:12px; color:var(--bk-muted); }
     .topic-count {
-      font-size: 12px;
-      color: var(--bk-brick);
-      background: rgba(198, 93, 62, 0.15);
-      padding: 4px 10px;
-      border-radius: 12px;
-      font-weight: 600;
-      white-space: nowrap;
-      margin-left: 16px;
+      font-family:var(--font-mono);
+      font-size:11px; color:var(--bk-brick);
+      background:rgba(198,93,62,0.12); padding:3px 10px;
+      border-radius:2px; font-weight:600;
+      white-space:nowrap; margin-left:16px;
     }
     .topic-arrow {
-      color: var(--bk-dim);
-      font-size: 18px;
-      margin-left: 12px;
-      transition: transform 0.3s;
+      color:var(--bk-dim); font-size:16px;
+      margin-left:12px; transition:transform 0.3s;
     }
-    .topic-card.open .topic-arrow { transform: rotate(180deg); }
-
+    .topic-card.open .topic-arrow { transform:rotate(180deg); }
     .topic-body {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.4s ease;
+      max-height:0; overflow:hidden; transition:max-height 0.4s ease;
     }
-    .topic-card.open .topic-body { max-height: 2000px; }
-
+    .topic-card.open .topic-body { max-height:3000px; }
     .topic-body-inner {
-      padding: 0 28px 24px;
-      border-top: 1px solid rgba(200, 120, 80, 0.06);
+      padding:0 28px 24px;
+      border-top:1px solid rgba(180,120,70,0.06);
     }
-
-    /* Notes list */
-    .notes-list { margin-top: 20px; }
-
+    .notes-list { margin-top:16px; }
     .note-item {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.04);
-      border-radius: 10px;
-      padding: 16px 20px;
-      margin-bottom: 10px;
-      position: relative;
+      background:rgba(255,255,255,0.015);
+      border:1px solid rgba(255,255,255,0.03);
+      border-radius:4px; padding:14px 18px;
+      margin-bottom:8px; position:relative;
     }
-    .note-meta {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 8px;
-    }
-    .note-author {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--bk-warm);
-    }
-    .note-date {
-      font-size: 11px;
-      color: var(--bk-dim);
-    }
+    .note-meta { display:flex; align-items:center; gap:10px; margin-bottom:6px; }
+    .note-author { font-size:12px; font-weight:700; color:var(--bk-warm); }
+    .note-date { font-size:10px; color:var(--bk-dim); font-family:var(--font-mono); }
     .note-content {
-      font-size: 14px;
-      color: var(--bk-text);
-      opacity: 0.85;
-      line-height: 1.7;
-      white-space: pre-wrap;
-      word-break: break-word;
+      font-size:14px; color:var(--bk-text); opacity:0.85;
+      line-height:1.8; white-space:pre-wrap; word-break:break-word;
     }
     .note-delete {
-      position: absolute;
-      top: 12px;
-      right: 14px;
-      background: none;
-      border: none;
-      color: var(--bk-dim);
-      cursor: pointer;
-      font-size: 14px;
-      padding: 4px;
-      opacity: 0;
-      transition: opacity 0.2s, color 0.2s;
+      position:absolute; top:10px; right:12px;
+      background:none; border:none; color:var(--bk-dim);
+      cursor:pointer; font-size:14px; padding:4px;
+      opacity:0; transition:opacity 0.2s, color 0.2s;
     }
-    .note-item:hover .note-delete { opacity: 1; }
-    .note-delete:hover { color: #e74c3c; }
-
-    /* Note input */
+    .note-item:hover .note-delete { opacity:1; }
+    .note-delete:hover { color:#c0392b; }
     .note-input-wrap {
-      margin-top: 16px;
-      display: flex;
-      gap: 10px;
-      align-items: flex-end;
+      margin-top:14px; display:flex; gap:10px; align-items:flex-end;
     }
     .note-input-wrap textarea {
-      flex: 1;
-      min-height: 60px;
-      max-height: 200px;
-      padding: 12px 16px;
-      background: var(--bk-input-bg);
-      border: 1px solid var(--bk-input-border);
-      border-radius: 10px;
-      color: var(--bk-text);
-      font-family: var(--font);
-      font-size: 14px;
-      line-height: 1.6;
-      resize: vertical;
-      outline: none;
-      transition: border-color 0.2s;
+      flex:1; min-height:56px; max-height:200px;
+      padding:12px 16px; background:var(--bk-input-bg);
+      border:1px solid var(--bk-input-border); border-radius:4px;
+      color:var(--bk-text); font-family:var(--font-body);
+      font-size:14px; line-height:1.6; resize:vertical; outline:none;
+      transition:border-color 0.2s;
     }
-    .note-input-wrap textarea:focus { border-color: var(--bk-brick); }
-    .note-input-wrap textarea::placeholder { color: var(--bk-dim); }
+    .note-input-wrap textarea:focus { border-color:var(--bk-brick); }
+    .note-input-wrap textarea::placeholder { color:var(--bk-dim); }
     .note-submit {
-      padding: 12px 20px;
-      background: var(--bk-brick);
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      font-family: var(--font);
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: background 0.2s;
-      flex-shrink: 0;
+      padding:12px 18px; background:var(--bk-brick); color:#fff;
+      border:none; border-radius:4px; font-family:var(--font-body);
+      font-size:13px; font-weight:600; cursor:pointer;
+      white-space:nowrap; transition:background 0.2s; flex-shrink:0;
     }
-    .note-submit:hover { background: var(--bk-brick-light); }
-    .note-submit:disabled { opacity: 0.4; cursor: not-allowed; }
-
+    .note-submit:hover { background:var(--bk-brick-light); }
+    .note-submit:disabled { opacity:0.4; cursor:not-allowed; }
     .empty-notes {
-      text-align: center;
-      padding: 24px;
-      color: var(--bk-dim);
-      font-size: 13px;
+      text-align:center; padding:20px;
+      color:var(--bk-dim); font-size:12px;
     }
 
-    /* ---- FOOTER ---- */
+    /* ===== FOOTER ===== */
     .hub-footer {
-      text-align: center;
-      padding: 48px 32px;
-      border-top: 1px solid rgba(200, 120, 80, 0.06);
-      margin-top: 40px;
+      text-align:center; padding:60px 40px;
+      border-top:1px solid rgba(180,120,70,0.06);
+      margin-top:40px;
     }
     .hub-footer p {
-      font-size: 12px;
-      color: var(--bk-dim);
-      letter-spacing: 1px;
+      font-size:11px; color:var(--bk-dim);
+      letter-spacing:1px; font-family:var(--font-mono);
     }
 
-    /* ---- TOAST ---- */
+    /* ===== TOAST ===== */
     .toast {
-      position: fixed;
-      bottom: 32px;
-      left: 50%;
-      transform: translateX(-50%) translateY(80px);
-      background: var(--bk-surface);
-      border: 1px solid var(--bk-card-border);
-      color: var(--bk-text);
-      padding: 12px 24px;
-      border-radius: 10px;
-      font-size: 13px;
-      font-family: var(--font);
-      z-index: 9000;
-      opacity: 0;
-      transition: all 0.3s;
-      pointer-events: none;
+      position:fixed; bottom:32px; left:50%;
+      transform:translateX(-50%) translateY(80px);
+      background:var(--bk-surface); border:1px solid var(--bk-card-border);
+      color:var(--bk-text); padding:12px 24px; border-radius:4px;
+      font-size:13px; font-family:var(--font-body);
+      z-index:9000; opacity:0; transition:all 0.3s;
+      pointer-events:none;
     }
-    .toast.show {
-      transform: translateX(-50%) translateY(0);
-      opacity: 1;
+    .toast.show { transform:translateX(-50%) translateY(0); opacity:1; }
+
+    #importInput { display:none; }
+
+    /* ===== WIDE QUOTE ===== */
+    .wide-quote {
+      max-width:100%; margin:0; padding:80px 40px;
+      text-align:center;
+      background:linear-gradient(180deg, transparent, rgba(198,93,62,0.03), transparent);
+      position:relative;
+    }
+    .wide-quote .wq-text {
+      font-family:var(--font-display);
+      font-size:clamp(20px, 3.5vw, 36px);
+      color:var(--bk-sand);
+      line-height:1.8; max-width:700px;
+      margin:0 auto;
+    }
+    .wide-quote .wq-attr {
+      font-family:var(--font-mono);
+      font-size:10px; letter-spacing:3px;
+      color:var(--bk-dim); margin-top:24px;
+      text-transform:uppercase;
     }
 
-    /* ---- FILE INPUT HIDDEN ---- */
-    #importInput { display: none; }
+    /* ===== NAV DOT ===== */
+    .nav-dots {
+      position:fixed; right:20px; top:50%;
+      transform:translateY(-50%); z-index:90;
+      display:flex; flex-direction:column; gap:12px;
+    }
+    .nav-dot {
+      width:6px; height:6px; border-radius:50%;
+      background:var(--bk-dim); cursor:pointer;
+      transition:all 0.3s; border:none; padding:0;
+    }
+    .nav-dot:hover, .nav-dot.active {
+      background:var(--bk-brick);
+      transform:scale(1.5);
+    }
 
-    /* ---- RESPONSIVE ---- */
-    @media (max-width: 768px) {
-      .hero { padding: 64px 20px 48px; }
-      .hero h1 { letter-spacing: 10px; text-indent: 10px; }
-      .section { padding: 0 20px 56px; }
-      .story-card { padding: 28px; }
-      .top-bar { padding: 12px 16px; flex-wrap: wrap; gap: 8px; }
-      .top-bar-right { width: 100%; justify-content: flex-end; }
-      .slogan-grid { grid-template-columns: 1fr; }
-      .note-input-wrap { flex-direction: column; }
-      .note-submit { width: 100%; }
-      .topic-header { padding: 18px 20px; }
-      .topic-body-inner { padding: 0 20px 20px; }
+    /* ===== RESPONSIVE ===== */
+    @media (max-width:768px) {
+      .hero { padding:100px 24px 64px; }
+      .section { padding:0 24px 64px; }
+      .story-card { padding:32px; }
+      .top-bar { padding:12px 16px; flex-wrap:wrap; gap:8px; }
+      .top-bar-right { width:100%; justify-content:flex-end; }
+      .slogan-grid { grid-template-columns:1fr; }
+      .collab-grid { grid-template-columns:repeat(2, 1fr); }
+      .season-flow { flex-direction:column; }
+      .season-step { border-right:none; border-bottom:1px solid var(--bk-card-border); }
+      .heritage-card { grid-template-columns:1fr; }
+      .pos-grid { grid-template-columns:1fr; }
+      .principle-table { font-size:13px; }
+      .principle-table th, .principle-table td { padding:10px 12px; }
+      .note-input-wrap { flex-direction:column; }
+      .note-submit { width:100%; }
+      .nav-dots { display:none; }
+      .def-box { padding:32px 24px; }
+      .def-box .def-text { font-size:20px; }
+      .brick-frame { width:220px; height:110px; }
+      .wide-quote { padding:48px 24px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ============ PASSWORD GATE ============ -->
+  <!-- ===== PASSWORD GATE ===== -->
   <div id="gate">
-    <div class="brand-mark">BRICKS</div>
-    <div class="brand-sub">Brand Development Hub</div>
+    <div class="gate-brick">
+      <span class="gate-brand">BRICKS</span>
+    </div>
+    <div class="gate-sub">Brand Development Hub</div>
     <div class="gate-input-wrap">
       <input type="password" id="gatePassword" placeholder="Access code" autocomplete="off">
       <button id="gateSubmit">Enter</button>
@@ -556,14 +744,14 @@
     <div class="gate-error" id="gateError"></div>
   </div>
 
-  <!-- ============ MAIN APP ============ -->
+  <!-- ===== MAIN ===== -->
   <div id="app">
 
-    <!-- TOP BAR -->
+    <!-- NAV -->
     <header class="top-bar">
       <div class="top-bar-left">
         <span class="logo-text">BRICKS</span>
-        <span class="badge">Internal Only</span>
+        <span class="badge">Internal v2</span>
       </div>
       <div class="top-bar-right">
         <select class="author-select" id="authorSelect">
@@ -573,187 +761,510 @@
           <option value="진민정">진민정</option>
           <option value="곽지윤">곽지윤</option>
         </select>
-        <button class="tool-btn" id="btnExport">내보내기</button>
-        <button class="tool-btn" id="btnImport">가져오기</button>
+        <button class="tool-btn" id="btnExport">Export</button>
+        <button class="tool-btn" id="btnImport">Import</button>
       </div>
     </header>
 
+    <!-- NAV DOTS -->
+    <nav class="nav-dots" id="navDots"></nav>
+
     <!-- HERO -->
-    <section class="hero">
+    <section class="hero" id="sec-hero">
+      <div class="hero-bricks" id="heroBricks"></div>
       <h1>BRICKS</h1>
       <div class="tagline">Brick by brick.</div>
-      <div class="tagline-kr">無너지지 않아.</div>
+      <div class="tagline-kr">벽돌 하나에 마음 하나. 모이면 집이 되고, 집이 모이면 마을이 됩니다.</div>
+      <div class="scroll-hint">Scroll to explore</div>
     </section>
 
-    <!-- BRAND STORY -->
-    <section class="section">
+    <!-- 01 POSITIONING -->
+    <section class="section" id="sec-positioning">
+      <div class="section-num">01</div>
+      <div class="section-label">Positioning</div>
+      <h2 class="section-title">컨셉 브랜드라는 장르</h2>
+      <div class="divider"></div>
+
+      <div class="def-box">
+        <div class="def-label">Brand Definition</div>
+        <div class="def-text">
+          BRICKS는 시즌마다 컨셉을 새로 짓는 패션 브랜드입니다.<br>
+          모르는 사람에겐 그냥 멋있는 옷,<br>
+          아는 사람에겐 의미가 담긴 한 장의 벽돌.
+        </div>
+        <div class="def-sub">
+          피스마이너스원이나 스투시처럼 겉보기엔 하이엔드 스트릿 브랜드.<br>
+          하지만 아는 사람은 안다 — 저 옷을 입고 다니는 사람에겐 이유가 있다는 것.
+        </div>
+      </div>
+
+      <div class="pos-grid">
+        <div class="pos-card">
+          <div class="pos-icon">&mdash;</div>
+          <div class="pos-label">Surface</div>
+          <div class="pos-text">겉: 하이엔드 패션.<br>사고 싶은 디자인이 1순위.<br>가격에 걸맞은 품질과 희소성.</div>
+        </div>
+        <div class="pos-card">
+          <div class="pos-icon">&there4;</div>
+          <div class="pos-label">Hidden Code</div>
+          <div class="pos-text">속: 숨은 의미.<br>벽돌 모티브, N° 시즌 넘버,<br>알면 더 좋은 비밀.</div>
+        </div>
+        <div class="pos-card">
+          <div class="pos-icon">&infin;</div>
+          <div class="pos-label">Accumulation</div>
+          <div class="pos-text">누적: 마음→집→마을.<br>매 시즌의 콜라보가 벽돌이 되어<br>BRICKS Village를 짓는다.</div>
+        </div>
+      </div>
+
+      <div class="section-subtitle">
+        의미를 전면에 내세우는 "착한 브랜드"가 아니다.<br>
+        의미는 숨기고, 제품은 드러낸다. 의미는 찾아오게 한다 — 떠먹이지 않는다.
+      </div>
+    </section>
+
+    <!-- 02 BRAND STORY -->
+    <section class="section" id="sec-story">
+      <div class="section-num">02</div>
       <div class="section-label">Brand Story</div>
-      <h2 class="section-title">우리는 무너질 수 있다는 걸 안다.</h2>
+      <h2 class="section-title">소중한 마음들이 모여</h2>
       <div class="divider"></div>
       <div class="story-card">
         <p>
-          누구나 한 번쯤은 흔들리고, 금이 가고, 주저앉는다.<br>
-          그래서 우리는 <span class="highlight">벽돌</span>을 생각했다.
+          한 장의 벽돌은 작다.<br>
+          하지만 그 벽돌에 <span class="hl">마음 하나</span>가 담기면, 이야기가 시작된다.
         </p>
         <p>
-          한 장의 벽돌은 약하다.<br>
-          하지만 두 장이 만나면 버틴다.<br>
-          열 장이 쌓이면 벽이 된다.<br>
-          백 장이 모이면, <span class="highlight">무너지지 않는 집</span>이 된다.
+          두 장이 만나면 기초가 되고,<br>
+          열 장이 쌓이면 벽이 되고,<br>
+          백 장이 모이면 <span class="hl">든든한 집</span>이 된다.<br>
+          그 집들이 나란히 서면 <span class="hl">마을</span>이 된다.
         </p>
         <p>
-          브릭스는 그렇게 만들어진다.<br>
-          한 사람의 하루, 한 번의 선택, 한 벌의 옷.<br>
-          작고 단단한 것들이 모여 삶을 지탱한다.
+          BRICKS는 그렇게 만들어진다.<br>
+          시즌마다 하나의 컨셉으로 집을 짓고,<br>
+          집이 모여 <span class="hl-celadon">BRICKS Village</span>가 된다.<br>
+          당신이 고른 옷 한 벌, 그것이 벽돌 한 장.
         </p>
         <p>
-          늑대가 와도 무너지지 않는, 막내 돼지의 집처럼.
+          무너질 수도 있다. 괜찮다.<br>
+          다시 쌓으면 된다. 함께라면.
         </p>
         <div class="philosophy">
-          "무너질 수 있어.<br>하나씩 하나씩, 함께 쌓아나가보자."
+          "벽돌 하나에 마음 하나.<br>
+          모이면 집이 되고,<br>
+          집이 모이면 마을이 됩니다."
         </div>
       </div>
     </section>
 
-    <!-- SLOGAN SYSTEM -->
-    <section class="section">
+    <!-- WIDE QUOTE -->
+    <div class="wide-quote">
+      <div class="wq-text">
+        모르는 사람에겐 그냥 멋있는 옷.<br>
+        아는 사람에겐, 의미가 담긴 벽돌.
+      </div>
+      <div class="wq-attr">The Concept Brand</div>
+    </div>
+
+    <!-- 03 THE BRICK -->
+    <section class="section" id="sec-brick">
+      <div class="section-num">03</div>
+      <div class="section-label">The Brick</div>
+      <h2 class="section-title">기본 벽돌 — 시그니처 폼</h2>
+      <div class="section-subtitle">
+        콜라보를 담는 그릇. 형(形)은 고정, 안의 표현은 무한. 2:1 직사각형 벽돌 비율. 단색 미니멀.
+      </div>
+      <div class="divider"></div>
+
+      <div class="brick-demo">
+        <div class="brick-frame">
+          <div class="brick-corner"></div>
+          <div class="brick-content">Your Story</div>
+          <div class="brick-mark">BRICKS</div>
+          <div class="brick-n">N&deg; 01</div>
+        </div>
+        <div class="brick-desc">
+          프레임은 절대 바뀌지 않는다. 안만 바뀐다.<br>
+          50개의 콜라보가 나와도 이 프레임 안에 있으면 모두 BRICKS다.<br>
+          우하단 <strong>N°</strong> 시즌 넘버 — 아는 사람만 읽는 코드.
+        </div>
+      </div>
+
+      <h3 style="font-size:16px; font-weight:700; margin-bottom:20px; color:var(--bk-text);">Same Frame / Different Soul</h3>
+      <div class="collab-grid">
+        <div class="collab-brick">
+          <div class="collab-tag">BRICKS &times;</div>
+          <div class="collab-inner">아티스트<br>콜라보</div>
+          <div class="collab-n">N&deg; 01</div>
+        </div>
+        <div class="collab-brick">
+          <div class="collab-tag">BRICKS &times;</div>
+          <div class="collab-inner">전돌(塼)<br>헤리티지</div>
+          <div class="collab-n">N&deg; 02</div>
+        </div>
+        <div class="collab-brick">
+          <div class="collab-tag">BRICKS &times;</div>
+          <div class="collab-inner">IP<br>캐릭터</div>
+          <div class="collab-n">N&deg; 03</div>
+        </div>
+        <div class="collab-brick">
+          <div class="collab-tag">BRICKS &times;</div>
+          <div class="collab-inner">사회공헌<br>시즌</div>
+          <div class="collab-n">N&deg; 04</div>
+        </div>
+        <div class="collab-brick">
+          <div class="collab-tag">BRICKS &times;</div>
+          <div class="collab-inner">브랜드<br>콜라보</div>
+          <div class="collab-n">N&deg; 05</div>
+        </div>
+        <div class="collab-brick">
+          <div class="collab-tag">BRICKS &times;</div>
+          <div class="collab-inner">한정<br>드롭</div>
+          <div class="collab-n">N&deg; 06</div>
+        </div>
+      </div>
+      <p style="font-size:13px; color:var(--bk-muted); line-height:1.8; margin-bottom:0;">
+        콜라보 파트너 하나하나가 벽돌 한 장이 되어 BRICKS라는 집을 짓는다.<br>
+        파트너는 프레임 안만 자유롭게 채운다. 프레임 자체는 <strong style="color:var(--bk-warm);">절대 못 바꾼다.</strong>
+      </p>
+    </section>
+
+    <!-- 04 HERITAGE -->
+    <section class="section" id="sec-heritage">
+      <div class="section-num">04</div>
+      <div class="section-label">Heritage</div>
+      <h2 class="section-title">전돌(塼) — 동양의 벽돌</h2>
+      <div class="section-subtitle">
+        벽돌은 서양만의 것이 아니다. 동양에도 수천 년 전부터 고유한 벽돌 문화가 있었다.
+      </div>
+      <div class="divider"></div>
+
+      <div class="heritage-card">
+        <div class="heritage-item">
+          <div class="h-region">Korea &middot; 한국</div>
+          <div class="h-title">백제 무늬벽돌과 무령왕릉</div>
+          <div class="h-body">
+            백제·통일신라는 정교한 무늬가 새겨진 <span class="h-hl">전돌(塼)</span>을 만들었다.
+            <span class="h-hl">무령왕릉</span>은 벽돌로 쌓은 전축분(塼築墳).
+            연화문(蓮花紋) 벽돌은 BRICKS의 시즌 모티브로 쓸 수 있는 강력한 시각 자산이다.
+          </div>
+        </div>
+        <div class="heritage-item">
+          <div class="h-region">China &middot; 중국</div>
+          <div class="h-title">만리장성과 진한(秦漢) 전돌</div>
+          <div class="h-body">
+            중국은 벽돌 문명의 핵심 지역. 신석기 시대부터 흙벽돌을 썼고,
+            <span class="h-hl">만리장성</span>의 상당 구간이 구운 벽돌 구조물이다.
+            한자 "塼(전)"이라는 글자 자체가 동양 고유의 벽돌 문화를 증명한다.
+          </div>
+        </div>
+      </div>
+
+      <div class="def-box" style="margin-top:12px;">
+        <div class="def-label">Brand Code</div>
+        <div class="def-text" style="font-size:20px;">
+          서양의 Brick + 동양의 塼<br>
+          <span style="font-size:16px; color:var(--bk-muted);">
+            아는 사람만 읽는 이중 코드. 한자 "塼", 전돌 무늬, 연화문 —<br>
+            서양식 brick과는 다른 BRICKS만의 동양적 깊이.
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 SEASON SYSTEM -->
+    <section class="section" id="sec-season">
+      <div class="section-num">05</div>
+      <div class="section-label">Season System</div>
+      <h2 class="section-title">시즌 운영 원칙</h2>
+      <div class="section-subtitle">
+        한 시즌 = 하나의 집 = 하나의 컨셉. 분기제(3개월), 연 4회.
+      </div>
+      <div class="divider"></div>
+
+      <div class="season-flow">
+        <div class="season-step">
+          <div class="step-num">PHASE 1</div>
+          <div class="step-icon">&#9633;</div>
+          <div class="step-name">착공</div>
+          <div class="step-desc">주제 · 기부처 ·<br>제품 · 콜라보 공개</div>
+        </div>
+        <div class="season-step">
+          <div class="step-num">PHASE 2</div>
+          <div class="step-icon">&#9646;&#9646;</div>
+          <div class="step-name">시공</div>
+          <div class="step-desc">판매 · 참여<br>벽돌이 쌓인다</div>
+        </div>
+        <div class="season-step">
+          <div class="step-num">PHASE 3</div>
+          <div class="step-icon">&#9651;</div>
+          <div class="step-name">완공</div>
+          <div class="step-desc">목표 달성<br>집 완성</div>
+        </div>
+        <div class="season-step">
+          <div class="step-num">PHASE 4</div>
+          <div class="step-icon">&#10022;</div>
+          <div class="step-name">헌정</div>
+          <div class="step-desc">기부 집행 · 투명 리포트<br>한정 드롭</div>
+        </div>
+      </div>
+
+      <h3 style="font-size:16px; font-weight:700; margin:40px 0 16px; color:var(--bk-text);">변하는 것 / 변하지 않는 것</h3>
+      <table class="principle-table">
+        <thead>
+          <tr>
+            <th style="width:50%">Season &mdash; 시즌마다 바뀜</th>
+            <th style="width:50%">Foundation &mdash; 절대 안 바뀜</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="cell-change">주제 · 서사</td><td class="cell-fixed">벽돌 한 장의 철학</td></tr>
+          <tr><td class="cell-change">기부처</td><td class="cell-fixed">4단계 시즌 구조</td></tr>
+          <tr><td class="cell-change">제품 디자인</td><td class="cell-fixed">슬로건 체계</td></tr>
+          <tr><td class="cell-change">색 · 비주얼 모티브</td><td class="cell-fixed">투명한 기부 공개</td></tr>
+          <tr><td class="cell-change">집의 모양</td><td class="cell-fixed">마을에 누적되는 방식</td></tr>
+          <tr><td class="cell-change">콜라보 파트너</td><td class="cell-fixed">기본 벽돌 프레임</td></tr>
+        </tbody>
+      </table>
+
+      <div class="section-subtitle" style="margin-top:32px; margin-bottom:0;">
+        이 표가 컨셉 브랜드를 지탱하는 헌법이다.<br>
+        자유(시즌 변주)와 일관성(불변의 축)이 동시에 있어야 "장르"가 된다.
+      </div>
+    </section>
+
+    <!-- 06 SLOGAN -->
+    <section class="section" id="sec-slogan">
+      <div class="section-num">06</div>
       <div class="section-label">Slogan System</div>
       <h2 class="section-title">브릭스가 말하는 방식</h2>
       <div class="divider"></div>
       <div class="slogan-grid">
         <div class="slogan-item">
-          <div class="usage">Global Main</div>
+          <div class="usage">Global Tagline</div>
           <div class="text">Brick by brick.</div>
-          <div class="desc">글로벌 태그라인. SNS 해시태그, 국제 커뮤니케이션에 사용</div>
+          <div class="desc">영문 메인. 과정 · 동행. 모든 글로벌 커뮤니케이션의 기본.</div>
         </div>
         <div class="slogan-item">
           <div class="usage">Korean Main</div>
-          <div class="text">無너지지 않아.</div>
-          <div class="desc">한글+한자 타이포 장난. 인스타, 굿즈, 티셔츠 등 비주얼 아이덴티티</div>
+          <div class="text">마음이 모이면 집이 됩니다.</div>
+          <div class="desc">국문 메인. 따뜻함 · 축적 · 함께. 캠페인 · SNS · 공간.</div>
         </div>
         <div class="slogan-item">
-          <div class="usage">Goods · Back Print</div>
+          <div class="usage">Brand Philosophy</div>
+          <div class="text">벽돌 하나에 마음 하나.</div>
+          <div class="desc">한 줄 철학. 브랜드북, 소개 자료, 인터뷰 응답.</div>
+        </div>
+        <div class="slogan-item">
+          <div class="usage">Goods &middot; Back Print</div>
           <div class="text">무너져. 다시 쌓아.</div>
-          <div class="desc">명령형의 단호함. 후드 백프린트, 스트릿 무드</div>
+          <div class="desc">스트릿 톤. 후드 백프린트, 머천다이즈. 회복 · 재건 시즌 한정.</div>
         </div>
         <div class="slogan-item">
-          <div class="usage">Label · Package</div>
+          <div class="usage">Label &middot; Package</div>
           <div class="text">We were built to last.</div>
-          <div class="desc">헤리티지 무드. 라벨 안쪽, 패키지 내부 인쇄용</div>
+          <div class="desc">헤리티지 무드. 라벨 안쪽, 패키지 내부 인쇄.</div>
         </div>
         <div class="slogan-item">
-          <div class="usage">Campaign · SNS</div>
-          <div class="text">흔들려도, 안 부서져.</div>
-          <div class="desc">라이프 카피. 시즌 캠페인, SNS 캡션 톤</div>
+          <div class="usage">Heritage Code</div>
+          <div class="text">塼 (전)</div>
+          <div class="desc">동양 벽돌 한자. 히든 라벨, 자수, 택에만 노출. 아는 사람의 신호.</div>
         </div>
       </div>
     </section>
 
-    <!-- DISCUSSION BOARD -->
-    <section class="section">
+    <!-- 07 SOCIAL CONTRIBUTION -->
+    <section class="section" id="sec-contribution">
+      <div class="section-num">07</div>
+      <div class="section-label">Social Contribution</div>
+      <h2 class="section-title">기여 구조 — 수익 일부 기부</h2>
+      <div class="divider"></div>
+      <div class="story-card">
+        <p>
+          BRICKS의 사회 공헌은 비즈니스 모델 자체에 심어져 있다.<br>
+          벽돌 한 장(제품 하나)이 팔릴 때마다 실제로 누군가의 공간을 짓는 데 기여한다.
+        </p>
+        <p>
+          <span class="hl">수익 일부 기부</span> — 단순하고 안정적인 구조.<br>
+          시즌마다 주제를 바꾸되, 기여의 방식은 같다.<br>
+          기부처는 시즌별로 선정하고, 기부금은 벽돌처럼 투명하게 공개한다.
+        </p>
+        <p>
+          사회 공헌을 전면에 내세우지 않는다.<br>
+          제품이 먼저 멋있어서 사고 싶고, 의미는 그 안에 숨어 있다.<br>
+          <span class="hl-celadon">의미가 짐이 아니라 보상이 되는 구조</span> — 아는 사람만 누리는.
+        </p>
+      </div>
+    </section>
+
+    <!-- 08 CHECKLIST -->
+    <section class="section" id="sec-checklist">
+      <div class="section-num">08</div>
+      <div class="section-label">Launch Checklist</div>
+      <h2 class="section-title">브랜드 시작 체크리스트</h2>
+      <div class="divider"></div>
+
+      <ul class="checklist">
+        <li class="cl-phase">Phase 1 — 권리 선점</li>
+        <li class="cl-item"><span class="cl-box"></span>"BRICKS" + "브릭스" 상표 출원 (의류·액세서리 25류 우선)</li>
+        <li class="cl-item"><span class="cl-box"></span>슬로건 상표 검토: "Brick by brick." / "無너지지 않아." / "무너져. 다시 쌓아."</li>
+        <li class="cl-item"><span class="cl-box"></span>도메인 확보: .com / .co.kr / .kr</li>
+        <li class="cl-item"><span class="cl-box"></span>SNS 핸들 선점: 인스타그램 · 유튜브 · 틱톡 동일 핸들</li>
+        <li class="cl-item"><span class="cl-box"></span>BRICS(경제블록) 혼동 대비 → 벽돌 심볼 + 로고 고정</li>
+
+        <li class="cl-phase">Phase 2 — 브랜드 정체성</li>
+        <li class="cl-item"><span class="cl-box"></span>로고 확정 (BRICKS + 벽돌 프레임 심볼)</li>
+        <li class="cl-item"><span class="cl-box"></span>슬로건 체계 최종 고정 (글로벌/국문/패키지/머천다이즈/히든)</li>
+        <li class="cl-item"><span class="cl-box"></span>컬러·폰트·벽돌 심볼 가이드 문서화</li>
+        <li class="cl-item"><span class="cl-box"></span>"컨셉 브랜드" 한 줄 정의문 확정</li>
+        <li class="cl-item"><span class="cl-box"></span>시즌제 운영 원칙 정리 (분기/주제 선정 기준/마을 누적)</li>
+
+        <li class="cl-phase">Phase 3 — 사회 공헌 설계</li>
+        <li class="cl-item"><span class="cl-box"></span>기부 비율 확정 (매출 또는 순이익의 N%)</li>
+        <li class="cl-item"><span class="cl-box"></span>시즌별 기부처 선정 기준 마련</li>
+        <li class="cl-item"><span class="cl-box"></span>투명성 리포트 공개 채널 결정</li>
+        <li class="cl-item"><span class="cl-box"></span>세무·회계 처리 방식 확인 (기부금 손금, 지정기부금)</li>
+
+        <li class="cl-phase">Phase 4 — MVP</li>
+        <li class="cl-item"><span class="cl-box"></span>랜딩 페이지 + "함께 짓는 집" 인터랙티브 연동</li>
+        <li class="cl-item"><span class="cl-box"></span>시즌 1 제품 라인 1~3종 확정</li>
+        <li class="cl-item"><span class="cl-box"></span>브랜드 스토리 콘텐츠 1편 ("왜 벽돌인가")</li>
+        <li class="cl-item"><span class="cl-box"></span>기여 구조 안내 페이지</li>
+
+        <li class="cl-phase">Phase 5 — 런칭</li>
+        <li class="cl-item"><span class="cl-box"></span>시즌 1: 주제 · 기부처 · 제품 · 기간을 하나의 캠페인으로</li>
+        <li class="cl-item"><span class="cl-box"></span>초기 참여자(지인·기업 벽돌) 사전 확보</li>
+        <li class="cl-item"><span class="cl-box"></span>완공 시 한정 드롭 리워드 설계</li>
+        <li class="cl-item"><span class="cl-box"></span>팝업스토어 컨셉 설계 (벽돌·집·마을을 공간으로)</li>
+      </ul>
+    </section>
+
+    <!-- 09 DISCUSSION -->
+    <section class="section" id="sec-discussion">
+      <div class="section-num">09</div>
       <div class="section-label">Discussion Board</div>
       <h2 class="section-title">함께 쌓아가는 브릭스</h2>
       <div class="divider"></div>
-      <p style="font-size: 14px; color: var(--bk-muted); margin-bottom: 32px;">
-        각 주제별로 자유롭게 의견을 남겨주세요. 이름을 선택한 뒤 의견을 작성하면 자동 저장됩니다.<br>
-        다른 팀원의 의견을 보려면 <strong style="color:var(--bk-warm);">내보내기/가져오기</strong>로 파일을 공유하세요.
+      <p style="font-size:13px; color:var(--bk-muted); margin-bottom:28px; line-height:1.8;">
+        각 주제별로 자유롭게 의견을 남겨주세요. 이름 선택 후 작성하면 로컬 저장됩니다.<br>
+        팀원 간 공유는 <strong style="color:var(--bk-warm);">Export/Import</strong>로 JSON 파일을 주고받으세요.
       </p>
-
       <div id="topicList"></div>
     </section>
 
     <!-- FOOTER -->
     <footer class="hub-footer">
       <p>BRICKS Brand Development Hub &middot; HESED CORP. Internal</p>
-      <p style="margin-top: 8px; opacity: 0.5;">This page is not indexed and not accessible to the public.</p>
+      <p style="margin-top:8px; opacity:0.5;">v2 &middot; 2026-06-02 &middot; Not indexed. Not public.</p>
     </footer>
   </div>
 
   <!-- TOAST -->
   <div class="toast" id="toast"></div>
-
-  <!-- HIDDEN FILE INPUT -->
   <input type="file" id="importInput" accept=".json">
 
   <script>
     // ============================================
-    // BRICKS Brand Hub — App Logic
+    // BRICKS Brand Hub v2 — App Logic
     // ============================================
 
     const PASS = 'bricks2026';
-    const STORAGE_KEY = 'bricks-hub-v1';
+    const STORAGE_KEY = 'bricks-hub-v2';
+
+    // ---- Floating Bricks (Hero) ----
+    function initHeroBricks() {
+      const container = document.getElementById('heroBricks');
+      const count = 12;
+      for (let i = 0; i < count; i++) {
+        const el = document.createElement('div');
+        el.className = 'float-brick';
+        const w = 30 + Math.random() * 50;
+        el.style.width = w + 'px';
+        el.style.height = (w / 2) + 'px';
+        el.style.left = (Math.random() * 100) + '%';
+        el.style.top = (60 + Math.random() * 40) + '%';
+        el.style.animationDelay = (Math.random() * 20) + 's';
+        el.style.animationDuration = (15 + Math.random() * 15) + 's';
+        container.appendChild(el);
+      }
+    }
+
+    // ---- Scroll Reveal ----
+    function initScrollReveal() {
+      const sections = document.querySelectorAll('.section');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) e.target.classList.add('visible');
+        });
+      }, { threshold: 0.12 });
+      sections.forEach(s => observer.observe(s));
+    }
+
+    // ---- Nav Dots ----
+    function initNavDots() {
+      const ids = ['sec-hero','sec-positioning','sec-story','sec-brick','sec-heritage','sec-season','sec-slogan','sec-contribution','sec-checklist','sec-discussion'];
+      const container = document.getElementById('navDots');
+      ids.forEach(id => {
+        const dot = document.createElement('button');
+        dot.className = 'nav-dot';
+        dot.dataset.target = id;
+        dot.addEventListener('click', () => {
+          document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+        });
+        container.appendChild(dot);
+      });
+
+      const dots = container.querySelectorAll('.nav-dot');
+      const updateActive = () => {
+        let closest = null, closestDist = Infinity;
+        ids.forEach((id, i) => {
+          const el = document.getElementById(id);
+          if (!el) return;
+          const dist = Math.abs(el.getBoundingClientRect().top);
+          if (dist < closestDist) { closestDist = dist; closest = i; }
+        });
+        dots.forEach((d, i) => d.classList.toggle('active', i === closest));
+      };
+      window.addEventListener('scroll', updateActive, { passive: true });
+      updateActive();
+    }
 
     // ---- Topics Config ----
     const TOPICS = [
-      {
-        id: 'color-palette',
-        title: '컬러 팔레트',
-        desc: '브릭스를 대표하는 색상은 무엇이어야 할까?',
-        placeholder: '예: 테라코타 + 차콜 베이스가 좋을 것 같아. 벽돌색 톤으로...'
-      },
-      {
-        id: 'target-customer',
-        title: '타겟 고객',
-        desc: '누구를 위한 브랜드인가? 연령대, 라이프스타일, 취향',
-        placeholder: '예: 25-35세, 스트릿 문화에 관심 있는 MZ세대...'
-      },
-      {
-        id: 'first-product',
-        title: '첫 제품 라인',
-        desc: '어떤 카테고리로 시작할까? 아우터? 가방? 캡? 잡화?',
-        placeholder: '예: 후드와 캡으로 시작하면 좋을 것 같아. 벽돌 로고가 잘 어울리는...'
-      },
-      {
-        id: 'price-position',
-        title: '가격 포지셔닝',
-        desc: '어디에 위치시킬 것인가? 프리미엄? 하이엔드? 럭셔리?',
-        placeholder: '예: 후드 기준 15-25만원대, 프리미엄 스트릿 포지션...'
-      },
-      {
-        id: 'distribution',
-        title: '유통 채널',
-        desc: '어디서 판매? 자사몰, 편집숍, 팝업, 마켓플레이스?',
-        placeholder: '예: 자사몰 + 무신사 입점으로 시작하고, 시즌 팝업으로...'
-      },
-      {
-        id: 'brand-visual',
-        title: '브랜드 비주얼',
-        desc: '로고 활용, 타이포그래피, 패키지, 라벨 방향',
-        placeholder: '예: 벽돌 로고를 심플하게 엠보싱으로 넣으면 고급스러울 것 같아...'
-      },
-      {
-        id: 'reference-brands',
-        title: '레퍼런스 브랜드',
-        desc: '참고하고 싶은 브랜드, 분위기, 무드가 있다면?',
-        placeholder: '예: Fear of God의 미니멀함 + Acne Studios의 스칸디 무드...'
-      },
-      {
-        id: 'free-opinion',
-        title: '자유 의견',
-        desc: '브릭스에 대한 모든 생각을 자유롭게',
-        placeholder: '브릭스에 대해 떠오르는 아이디어, 걱정, 기대 무엇이든...'
-      }
+      { id:'first-collab', title:'시즌 1 콜라보 파트너', desc:'첫 벽돌을 누구와 놓을 것인가? 자체 IP? 외부 아티스트?', placeholder:'예: 자체 캐릭터로 시작하고, 시즌 2부터 외부 아티스트...' },
+      { id:'first-product', title:'첫 제품 라인', desc:'어떤 카테고리로 시작? 아우터? 후드? 캡? 잡화?', placeholder:'예: 후드와 캡으로 시작, 벽돌 프레임이 잘 어울리는...' },
+      { id:'price-position', title:'가격 포지셔닝', desc:'하이엔드 스트릿. 구체적인 가격대는?', placeholder:'예: 후드 기준 20-35만원대, PMO급 포지션...' },
+      { id:'popup-concept', title:'팝업스토어 컨셉', desc:'벽돌·집·마을 서사를 공간으로 어떻게 번역할 것인가?', placeholder:'예: 입구에서 벽돌 한 장 받고, 나갈 때 마을 벽에 놓고 나오는...' },
+      { id:'color-palette', title:'컬러 팔레트', desc:'브릭스를 대표하는 색상은?', placeholder:'예: 테라코타 + 차콜 + 청자색(전돌 모티브)...' },
+      { id:'hidden-codes', title:'숨은 코드 설계', desc:'모르면 그래픽, 알면 메시지인 장치들', placeholder:'예: N° 시즌 넘버, 塼 한자, 연화문 패턴, QR...' },
+      { id:'season1-theme', title:'시즌 1 주제', desc:'첫 집의 이름과 서사. 어떤 이야기를 지을 것인가?', placeholder:'예: "기초" — 첫 시즌이니까 말 그대로 기초를 놓는 이야기...' },
+      { id:'reference-brands', title:'레퍼런스 브랜드', desc:'참고하고 싶은 브랜드, 분위기, 무드', placeholder:'예: PMO의 미니멀함 + Stussy의 콜라보 DNA + BOSS의 프리미엄...' },
+      { id:'free-opinion', title:'자유 의견', desc:'브릭스에 대한 모든 생각', placeholder:'떠오르는 아이디어, 걱정, 기대 무엇이든...' }
     ];
 
     // ---- Data Layer ----
     function loadData() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
-        return raw ? JSON.parse(raw) : { author: '', notes: {} };
-      } catch {
-        return { author: '', notes: {} };
-      }
+        if (raw) return JSON.parse(raw);
+        // Migrate from v1
+        const v1 = localStorage.getItem('bricks-hub-v1');
+        if (v1) {
+          const d = JSON.parse(v1);
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(d));
+          return d;
+        }
+        return { author:'', notes:{} };
+      } catch { return { author:'', notes:{} }; }
     }
 
-    function saveData(data) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-    }
+    function saveData(data) { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
 
     function addNote(topicId, content) {
       const data = loadData();
       if (!data.notes[topicId]) data.notes[topicId] = [];
       const note = {
-        id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+        id: Date.now().toString(36) + Math.random().toString(36).slice(2,6),
         author: data.author,
         content: content.trim(),
         date: new Date().toISOString()
@@ -773,12 +1284,12 @@
 
     function getNotes(topicId) {
       const data = loadData();
-      return (data.notes[topicId] || []).sort((a, b) => new Date(a.date) - new Date(b.date));
+      return (data.notes[topicId] || []).sort((a,b) => new Date(a.date) - new Date(b.date));
     }
 
     function getTotalNoteCount() {
       const data = loadData();
-      return Object.values(data.notes).reduce((sum, arr) => sum + arr.length, 0);
+      return Object.values(data.notes).reduce((s,a) => s + a.length, 0);
     }
 
     // ---- Toast ----
@@ -792,14 +1303,16 @@
     // ---- Format Date ----
     function formatDate(iso) {
       const d = new Date(iso);
-      const mon = d.getMonth() + 1;
-      const day = d.getDate();
-      const h = d.getHours().toString().padStart(2, '0');
-      const m = d.getMinutes().toString().padStart(2, '0');
-      return `${mon}/${day} ${h}:${m}`;
+      return `${d.getMonth()+1}/${d.getDate()} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
     }
 
-    // ---- Render ----
+    function escapeHtml(str) {
+      const d = document.createElement('div');
+      d.textContent = str;
+      return d.innerHTML;
+    }
+
+    // ---- Render Topics ----
     function renderTopics() {
       const container = document.getElementById('topicList');
       container.innerHTML = '';
@@ -814,15 +1327,24 @@
               <h3>${topic.title}</h3>
               <div class="topic-desc">${topic.desc}</div>
             </div>
-            ${notes.length > 0 ? `<span class="topic-count">${notes.length}개 의견</span>` : ''}
+            ${notes.length > 0 ? `<span class="topic-count">${notes.length}</span>` : ''}
             <span class="topic-arrow">&#9662;</span>
           </div>
           <div class="topic-body">
             <div class="topic-body-inner">
               <div class="notes-list" id="notes-${topic.id}">
                 ${notes.length === 0
-                  ? '<div class="empty-notes">아직 의견이 없습니다. 첫 번째 의견을 남겨보세요.</div>'
-                  : notes.map(n => renderNote(topic.id, n)).join('')
+                  ? '<div class="empty-notes">아직 의견이 없습니다.</div>'
+                  : notes.map(n => `
+                    <div class="note-item">
+                      <div class="note-meta">
+                        <span class="note-author">${escapeHtml(n.author)}</span>
+                        <span class="note-date">${formatDate(n.date)}</span>
+                      </div>
+                      <div class="note-content">${escapeHtml(n.content)}</div>
+                      <button class="note-delete" data-topic="${topic.id}" data-note="${n.id}" title="삭제">&times;</button>
+                    </div>
+                  `).join('')
                 }
               </div>
               <div class="note-input-wrap">
@@ -835,42 +1357,31 @@
         container.appendChild(card);
       });
 
-      // Event: toggle topics
-      document.querySelectorAll('.topic-header').forEach(header => {
-        header.addEventListener('click', () => {
-          header.closest('.topic-card').classList.toggle('open');
-        });
+      // Toggle
+      document.querySelectorAll('.topic-header').forEach(h => {
+        h.addEventListener('click', () => h.closest('.topic-card').classList.toggle('open'));
       });
 
-      // Event: submit notes
+      // Submit
       document.querySelectorAll('.note-submit').forEach(btn => {
         btn.addEventListener('click', () => {
-          const topicId = btn.dataset.topic;
-          const textarea = document.getElementById(`input-${topicId}`);
-          const content = textarea.value.trim();
+          const tid = btn.dataset.topic;
+          const ta = document.getElementById(`input-${tid}`);
+          const content = ta.value.trim();
           const data = loadData();
-
-          if (!data.author) {
-            showToast('상단에서 이름을 먼저 선택해주세요.');
-            return;
-          }
+          if (!data.author) { showToast('상단에서 이름을 먼저 선택해주세요.'); return; }
           if (!content) return;
-
-          addNote(topicId, content);
-          textarea.value = '';
+          addNote(tid, content);
+          ta.value = '';
           renderTopics();
-          // Re-open this topic
-          const cards = document.querySelectorAll('.topic-card');
-          cards.forEach(card => {
-            if (card.querySelector(`[data-topic="${topicId}"]`)) {
-              card.classList.add('open');
-            }
+          document.querySelectorAll('.topic-card').forEach(c => {
+            if (c.querySelector(`[data-topic="${tid}"]`)) c.classList.add('open');
           });
           showToast('의견이 저장되었습니다.');
         });
       });
 
-      // Event: delete notes
+      // Delete
       document.querySelectorAll('.note-delete').forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.stopPropagation();
@@ -878,49 +1389,25 @@
           if (confirm('이 의견을 삭제할까요?')) {
             deleteNote(topic, note);
             renderTopics();
-            // Re-open this topic
-            const cards = document.querySelectorAll('.topic-card');
-            cards.forEach(card => {
-              if (card.querySelector(`[data-topic="${topic}"]`)) {
-                card.classList.add('open');
-              }
+            document.querySelectorAll('.topic-card').forEach(c => {
+              if (c.querySelector(`[data-topic="${topic}"]`)) c.classList.add('open');
             });
             showToast('삭제되었습니다.');
           }
         });
       });
 
-      // Enter key support (Ctrl+Enter or Cmd+Enter to submit)
-      document.querySelectorAll('.note-input-wrap textarea').forEach(textarea => {
-        textarea.addEventListener('keydown', (e) => {
+      // Ctrl+Enter
+      document.querySelectorAll('.note-input-wrap textarea').forEach(ta => {
+        ta.addEventListener('keydown', (e) => {
           if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-            const btn = textarea.parentElement.querySelector('.note-submit');
-            btn.click();
+            ta.parentElement.querySelector('.note-submit').click();
           }
         });
       });
     }
 
-    function renderNote(topicId, note) {
-      return `
-        <div class="note-item">
-          <div class="note-meta">
-            <span class="note-author">${note.author}</span>
-            <span class="note-date">${formatDate(note.date)}</span>
-          </div>
-          <div class="note-content">${escapeHtml(note.content)}</div>
-          <button class="note-delete" data-topic="${topicId}" data-note="${note.id}" title="삭제">&times;</button>
-        </div>
-      `;
-    }
-
-    function escapeHtml(str) {
-      const div = document.createElement('div');
-      div.textContent = str;
-      return div.innerHTML;
-    }
-
-    // ---- Password Gate ----
+    // ---- Gate ----
     function initGate() {
       const gate = document.getElementById('gate');
       const app = document.getElementById('app');
@@ -928,7 +1415,6 @@
       const btn = document.getElementById('gateSubmit');
       const error = document.getElementById('gateError');
 
-      // Check session
       if (sessionStorage.getItem('bricks-auth') === 'ok') {
         gate.classList.add('hidden');
         app.classList.add('active');
@@ -947,43 +1433,35 @@
           setTimeout(() => error.textContent = '', 2000);
         }
       }
-
       btn.addEventListener('click', tryAuth);
-      input.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') tryAuth();
-      });
+      input.addEventListener('keydown', e => { if (e.key === 'Enter') tryAuth(); });
       input.focus();
     }
 
-    // ---- Author Select ----
+    // ---- Author ----
     function initAuthor() {
-      const select = document.getElementById('authorSelect');
+      const sel = document.getElementById('authorSelect');
       const data = loadData();
-      if (data.author) select.value = data.author;
-
-      select.addEventListener('change', () => {
+      if (data.author) sel.value = data.author;
+      sel.addEventListener('change', () => {
         const data = loadData();
-        data.author = select.value;
+        data.author = sel.value;
         saveData(data);
-        if (select.value) showToast(`${select.value}님으로 설정되었습니다.`);
+        if (sel.value) showToast(`${sel.value}님으로 설정되었습니다.`);
       });
     }
 
-    // ---- Export / Import ----
+    // ---- Export/Import ----
     function initTools() {
       document.getElementById('btnExport').addEventListener('click', () => {
         const data = loadData();
         const total = getTotalNoteCount();
-        if (total === 0) {
-          showToast('내보낼 의견이 없습니다.');
-          return;
-        }
+        if (total === 0) { showToast('내보낼 의견이 없습니다.'); return; }
         const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
-        const dateStr = new Date().toISOString().split('T')[0];
         a.href = url;
-        a.download = `bricks-notes-${data.author || 'unknown'}-${dateStr}.json`;
+        a.download = `bricks-notes-${data.author||'unknown'}-${new Date().toISOString().split('T')[0]}.json`;
         a.click();
         URL.revokeObjectURL(url);
         showToast(`${total}개 의견을 내보냈습니다.`);
@@ -996,34 +1474,28 @@
       document.getElementById('importInput').addEventListener('change', (e) => {
         const file = e.target.files[0];
         if (!file) return;
-
         const reader = new FileReader();
         reader.onload = (ev) => {
           try {
             const imported = JSON.parse(ev.target.result);
             const data = loadData();
             let count = 0;
-
             for (const [topic, notes] of Object.entries(imported.notes || {})) {
               if (!data.notes[topic]) data.notes[topic] = [];
               for (const note of notes) {
-                // Avoid duplicates by ID
                 if (!data.notes[topic].find(n => n.id === note.id)) {
                   data.notes[topic].push(note);
                   count++;
                 }
               }
             }
-
             saveData(data);
             renderTopics();
             showToast(`${count}개 의견을 가져왔습니다.`);
-          } catch {
-            showToast('파일 형식이 올바르지 않습니다.');
-          }
+          } catch { showToast('파일 형식이 올바르지 않습니다.'); }
         };
         reader.readAsText(file);
-        e.target.value = ''; // Reset input
+        e.target.value = '';
       });
     }
 
@@ -1033,6 +1505,9 @@
       initAuthor();
       initTools();
       renderTopics();
+      initHeroBricks();
+      initScrollReveal();
+      initNavDots();
     });
   </script>
 </body>
