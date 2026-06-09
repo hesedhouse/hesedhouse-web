@@ -3,28 +3,27 @@ import PageLayout from '../layouts/PageLayout.astro';
 import Hero from '../components/Hero.astro';
 import CTABanner from '../components/CTABanner.astro';
 import PortfolioCard from '../components/PortfolioCard.astro';
+import { getCollection } from 'astro:content';
+
+const items = (await getCollection('portfolio'))
+  .filter((p) => p.data.category === 'ai' && !p.data.draft)
+  .sort((a, b) => a.data.order - b.data.order);
 ---
 <PageLayout title="WORKS - AI SOLUTION" description="헤세드코퍼레이션의 AI 솔루션 프로젝트 포트폴리오">
   <Hero dark={false} eyebrow="WORKS" title="AI SOLUTION" subtitle="AI 솔루션 프로젝트 포트폴리오" />
   <section class="portfolio">
     <div class="portfolio-inner">
       <div class="portfolio-grid">
-        <PortfolioCard
-          category="ai"
-          tag="AI CONTENT PRODUCTION"
-          client="클라이밍장"
-          title="AI 홍보영상 제작"
-          description="AI 영상 생성 기술을 활용한 클라이밍장 홍보 영상. 촬영 없이 AI만으로 몰입감 있는 영상 콘텐츠를 완성하여 마케팅 비용을 대폭 절감."
-          year="2026"
-        />
-        <PortfolioCard
-          category="ai"
-          tag="AI WORKFLOW AUTOMATION"
-          client="HESEDCORP"
-          title="Hesed Dynasty — 자체 AI 조직 구축"
-          description="10개 부서를 커버하는 AI 에이전트 조직을 설계하고 운영. 기획부터 법무까지 실무에 투입하여 AI와 사람이 함께 일하는 업무 프로세스를 실증."
-          year="2026"
-        />
+        {items.map((item) => (
+          <PortfolioCard
+            category={item.data.category}
+            client={item.data.client}
+            title={item.data.title}
+            description={item.data.description || undefined}
+            year={item.data.year}
+            tag={item.data.tag || undefined}
+          />
+        ))}
       </div>
       <p class="coming-soon">More projects coming soon.</p>
     </div>
