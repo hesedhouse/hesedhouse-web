@@ -11,6 +11,32 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+// ── Slack 알림 ──
+// 토큰은 환경변수로 주입 (GitHub Actions: secrets.SLACK_BOT_TOKEN). 하드코딩 금지.
+const SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN;
+const SLACK_CHANNEL_BLOG = process.env.SLACK_CHANNEL_BLOG || "C0B21M1CQBX"; // #bot-blog-auto
+
+async function notifySlack(text, blocks) {
+  if (!SLACK_BOT_TOKEN) return; // 토큰 미설정 시 알림 생략 (블로그 생성은 계속)
+  try {
+    const body = {
+      channel: SLACK_CHANNEL_BLOG,
+      username: "옥수(총괄)",
+      icon_url: "https://files.slack.com/files-pri/T0B201QA7DJ-F0B2BG9KBA5/oksu.jpg",
+      ...(text && { text }),
+      ...(blocks && { blocks }),
+    };
+    await fetch("https://slack.com/api/chat.postMessage", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${SLACK_BOT_TOKEN}`,
+        "Content-Type": "application/json; charset=utf-8",
+      },
+      body: JSON.stringify(body),
+    });
+  } catch { /* Slack 실패해도 블로그 생성은 계속 진행 */ }
+}
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const BLOG_DIR = path.join(__dirname, "..", "src", "content", "blog");
 
@@ -264,10 +290,30 @@ async function main() {
   const rawText = await generatePost(author, existingPosts, { isKpop: isKpopDay });
   const filePath = parseAndSave(rawText, author);
 
+  // Slack 성공 알림
+  const titleMatch = rawText.match(/title:\s*"(.+)"/);
+  const postTitle = titleMatch?.[1] || "새 글";
+  await notifySlack(null, [
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: `*🏯 블로그 자동 포스팅 완료*\n\n` +
+          `*제목:* ${postTitle}\n` +
+          `*작가:* ${author.name} (${author.team})\n` +
+          `*카테고리:* ${isKpopDay ? "kpop-monthly" : author.category}\n` +
+          `*발행일:* ${todayStr()}\n` +
+          `*사이트:* <https://hesedhouse.net|hesedhouse.net>`,
+      },
+    },
+  ]);
+
   console.log(`\n🎉 완료! Netlify가 자동 배포합니다.`);
 }
 
-main().catch((err) => {
+main().catch(async (err) => {
   console.error("❌ 오류 발생:", err.message);
+  // Slack 실패 알림
+  await notifySlack(`❌ 블로그 자동 포스팅 실패\n오류: ${err.message}`);
   process.exit(1);
 });

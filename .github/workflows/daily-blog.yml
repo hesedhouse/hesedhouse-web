@@ -27,6 +27,7 @@ jobs:
       - name: Generate blog post
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         run: node scripts/generate-post.mjs
 
       - name: Check for new files
