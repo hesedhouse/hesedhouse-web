@@ -3,27 +3,26 @@ import PageLayout from '../layouts/PageLayout.astro';
 import Hero from '../components/Hero.astro';
 import CTABanner from '../components/CTABanner.astro';
 import PortfolioCard from '../components/PortfolioCard.astro';
-import { getCollection } from 'astro:content';
-
-const items = (await getCollection('portfolio'))
-  .filter((p) => p.data.category === 'ip' && !p.data.draft)
-  .sort((a, b) => a.data.order - b.data.order);
 ---
 <PageLayout title="WORKS - IP LICENSE & COLLABO" description="헤세드코퍼레이션의 IP 라이선스 및 콜라보레이션 프로젝트 포트폴리오">
   <Hero dark={false} eyebrow="WORKS" title="IP LICENSE & COLLABO" subtitle="IP 라이선스 및 콜라보레이션 프로젝트" />
   <section class="portfolio">
     <div class="portfolio-inner">
       <div class="portfolio-grid">
-        {items.map((item) => (
-          <PortfolioCard
-            category={item.data.category}
-            client={item.data.client}
-            title={item.data.title}
-            description={item.data.description || undefined}
-            year={item.data.year}
-            tag={item.data.tag || undefined}
-          />
-        ))}
+        <PortfolioCard
+          category="ip"
+          tag="IP COLLABORATION"
+          client="CJ ENM"
+          title="CJ ENM 콜라보레이션"
+          year="2026"
+        />
+        <PortfolioCard
+          category="ip"
+          tag="ORIGINAL IP"
+          client="HESEDCORP"
+          title="BRICKS 자체 IP"
+          year="2026"
+        />
       </div>
       <p class="coming-soon">More projects coming soon.</p>
     </div>

@@ -3,27 +3,24 @@ import PageLayout from '../layouts/PageLayout.astro';
 import Hero from '../components/Hero.astro';
 import CTABanner from '../components/CTABanner.astro';
 import PortfolioCard from '../components/PortfolioCard.astro';
-import { getCollection } from 'astro:content';
-
-const items = (await getCollection('portfolio'))
-  .filter((p) => p.data.category === 'merch' && !p.data.draft)
-  .sort((a, b) => a.data.order - b.data.order);
 ---
 <PageLayout title="WORKS - MERCHANDISING" description="헤세드코퍼레이션의 MD 상품 기획 및 제작 포트폴리오">
   <Hero dark={false} eyebrow="WORKS" title="MERCHANDISING" subtitle="MD 상품 기획 및 제작 포트폴리오" />
   <section class="portfolio">
     <div class="portfolio-inner">
       <div class="portfolio-grid">
-        {items.map((item) => (
-          <PortfolioCard
-            category={item.data.category}
-            client={item.data.client}
-            title={item.data.title}
-            description={item.data.description || undefined}
-            year={item.data.year}
-            tag={item.data.tag || undefined}
-          />
-        ))}
+        <PortfolioCard
+          category="merch"
+          client="Client A"
+          title="캐릭터 굿즈 기획 및 제작"
+          year="2026"
+        />
+        <PortfolioCard
+          category="merch"
+          client="Client B"
+          title="프리미엄 MD 패키지"
+          year="2026"
+        />
       </div>
       <p class="coming-soon">More projects coming soon.</p>
     </div>
