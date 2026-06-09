@@ -43,4 +43,18 @@ const blog = defineCollection({
   }),
 });
 
-export const collections = { dynasty, blog };
+const portfolio = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/portfolio' }),
+  schema: z.object({
+    title: z.string(),
+    category: z.enum(['ip', 'merch', 'popup', 'distribution', 'vs', 'ai']),
+    client: z.string(),
+    description: z.string().default(''),
+    year: z.string(),
+    tag: z.string().default(''),
+    order: z.number().default(0),
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { dynasty, blog, portfolio };
