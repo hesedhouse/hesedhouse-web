@@ -50,8 +50,8 @@ const AUTHORS = [
   { id: "baram",    name: "바람", team: "글로벌팀",     category: "k-content-global", topics: "K-캐릭터·K-POP의 글로벌 확장 현상, 해외 시장 반응 리포트, 국가별 트렌드, 글로벌 라이선싱 동향, 문화 수출 분석" },
   { id: "jupan",    name: "주판", team: "재무팀",       category: "fan-economy",      topics: "팬덤 경제학, 포토카드·한정판·콜라보 경제 현상 분석, 컬렉팅 문화, 크라우드펀딩 굿즈, 팬이 만드는 시장의 구조 (※회사 내부 원가·마진율·구체 단가 등 영업 비밀은 절대 공개 금지)" },
   { id: "songsa",   name: "송사", team: "법무팀",       category: "biz-legal",        topics: "AI 저작권·IP 보호 쟁점, 캐릭터 짝퉁 단속 현실, 해외 계약 함정, NFT 법적 논쟁, 표시광고법과 SNS 마케팅, 크리에이터 계약" },
-  { id: "indeok",   name: "인덕", team: "인사총무팀",   category: "ai-biz",           topics: "AI가 비즈니스를 바꾸는 현장, 실제 AI 도구 활용 사례, AI 시대 직업 변화, 스몰비즈니스 AI 도입기, AI 트렌드 해석" },
-  { id: "oksu",     name: "옥수", team: "AI 총괄 비서", category: "editorial",        topics: "IP 산업 전망, K-콘텐츠 위기와 기회, 소규모 기업 생존 전략, AI 시대 경영, 10년 후 산업 예측" },
+  { id: "indeok",   name: "인덕", team: "인사총무팀",   category: "ai-biz",           topics: "AI가 비즈니스를 바꾸는 현장, 실제 AI 도구 활용 사례, **AI 검색(GEO·생성형 검색) 시대의 마케팅 변화 — ChatGPT·Perplexity·Gemini·AI Overview 등에서 브랜드가 노출·인용되는 원리와 AI 검색최적화(GEO, Generative Engine Optimization) 트렌드**, 스몰비즈니스 AI 도입기, AI 트렌드 해석" },
+  { id: "oksu",     name: "옥수", team: "AI 총괄 비서", category: "editorial",        topics: "IP 산업 전망, K-콘텐츠 위기와 기회, 소규모 기업 생존 전략, AI 시대 경영, **검색의 미래 — SEO에서 GEO(AI 검색최적화)로 넘어가는 마케팅 패러다임, AI 검색이 바꾸는 기업의 브랜드 가시성 전략**, 10년 후 산업 예측" },
 ];
 
 // ── 오늘의 작가 결정 (날짜 기반 순환) ──
@@ -150,7 +150,7 @@ ${year}년 ${month}월 한국에서 열리는 K-POP 콘서트·팬미팅·페스
    - 마지막 안내문: "* 본 일정은 ${todayStr()} 기준 공개된 정보를 정리한 것이며, 변경될 수 있습니다. 최신 정보는 각 공연 공식 채널에서 확인해 주세요."
 5. 본문은 마크다운 **4,000~5,500자** 분량
 6. tags 5~6개 포함
-7. **회사(헤세드코퍼레이션) 내부 원가·마진·구체 단가 정보 노출 금지**
+7. **회사(헤세드코퍼레이션) 내부 자료·실제 수치(매출·원가·마진·단가·비공개 고객사명·계약·인사 정보 등) 노출 금지 — 공개 정보만 사용**
 
 ## 출력 형식 (이 형식 그대로 출력, ---마커--- 표기 정확히 지킬 것)
 ---SLUG---
@@ -193,7 +193,7 @@ ${existingTitles || "(없음)"}
 5. 데이터·사례·인용·비교표 등을 풍부하게 활용하여 전문성을 보여주세요
 6. **일반 독자도 재미있게 읽을 수 있는 톤** — 전문 용어는 풀어쓰되, 깊이는 유지
 7. 헤세드코퍼레이션의 업계 경험에서 나오는 관점을 자연스럽게 녹여주세요
-8. **회사 내부 원가·마진율·구체 단가·매입가 등 영업 비밀은 절대 공개 금지** (필요 시 비율·범위·구조만 언급)
+8. **회사 내부 자료·실제 수치는 절대 공개 금지** — 헤세드코퍼레이션의 실제 매출·영업이익·원가·마진율·단가·매입가, 비공개 고객사명, 계약 조건, 인사·급여 정보 등 비공개 내부 정보는 일절 언급하지 마세요. 일반 시장 데이터·공개된 사례·공개 정보만 사용하고, 자사 관련은 비율·범위·구조 수준으로만 언급합니다.
 9. tags 4~6개
 10. slug(파일명용)는 영문 kebab-case로 제안
 
@@ -211,7 +211,7 @@ tags: ["tag1", "tag2", "tag3", "tag4", "tag5"]
   }
 
   const response = await client.messages.create({
-    model: "claude-sonnet-4-20250514",
+    model: "claude-opus-4-8",
     max_tokens: 8192,
     ...(tools ? { tools } : {}),
     messages: [{ role: "user", content: prompt }],
@@ -224,6 +224,27 @@ tags: ["tag1", "tag2", "tag3", "tag4", "tag5"]
     throw new Error("응답에 text 블록이 없음");
   }
   return textBlocks.map((b) => b.text).join("\n");
+}
+
+// ── 내부정보 유출 가드 (완전 자동 발행이라 코드가 최종 방어선) ──
+// 1차 방어 = 입력 격리(프롬프트엔 공개 정보만 투입). 이 스캔은 2차 백스톱.
+// 오탐을 줄이려 '내부 유출 신호가 강한' 패턴(실제 금액·마진·영업비밀)만 차단한다.
+const INTERNAL_LEAK_PATTERNS = [
+  /원가\s*[:은는]?\s*[0-9][0-9,]*\s*원/,
+  /매입가\s*[:은는]?\s*[0-9][0-9,]*\s*원/,
+  /(마진율|마진)\s*[:은는]?\s*[0-9]+\s*%/,
+  /당사\s*(매출|영업이익|순이익)[^。\n]{0,20}[0-9][0-9,]*\s*(원|억|만)/,
+  /헤세드[^。\n]{0,30}(매출|영업이익|순이익)[^。\n]{0,20}[0-9][0-9,]*\s*(원|억|만)/,
+  /영업\s*비밀/,
+  /내부\s*(자료|문건|문서)\s*(에 따르면|기준|상)/,
+];
+function assertNoInternalData(text) {
+  for (const re of INTERNAL_LEAK_PATTERNS) {
+    const m = text.match(re);
+    if (m) {
+      throw new Error(`내부정보 유출 의심 패턴 감지 → 발행 차단: "${m[0]}"`);
+    }
+  }
 }
 
 // ── 응답 파싱 & 파일 저장 ──
@@ -255,6 +276,8 @@ ${body}
   if (fs.existsSync(filePath)) {
     throw new Error(`파일 이미 존재: ${filePath}`);
   }
+
+  assertNoInternalData(fileContent);   // 내부정보 유출 백스톱 — 걸리면 발행 중단(Slack 알림)
 
   fs.writeFileSync(filePath, fileContent, "utf-8");
   console.log(`✅ 새 블로그 글 생성 완료: ${slug}.md`);
