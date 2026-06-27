@@ -247,6 +247,19 @@ function assertNoInternalData(text) {
   }
 }
 
+// ── frontmatter 안전 인용 (모델이 title/description에 큰따옴표 넣어도 YAML/Astro 빌드 안 깨지게) ──
+// 빌드가 깨지면 그날 글뿐 아니라 사이트 전체 배포가 막히므로, 항상 유효한 더블쿼트 스칼라로 재인용한다.
+function sanitizeFrontmatter(fm) {
+  return fm.split("\n").map((line) => {
+    const m = line.match(/^(title|description):\s*(.*)$/);
+    if (!m) return line;                       // title/description 외 라인(category·author·tags)은 그대로
+    let val = m[2].trim();
+    if (val.length >= 2 && val.startsWith('"') && val.endsWith('"')) val = val.slice(1, -1);
+    const esc = val.replace(/\\/g, "\\\\").replace(/"/g, '\\"');   // YAML 더블쿼트 이스케이프
+    return `${m[1]}: "${esc}"`;
+  }).join("\n");
+}
+
 // ── 응답 파싱 & 파일 저장 ──
 function parseAndSave(rawText, author) {
   const slugMatch = rawText.match(/---SLUG---\s*\n(.+)/);
@@ -258,7 +271,7 @@ function parseAndSave(rawText, author) {
   }
 
   const slug = slugMatch[1].trim();
-  const frontmatter = frontmatterMatch[1].trim();
+  const frontmatter = sanitizeFrontmatter(frontmatterMatch[1].trim());
   const body = bodyMatch[1].trim();
   const today = todayStr();
 
