@@ -124,6 +124,134 @@ const services = [
     </div>
   </section>
 
+  <!-- ══════════════════════════════════════════
+       INTERACTIVE ORBITAL — Service Ecosystem
+       ══════════════════════════════════════════ -->
+  <section class="orbital-section" id="orbitalSection">
+    <div class="orbital-bg"></div>
+
+    <div class="orbital-header">
+      <p class="orbital-eyebrow">ECOSYSTEM</p>
+      <h2 class="orbital-title">비즈니스의 모든 궤도</h2>
+      <p class="orbital-desc">IP 라이선스부터 AI 솔루션까지, 7개 서비스가 하나의 생태계로 연결됩니다</p>
+    </div>
+
+    <div class="orbital-stage" id="orbitalStage">
+      <!-- SVG orbit rings -->
+      <svg class="orbit-svg" viewBox="0 0 700 700" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="hubGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#f39800" stop-opacity="0.15"/>
+            <stop offset="100%" stop-color="#f39800" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <!-- Outer ring -->
+        <circle cx="350" cy="350" r="310" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1" stroke-dasharray="4 6"/>
+        <!-- Inner ring -->
+        <circle cx="350" cy="350" r="190" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1" stroke-dasharray="4 6"/>
+        <!-- Hub glow -->
+        <circle cx="350" cy="350" r="120" fill="url(#hubGlow)"/>
+        <!-- Connection lines (drawn by JS) -->
+        <g id="orbitConnections"></g>
+      </svg>
+
+      <!-- Central hub -->
+      <div class="orbital-hub" id="orbitalHub">
+        <div class="hub-pulse"></div>
+        <div class="hub-inner">
+          <span class="hub-logo">HESED</span>
+          <span class="hub-sub">CORP.</span>
+        </div>
+      </div>
+
+      <!-- Orbit nodes — inner ring (3) -->
+      <div class="orbit-ring-group" id="innerRing" data-radius="190" data-speed="0.0003">
+        <a href="/iplicensecollabo" class="orbital-node" data-index="0" data-color="#f39800">
+          <div class="node-dot"></div>
+          <div class="node-card">
+            <span class="node-num">01</span>
+            <span class="node-title">IP LICENSE</span>
+            <span class="node-desc">IP 라이선스 확보부터 브랜드 콜라보레이션까지</span>
+          </div>
+        </a>
+        <a href="/merchandising" class="orbital-node" data-index="1" data-color="#64c8ff">
+          <div class="node-dot"></div>
+          <div class="node-card">
+            <span class="node-num">02</span>
+            <span class="node-title">MERCHANDISING</span>
+            <span class="node-desc">트렌디한 굿즈와 MD 상품을 기획·디자인·생산</span>
+          </div>
+        </a>
+        <a href="/distribution" class="orbital-node" data-index="2" data-color="#a78bfa">
+          <div class="node-dot"></div>
+          <div class="node-card">
+            <span class="node-num">03</span>
+            <span class="node-title">DISTRIBUTION</span>
+            <span class="node-desc">온·오프라인 유통 채널로 글로벌 마켓 진출</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Orbit nodes — outer ring (4) -->
+      <div class="orbit-ring-group" id="outerRing" data-radius="310" data-speed="-0.00018">
+        <a href="/popupoperation" class="orbital-node" data-index="0" data-color="#34d399">
+          <div class="node-dot"></div>
+          <div class="node-card">
+            <span class="node-num">04</span>
+            <span class="node-title">POP-UP</span>
+            <span class="node-desc">팝업스토어·전시·이벤트 기획부터 운영까지</span>
+          </div>
+        </a>
+        <a href="/visualstudio" class="orbital-node" data-index="1" data-color="#f472b6">
+          <div class="node-dot"></div>
+          <div class="node-card">
+            <span class="node-num">05</span>
+            <span class="node-title">VISUAL</span>
+            <span class="node-desc">브랜드 아이덴티티를 완성하는 비주얼 콘텐츠</span>
+          </div>
+        </a>
+        <a href="/ai-solution" class="orbital-node" data-index="2" data-color="#f39800">
+          <div class="node-dot"></div>
+          <div class="node-card">
+            <span class="node-num">06</span>
+            <span class="node-title">AI SOLUTION</span>
+            <span class="node-desc">AI로 업무를 설계하고 비즈니스를 자동화</span>
+          </div>
+        </a>
+        <a href="/investment" class="orbital-node" data-index="3" data-color="#fbbf24">
+          <div class="node-dot"></div>
+          <div class="node-card">
+            <span class="node-num">07</span>
+            <span class="node-title">INVESTMENT</span>
+            <span class="node-desc">IP·콘텐츠·테크 분야의 전략적 투자와 사업개발</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Drag hint -->
+      <div class="orbital-hint" id="orbitalHint">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 2v4m0 12v4M2 12h4m12 0h4M6.34 6.34l2.83 2.83m5.66 5.66l2.83 2.83M17.66 6.34l-2.83 2.83m-5.66 5.66l-2.83 2.83"/>
+        </svg>
+        <span>드래그하여 회전</span>
+      </div>
+    </div>
+
+    <!-- Mobile fallback list -->
+    <div class="orbital-mobile-list">
+      {services.map((s, i) => (
+        <a href={s.href} class="orbital-mobile-item">
+          <span class="mobile-item-num">{s.eyebrow}</span>
+          <div class="mobile-item-text">
+            <span class="mobile-item-title">{s.title}</span>
+            <span class="mobile-item-desc">{s.description}</span>
+          </div>
+          <span class="mobile-item-arrow">→</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
   <section class="services-section">
     <div class="services-inner">
       <h2 class="services-title">Services</h2>
@@ -365,7 +493,203 @@ const services = [
     });
   })();
 
-  // ── 4. Count-up numbers ──
+  // ── 4. Interactive Orbital ──
+  (function initOrbital() {
+    const stage = document.getElementById('orbitalStage');
+    if (!stage) return;
+
+    const innerRing = document.getElementById('innerRing');
+    const outerRing = document.getElementById('outerRing');
+    const connectionsGroup = document.getElementById('orbitConnections');
+    const hint = document.getElementById('orbitalHint');
+    if (!innerRing || !outerRing) return;
+
+    const rings = [
+      { el: innerRing, angle: 0, speed: 0.0003, radius: 190 },
+      { el: outerRing, angle: Math.PI * 0.3, speed: -0.00018, radius: 310 },
+    ];
+
+    let isDragging = false;
+    let dragStartAngle = 0;
+    let dragStartMouse = 0;
+    let activeRingIdx = -1;
+    let hoveredNode: HTMLElement | null = null;
+    let paused = false;
+    let raf: number;
+    let lastTime = 0;
+    let hintHidden = false;
+
+    const CENTER = 350; // SVG viewbox center
+
+    function positionNodes(ring: typeof rings[0], time: number) {
+      const nodes = ring.el.querySelectorAll('.orbital-node');
+      const count = nodes.length;
+      const angleStep = (Math.PI * 2) / count;
+
+      nodes.forEach((node, i) => {
+        const el = node as HTMLElement;
+        const angle = ring.angle + i * angleStep;
+        const x = Math.cos(angle) * ring.radius;
+        const y = Math.sin(angle) * ring.radius;
+
+        el.style.transform = `translate(${x}px, ${y}px)`;
+        el.dataset.currentAngle = String(angle);
+
+        // Draw connection line
+        if (connectionsGroup) {
+          const lineId = `conn-${ring.el.id}-${i}`;
+          let line = connectionsGroup.querySelector(`#${lineId}`) as SVGLineElement | null;
+          if (!line) {
+            line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.id = lineId;
+            line.setAttribute('stroke-width', '0.5');
+            connectionsGroup.appendChild(line);
+          }
+          const nx = CENTER + x;
+          const ny = CENTER + y;
+          line.setAttribute('x1', String(CENTER));
+          line.setAttribute('y1', String(CENTER));
+          line.setAttribute('x2', String(nx));
+          line.setAttribute('y2', String(ny));
+
+          const isHovered = el === hoveredNode;
+          const color = el.dataset.color || '#f39800';
+          line.setAttribute('stroke', isHovered ? color : 'rgba(255,255,255,0.04)');
+          line.style.transition = 'stroke 0.4s ease';
+        }
+      });
+    }
+
+    function animate(time: number) {
+      if (!lastTime) lastTime = time;
+      const dt = time - lastTime;
+      lastTime = time;
+
+      if (!paused && !isDragging) {
+        rings.forEach(ring => {
+          ring.angle += ring.speed * dt;
+        });
+      }
+
+      rings.forEach(ring => positionNodes(ring, time));
+      raf = requestAnimationFrame(animate);
+    }
+
+    // Drag to rotate
+    stage.addEventListener('mousedown', (e) => {
+      if ((e.target as HTMLElement).closest('.orbital-node')) return;
+      isDragging = true;
+      dragStartMouse = Math.atan2(
+        e.clientY - stage.getBoundingClientRect().top - stage.offsetHeight / 2,
+        e.clientX - stage.getBoundingClientRect().left - stage.offsetWidth / 2
+      );
+      // Rotate both rings together
+      activeRingIdx = -1;
+      rings.forEach((r, i) => { (r as any)._dragStart = r.angle; });
+      stage.style.cursor = 'grabbing';
+
+      if (!hintHidden && hint) {
+        hint.style.opacity = '0';
+        hintHidden = true;
+      }
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      const rect = stage.getBoundingClientRect();
+      const currentAngle = Math.atan2(
+        e.clientY - rect.top - stage.offsetHeight / 2,
+        e.clientX - rect.left - stage.offsetWidth / 2
+      );
+      const delta = currentAngle - dragStartMouse;
+      rings.forEach(r => {
+        r.angle = (r as any)._dragStart + delta * (r.speed > 0 ? 1 : -1);
+      });
+    });
+
+    window.addEventListener('mouseup', () => {
+      if (isDragging) {
+        isDragging = false;
+        stage.style.cursor = '';
+      }
+    });
+
+    // Touch drag
+    let touchStartAngle = 0;
+    stage.addEventListener('touchstart', (e) => {
+      if ((e.target as HTMLElement).closest('.orbital-node')) return;
+      const touch = e.touches[0];
+      const rect = stage.getBoundingClientRect();
+      touchStartAngle = Math.atan2(
+        touch.clientY - rect.top - stage.offsetHeight / 2,
+        touch.clientX - rect.left - stage.offsetWidth / 2
+      );
+      rings.forEach(r => { (r as any)._dragStart = r.angle; });
+      isDragging = true;
+      if (!hintHidden && hint) { hint.style.opacity = '0'; hintHidden = true; }
+    }, { passive: true });
+
+    stage.addEventListener('touchmove', (e) => {
+      if (!isDragging) return;
+      const touch = e.touches[0];
+      const rect = stage.getBoundingClientRect();
+      const currentAngle = Math.atan2(
+        touch.clientY - rect.top - stage.offsetHeight / 2,
+        touch.clientX - rect.left - stage.offsetWidth / 2
+      );
+      const delta = currentAngle - touchStartAngle;
+      rings.forEach(r => {
+        r.angle = (r as any)._dragStart + delta * (r.speed > 0 ? 1 : -1);
+      });
+    }, { passive: true });
+
+    stage.addEventListener('touchend', () => { isDragging = false; });
+
+    // Hover effects on nodes
+    const allNodes = stage.querySelectorAll('.orbital-node');
+    allNodes.forEach((node) => {
+      const el = node as HTMLElement;
+      el.addEventListener('mouseenter', () => {
+        paused = true;
+        hoveredNode = el;
+        el.classList.add('is-active');
+        // Dim other nodes
+        allNodes.forEach(n => {
+          if (n !== el) (n as HTMLElement).classList.add('is-dimmed');
+        });
+      });
+      el.addEventListener('mouseleave', () => {
+        paused = false;
+        hoveredNode = null;
+        el.classList.remove('is-active');
+        allNodes.forEach(n => (n as HTMLElement).classList.remove('is-dimmed'));
+      });
+    });
+
+    // Scroll-triggered entry animation
+    const section = document.getElementById('orbitalSection');
+    if (section) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            section.classList.add('orbital-visible');
+            observer.disconnect();
+          }
+        });
+      }, { threshold: 0.2 });
+      observer.observe(section);
+    }
+
+    // Start
+    raf = requestAnimationFrame(animate);
+
+    // Cleanup
+    document.addEventListener('astro:before-swap', () => {
+      cancelAnimationFrame(raf);
+    });
+  })();
+
+  // ── 5. Count-up numbers ──
   (function initCountUp() {
     const counters = document.querySelectorAll('.count-up');
     let started = false;
@@ -716,6 +1040,388 @@ const services = [
     }
     .btn-pulse { animation: none; }
     .scroll-line { animation: none; opacity: 0.4; }
+  }
+
+  /* ============================================
+     INTERACTIVE ORBITAL
+     ============================================ */
+  .orbital-section {
+    position: relative;
+    padding: 80px 20px 100px;
+    overflow: hidden;
+    background: #000a14;
+  }
+
+  .orbital-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 40% at 50% 50%, rgba(243, 152, 0, 0.04) 0%, transparent 60%),
+      radial-gradient(ellipse 80% 50% at 30% 60%, rgba(100, 200, 255, 0.03) 0%, transparent 50%),
+      linear-gradient(180deg, #000a14 0%, #001020 50%, #000a14 100%);
+    z-index: 0;
+  }
+
+  .orbital-header {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    margin-bottom: 48px;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .orbital-visible .orbital-header {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .orbital-eyebrow {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--hc-orange);
+    margin-bottom: 12px;
+  }
+
+  .orbital-title {
+    font-family: var(--font-display);
+    font-size: 2.6rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -1px;
+    margin-bottom: 14px;
+  }
+
+  .orbital-desc {
+    font-family: var(--font-text);
+    font-size: 1.05rem;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.6;
+  }
+
+  /* ── Stage ── */
+  .orbital-stage {
+    position: relative;
+    z-index: 2;
+    width: 700px;
+    height: 700px;
+    max-width: 90vw;
+    max-height: 90vw;
+    margin: 0 auto;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+    opacity: 0;
+    transform: scale(0.85);
+    transition: opacity 1s ease 0.2s, transform 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
+  }
+  .orbital-visible .orbital-stage {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .orbit-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+  }
+
+  /* ── Hub ── */
+  .orbital-hub {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  .hub-pulse {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100px;
+    height: 100px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(243, 152, 0, 0.12) 0%, transparent 70%);
+    animation: hubPulse 3s ease-in-out infinite;
+  }
+  @keyframes hubPulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+    50% { transform: translate(-50%, -50%) scale(1.6); opacity: 0; }
+  }
+
+  .hub-inner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .hub-logo {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 3px;
+    line-height: 1;
+  }
+
+  .hub-sub {
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--hc-orange);
+    letter-spacing: 5px;
+    line-height: 1.4;
+  }
+
+  /* ── Orbit ring groups ── */
+  .orbit-ring-group {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    z-index: 2;
+  }
+
+  /* ── Nodes ── */
+  .orbital-node {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    will-change: transform;
+    transition: opacity 0.4s ease;
+  }
+
+  .orbital-node.is-dimmed {
+    opacity: 0.2;
+  }
+
+  .node-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--hc-orange);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 12px rgba(243, 152, 0, 0.3);
+    flex-shrink: 0;
+    transition: all 0.35s ease;
+    position: relative;
+  }
+  .orbital-node[data-color="#64c8ff"] .node-dot {
+    background: #64c8ff;
+    box-shadow: 0 0 12px rgba(100, 200, 255, 0.3);
+  }
+  .orbital-node[data-color="#a78bfa"] .node-dot {
+    background: #a78bfa;
+    box-shadow: 0 0 12px rgba(167, 139, 250, 0.3);
+  }
+  .orbital-node[data-color="#34d399"] .node-dot {
+    background: #34d399;
+    box-shadow: 0 0 12px rgba(52, 211, 153, 0.3);
+  }
+  .orbital-node[data-color="#f472b6"] .node-dot {
+    background: #f472b6;
+    box-shadow: 0 0 12px rgba(244, 114, 182, 0.3);
+  }
+  .orbital-node[data-color="#fbbf24"] .node-dot {
+    background: #fbbf24;
+    box-shadow: 0 0 12px rgba(251, 191, 36, 0.3);
+  }
+
+  .orbital-node.is-active .node-dot {
+    width: 18px;
+    height: 18px;
+    box-shadow: 0 0 24px rgba(243, 152, 0, 0.5);
+  }
+  .orbital-node.is-active[data-color="#64c8ff"] .node-dot { box-shadow: 0 0 24px rgba(100, 200, 255, 0.5); }
+  .orbital-node.is-active[data-color="#a78bfa"] .node-dot { box-shadow: 0 0 24px rgba(167, 139, 250, 0.5); }
+  .orbital-node.is-active[data-color="#34d399"] .node-dot { box-shadow: 0 0 24px rgba(52, 211, 153, 0.5); }
+  .orbital-node.is-active[data-color="#f472b6"] .node-dot { box-shadow: 0 0 24px rgba(244, 114, 182, 0.5); }
+  .orbital-node.is-active[data-color="#fbbf24"] .node-dot { box-shadow: 0 0 24px rgba(251, 191, 36, 0.5); }
+
+  /* ── Node card (tooltip) ── */
+  .node-card {
+    position: absolute;
+    left: 24px;
+    top: 50%;
+    transform: translateY(-50%) translateX(-6px);
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 12px 16px;
+    min-width: 180px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    white-space: nowrap;
+  }
+
+  .orbital-node.is-active .node-card {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+    pointer-events: auto;
+  }
+
+  .node-num {
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--hc-orange);
+    letter-spacing: 2px;
+  }
+
+  .node-title {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 1px;
+  }
+
+  .node-desc {
+    font-family: var(--font-text);
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    white-space: normal;
+    max-width: 200px;
+    line-height: 1.5;
+  }
+
+  /* ── Drag hint ── */
+  .orbital-hint {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-text);
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.25);
+    transition: opacity 0.5s ease;
+    z-index: 5;
+  }
+  .orbital-hint svg {
+    color: rgba(255, 255, 255, 0.25);
+    animation: hintRotate 4s ease-in-out infinite;
+  }
+  @keyframes hintRotate {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(20deg); }
+    75% { transform: rotate(-20deg); }
+  }
+
+  /* ── Mobile fallback ── */
+  .orbital-mobile-list {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    .orbital-stage {
+      display: none;
+    }
+    .orbital-hint {
+      display: none;
+    }
+    .orbital-mobile-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      max-width: 540px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease 0.3s, transform 0.6s ease 0.3s;
+    }
+    .orbital-visible .orbital-mobile-list {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .orbital-mobile-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 18px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      text-decoration: none;
+      transition: background 0.25s ease;
+    }
+    .orbital-mobile-item:hover,
+    .orbital-mobile-item:active {
+      background: rgba(255, 255, 255, 0.08);
+    }
+    .mobile-item-num {
+      font-family: var(--font-display);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--hc-orange);
+      letter-spacing: 1px;
+      flex-shrink: 0;
+      width: 24px;
+    }
+    .mobile-item-text {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .mobile-item-title {
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.5px;
+    }
+    .mobile-item-desc {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.4);
+      line-height: 1.4;
+    }
+    .mobile-item-arrow {
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.2);
+      flex-shrink: 0;
+    }
+
+    .orbital-title {
+      font-size: 2rem;
+    }
+    .orbital-desc {
+      font-size: 0.95rem;
+    }
+  }
+
+  /* ── Reduced motion ── */
+  @media (prefers-reduced-motion: reduce) {
+    .hub-pulse { animation: none; opacity: 0.3; }
+    .orbital-hint svg { animation: none; }
+    .orbit-ring-group .orbital-node {
+      transition: none !important;
+    }
   }
 
   /* ── Services section ── */
