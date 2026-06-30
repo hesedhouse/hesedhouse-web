@@ -168,14 +168,16 @@ const services = [
       <div class="orbit-ring-group" id="innerRing" data-radius="190" data-speed="0.0003">
         <a href="/iplicensecollabo" class="orbital-node" data-index="0" data-color="#f39800">
           <div class="node-dot"></div>
+          <span class="node-label">IP LICENSE</span>
           <div class="node-card">
             <span class="node-num">01</span>
-            <span class="node-title">IP LICENSE</span>
+            <span class="node-title">IP LICENSE & COLLABO</span>
             <span class="node-desc">IP 라이선스 확보부터 브랜드 콜라보레이션까지</span>
           </div>
         </a>
         <a href="/merchandising" class="orbital-node" data-index="1" data-color="#64c8ff">
           <div class="node-dot"></div>
+          <span class="node-label">MERCH</span>
           <div class="node-card">
             <span class="node-num">02</span>
             <span class="node-title">MERCHANDISING</span>
@@ -184,6 +186,7 @@ const services = [
         </a>
         <a href="/distribution" class="orbital-node" data-index="2" data-color="#a78bfa">
           <div class="node-dot"></div>
+          <span class="node-label">DISTRIBUTION</span>
           <div class="node-card">
             <span class="node-num">03</span>
             <span class="node-title">DISTRIBUTION</span>
@@ -196,22 +199,25 @@ const services = [
       <div class="orbit-ring-group" id="outerRing" data-radius="310" data-speed="-0.00018">
         <a href="/popupoperation" class="orbital-node" data-index="0" data-color="#34d399">
           <div class="node-dot"></div>
+          <span class="node-label">POP-UP</span>
           <div class="node-card">
             <span class="node-num">04</span>
-            <span class="node-title">POP-UP</span>
+            <span class="node-title">POP-UP OPERATION</span>
             <span class="node-desc">팝업스토어·전시·이벤트 기획부터 운영까지</span>
           </div>
         </a>
         <a href="/visualstudio" class="orbital-node" data-index="1" data-color="#f472b6">
           <div class="node-dot"></div>
+          <span class="node-label">VISUAL</span>
           <div class="node-card">
             <span class="node-num">05</span>
-            <span class="node-title">VISUAL</span>
+            <span class="node-title">VISUAL STUDIO</span>
             <span class="node-desc">브랜드 아이덴티티를 완성하는 비주얼 콘텐츠</span>
           </div>
         </a>
         <a href="/ai-solution" class="orbital-node" data-index="2" data-color="#f39800">
           <div class="node-dot"></div>
+          <span class="node-label">AI</span>
           <div class="node-card">
             <span class="node-num">06</span>
             <span class="node-title">AI SOLUTION</span>
@@ -220,9 +226,10 @@ const services = [
         </a>
         <a href="/investment" class="orbital-node" data-index="3" data-color="#fbbf24">
           <div class="node-dot"></div>
+          <span class="node-label">INVEST</span>
           <div class="node-card">
             <span class="node-num">07</span>
-            <span class="node-title">INVESTMENT</span>
+            <span class="node-title">INVESTMENT & BIZ DEV</span>
             <span class="node-desc">IP·콘텐츠·테크 분야의 전략적 투자와 사업개발</span>
           </div>
         </a>
@@ -1253,7 +1260,29 @@ const services = [
   .orbital-node.is-active[data-color="#f472b6"] .node-dot { box-shadow: 0 0 24px rgba(244, 114, 182, 0.5); }
   .orbital-node.is-active[data-color="#fbbf24"] .node-dot { box-shadow: 0 0 24px rgba(251, 191, 36, 0.5); }
 
-  /* ── Node card (tooltip) ── */
+  /* ── Node label (always visible) ── */
+  .node-label {
+    position: absolute;
+    left: 22px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.6);
+    letter-spacing: 1px;
+    white-space: nowrap;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .orbital-node.is-active .node-label {
+    opacity: 0;
+  }
+  .orbital-node.is-dimmed .node-label {
+    opacity: 0.2;
+  }
+
+  /* ── Node card (tooltip on hover) ── */
   .node-card {
     position: absolute;
     left: 24px;
