@@ -5,5 +5,4 @@ description: "클라이밍 스튜디오 HIGHFLEX의 웹사이트(highflexclimbin
 tag: WEB & SNS OPERATION
 order: 1
 draft: false
-image: /portfolio/highflex-online.jpg
 ---

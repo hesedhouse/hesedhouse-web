@@ -5,5 +5,4 @@ description: "롯데면세점 내 팝업 공간에서 MAMA × PEACEMAMAONE 콜�
 tag: POP-UP OPERATION
 order: 2
 draft: false
-image: /portfolio/peacemamaone-popup.jpg
 ---

@@ -5,5 +5,4 @@ description: "롯데면세점 명동 본점의 K-POP 굿즈 매장을 상품 구
 tag: STORE OPERATION
 order: 1
 draft: false
-image: /portfolio/lotte-dfs-kpop-store.jpg
 ---

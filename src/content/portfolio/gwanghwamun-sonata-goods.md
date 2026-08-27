@@ -5,5 +5,4 @@ description: "뮤지컬 공연 굿즈를 기획·제작했습니다. 공연의 �
 tag: MUSICAL GOODS
 order: 3
 draft: false
-image: /portfolio/gwanghwamun-sonata-goods.jpg
 ---

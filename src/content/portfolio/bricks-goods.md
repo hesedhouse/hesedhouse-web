@@ -5,5 +5,4 @@ description: "헤세드의 자체 브랜드 BRICKS의 티셔츠, 후디, 머그,
 tag: ORIGINAL IP GOODS
 order: 2
 draft: false
-image: /portfolio/bricks-goods.jpg
 ---

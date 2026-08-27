@@ -5,5 +5,4 @@ description: "인기 모바일 게임 IP의 캐릭터를 굿즈로. 기획부터
 tag: GAME IP GOODS
 order: 1
 draft: false
-image: /portfolio/infinite-stairs-goods.jpg
 ---

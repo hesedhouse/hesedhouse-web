@@ -5,5 +5,4 @@ description: "tvN 예능 팝업스토어의 공간 기획과 인테리어 시공
 tag: POP-UP STORE
 order: 3
 draft: false
-image: /portfolio/killit-popup.jpg
 ---
