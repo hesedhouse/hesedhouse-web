@@ -15,5 +15,4 @@ export const works = [
   { label: "POP-UP OPERATION", href: "/works-popup" },
   { label: "VISUAL STUDIO", href: "/works-vs" },
   { label: "AI SOLUTION", href: "/works-ai" },
-  { label: "INVESTMENT & BIZ DEV", href: "/works-investment" },
 ];

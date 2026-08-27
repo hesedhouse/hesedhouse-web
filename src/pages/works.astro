@@ -1,0 +1,62 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import Hero from '../components/Hero.astro';
+import CTABanner from '../components/CTABanner.astro';
+import PortfolioCard from '../components/PortfolioCard.astro';
+import { getCollection } from 'astro:content';
+
+const sections = [
+  { key: 'ip', label: 'IP LICENSE & COLLABO', href: '/works-ipco' },
+  { key: 'merch', label: 'MERCHANDISING', href: '/works-merch' },
+  { key: 'popup', label: 'POP-UP OPERATION', href: '/works-popup' },
+  { key: 'distribution', label: 'DISTRIBUTION', href: '/works-distribution' },
+  { key: 'vs', label: 'VISUAL STUDIO', href: '/works-vs' },
+  { key: 'ai', label: 'AI SOLUTION', href: '/works-ai' },
+];
+const all = (await getCollection('portfolio')).filter((p) => !p.data.draft);
+const byCat = (key: string) => all.filter((p) => p.data.category === key).sort((a, b) => a.data.order - b.data.order);
+---
+<PageLayout title="WORKS" description="헤세드코퍼레이션 포트폴리오 — IP 라이선스, 굿즈 제작, 팝업 운영, 유통, 비주얼, AI 솔루션">
+  <Hero dark={false} eyebrow="WORKS" title="PORTFOLIO" subtitle="헤세드코퍼레이션이 만든 것들" />
+  <section class="portfolio">
+    <div class="portfolio-inner">
+      {sections.map((s) => {
+        const items = byCat(s.key);
+        if (!items.length) return null;
+        return (
+          <div class="cat-block">
+            <div class="cat-head">
+              <h2 class="cat-title">{s.label}</h2>
+              <a class="cat-more" href={s.href}>VIEW ALL →</a>
+            </div>
+            <div class="portfolio-grid">
+              {items.map((item) => (
+                <PortfolioCard
+                  category={item.data.category}
+                  client={item.data.client}
+                  title={item.data.title}
+                  year={item.data.year}
+                  tag={item.data.tag || undefined}
+                  image={item.data.image}
+                />
+              ))}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </section>
+  <CTABanner title="프로젝트를 함께 만들어요" buttonText="CONTACT US" buttonHref="/contact" />
+</PageLayout>
+<style>
+  .portfolio { padding: 72px 20px; }
+  .portfolio-inner { max-width: var(--content-max); margin: 0 auto; }
+  .cat-block { margin-bottom: 72px; }
+  .cat-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid rgba(0,0,0,0.08); padding-bottom: 12px; }
+  .cat-title { font-size: 14px; font-weight: 700; letter-spacing: 2px; color: var(--hc-navy); margin: 0; }
+  .cat-more { font-size: 12px; font-weight: 600; letter-spacing: 1px; color: var(--hc-orange); text-decoration: none; }
+  .cat-more:hover { text-decoration: underline; }
+  .portfolio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  @media (max-width: 1024px) { .portfolio-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 640px) { .portfolio-grid { grid-template-columns: 1fr; } }
+</style>
