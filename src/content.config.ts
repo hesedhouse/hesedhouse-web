@@ -48,12 +48,13 @@ const portfolio = defineCollection({
   schema: z.object({
     title: z.string(),
     category: z.enum(['ip', 'merch', 'popup', 'distribution', 'vs', 'ai']),
-    client: z.string(),
+    client: z.string().default(''),
     description: z.string().default(''),
-    year: z.string(),
+    year: z.string().default(''),
     tag: z.string().default(''),
     order: z.number().default(0),
     draft: z.boolean().default(false),
+    image: z.string().optional(),
   }),
 });
 
