@@ -31,13 +31,11 @@ const categoryLabels: Record<string, string> = {
         <div class="thumb-deco-2"></div>
       </>
     )}
-    <span class="thumb-label">{categoryLabels[category]}</span>
-  </div>
-  <div class="port-info">
-    {tag && <span class="port-tag">{tag}</span>}
-    {client && <span class="port-client">{client}</span>}
-    <h3 class="port-title">{title}</h3>
-    {year && <span class="port-year">{year}</span>}
+    <div class="tile-text">
+      <span class="thumb-label">{tag || categoryLabels[category]}</span>
+      <h3 class="tile-title">{title}</h3>
+      {client && <span class="tile-client">{client}</span>}
+    </div>
   </div>
 </div>
 
@@ -58,13 +56,27 @@ const categoryLabels: Record<string, string> = {
   /* ── Thumbnail ── */
   .port-thumb {
     position: relative;
-    height: 220px;
+    aspect-ratio: 16 / 10;
+    min-height: 200px;
     overflow: hidden;
     display: flex;
     align-items: flex-end;
     justify-content: flex-start;
-    padding: 20px;
+    padding: 24px;
   }
+  .tile-text { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 8px; }
+  .tile-title {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: #fff;
+    letter-spacing: -0.2px;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+    word-break: keep-all;
+  }
+  .tile-client { font-size: 12px; color: rgba(255,255,255,0.7); letter-spacing: 0.3px; }
+  @media (max-width: 640px) { .tile-title { font-size: 19px; } }
   .port-card:hover .port-thumb .thumb-deco {
     transform: scale(1.08);
   }
@@ -98,13 +110,11 @@ const categoryLabels: Record<string, string> = {
   }
   .has-image .thumb-label { color: rgba(255, 255, 255, 0.85); }
   .thumb-label {
-    position: relative;
-    z-index: 2;
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--hc-orange);
   }
 
   /* ── Info ── */
