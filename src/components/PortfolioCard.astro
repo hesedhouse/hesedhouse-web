@@ -21,257 +21,156 @@ const categoryLabels: Record<string, string> = {
 };
 ---
 
-<div class={`port-card cat-${category}`}>
-  <div class={`port-thumb${image ? ' has-image' : ''}`}>
+<div class={`pf-card cat-${category}`}>
+  <div class="pf-thumb">
     {image ? (
-      <img class="thumb-img" src={image} alt={title} loading="lazy" />
+      <img class="pf-img" src={image} alt={title} loading="lazy" />
     ) : (
-      <>
-        <div class="thumb-deco"></div>
-        <div class="thumb-deco-2"></div>
-      </>
+      <div class="pf-placeholder">
+        <span class="pf-placeholder-icon">{categoryLabels[category]?.charAt(0) || '?'}</span>
+      </div>
     )}
-    <div class="tile-text">
-      <span class="thumb-label">{tag || categoryLabels[category]}</span>
-      <h3 class="tile-title">{title}</h3>
-      {client && <span class="tile-client">{client}</span>}
+  </div>
+  <div class="pf-body">
+    <div class="pf-tags">
+      <span class={`pf-cat-badge cat-badge-${category}`}>{tag || categoryLabels[category]}</span>
+      {year && <span class="pf-year">{year}</span>}
     </div>
+    {client && client !== 'HESEDCORP' && <span class="pf-client">{client}</span>}
+    <h3 class="pf-title">{title}</h3>
+    {description && <p class="pf-desc">{description}</p>}
   </div>
 </div>
 
 <style>
-  /* ── Card base ── */
-  .port-card {
-    border-radius: var(--r-md);
+  /* ── Card ── */
+  .pf-card {
+    background: var(--hc-white);
+    border-radius: var(--r-lg);
     overflow: hidden;
     border: 1px solid rgba(0, 0, 0, 0.06);
     transition: transform 0.3s var(--ease-std), box-shadow 0.3s var(--ease-std);
-    background: var(--hc-white);
   }
-  .port-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.10);
+  .pf-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
   }
 
   /* ── Thumbnail ── */
-  .port-thumb {
+  .pf-thumb {
     position: relative;
     aspect-ratio: 16 / 10;
-    min-height: 200px;
     overflow: hidden;
-    display: flex;
-    align-items: flex-end;
-    justify-content: flex-start;
-    padding: 24px;
+    background: var(--hc-gray-50);
   }
-  .tile-text { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 8px; }
-  .tile-title {
-    margin: 0;
-    font-size: 22px;
-    font-weight: 700;
-    line-height: 1.3;
-    color: #fff;
-    letter-spacing: -0.2px;
-    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
-    word-break: keep-all;
-  }
-  .tile-client { font-size: 12px; color: rgba(255,255,255,0.7); letter-spacing: 0.3px; }
-  @media (max-width: 640px) { .tile-title { font-size: 19px; } }
-  .port-card:hover .port-thumb .thumb-deco {
-    transform: scale(1.08);
-  }
-  .port-card:hover .port-thumb .thumb-deco-2 {
-    transform: scale(1.05) rotate(3deg);
-  }
-
-  .thumb-deco,
-  .thumb-deco-2 {
-    position: absolute;
-    inset: 0;
-    transition: transform 0.5s var(--ease-std);
-    pointer-events: none;
-  }
-
-  .thumb-img {
-    position: absolute;
-    inset: 0;
+  .pf-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: transform 0.5s var(--ease-std);
   }
-  .port-card:hover .thumb-img { transform: scale(1.05); }
-  .has-image::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(0,0,0,0.55) 100%);
-    pointer-events: none;
-  }
-  .has-image .thumb-label { color: rgba(255, 255, 255, 0.85); }
-  .thumb-label {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--hc-orange);
+  .pf-card:hover .pf-img {
+    transform: scale(1.04);
   }
 
-  /* ── Info ── */
-  .port-info {
-    padding: 20px 20px 24px;
+  /* ── Placeholder (no image) ── */
+  .pf-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-  .port-tag {
+  .pf-placeholder-icon {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: rgba(0, 0, 0, 0.06);
+    letter-spacing: 2px;
+  }
+
+  /* Category-specific placeholder gradients */
+  .cat-ip .pf-placeholder { background: linear-gradient(135deg, #eef4fb 0%, #dce8f5 100%); }
+  .cat-merch .pf-placeholder { background: linear-gradient(135deg, #f0f4f8 0%, #e2eaf3 100%); }
+  .cat-popup .pf-placeholder { background: linear-gradient(135deg, #f5f0f8 0%, #ece4f3 100%); }
+  .cat-distribution .pf-placeholder { background: linear-gradient(135deg, #eef8f5 0%, #dcf0e8 100%); }
+  .cat-vs .pf-placeholder { background: linear-gradient(135deg, #f3eff8 0%, #e8dff5 100%); }
+  .cat-ai .pf-placeholder { background: linear-gradient(135deg, #eef6fb 0%, #dcedf8 100%); }
+
+  .cat-ip .pf-placeholder-icon { color: rgba(0, 54, 104, 0.10); }
+  .cat-merch .pf-placeholder-icon { color: rgba(0, 54, 104, 0.10); }
+  .cat-popup .pf-placeholder-icon { color: rgba(100, 40, 120, 0.10); }
+  .cat-distribution .pf-placeholder-icon { color: rgba(20, 100, 70, 0.10); }
+  .cat-vs .pf-placeholder-icon { color: rgba(80, 40, 120, 0.10); }
+  .cat-ai .pf-placeholder-icon { color: rgba(0, 80, 140, 0.10); }
+
+  /* ── Body ── */
+  .pf-body {
+    padding: 20px 22px 24px;
+  }
+
+  /* ── Tags row ── */
+  .pf-tags {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+  .pf-cat-badge {
     display: inline-block;
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.5px;
-    text-transform: uppercase;
-    color: var(--hc-navy);
-    background: rgba(0, 54, 104, 0.07);
-    padding: 3px 8px;
-    border-radius: 4px;
-    margin-bottom: 8px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    line-height: 1;
   }
-  .port-client {
+  /* Badge colors by category */
+  .cat-badge-ip { background: rgba(0, 54, 104, 0.08); color: var(--hc-navy); }
+  .cat-badge-merch { background: rgba(243, 152, 0, 0.10); color: #b06e00; }
+  .cat-badge-popup { background: rgba(168, 85, 247, 0.10); color: #6b21a8; }
+  .cat-badge-distribution { background: rgba(52, 211, 153, 0.10); color: #047857; }
+  .cat-badge-vs { background: rgba(244, 114, 182, 0.10); color: #9d174d; }
+  .cat-badge-ai { background: rgba(0, 102, 204, 0.10); color: #0052a3; }
+
+  .pf-year {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--fg-tertiary);
+  }
+
+  /* ── Client ── */
+  .pf-client {
     display: block;
     font-size: 12px;
+    font-weight: 700;
     color: var(--hc-orange);
-    font-weight: 600;
-    letter-spacing: 0.3px;
+    letter-spacing: 0.5px;
     text-transform: uppercase;
     margin-bottom: 4px;
   }
-  .port-title {
-    font-size: 17px;
-    font-weight: 600;
-    margin: 4px 0;
-    color: var(--hc-ink);
-    line-height: 1.35;
-  }
-  .port-desc {
-    font-size: 13px;
-    line-height: 1.65;
-    color: rgba(0, 0, 0, 0.52);
-    margin: 8px 0 12px;
-  }
-  .port-year {
-    font-size: 12px;
-    color: rgba(0, 0, 0, 0.36);
-    font-weight: 500;
+
+  /* ── Title ── */
+  .pf-title {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--fg-primary);
+    margin: 0 0 8px;
+    word-break: keep-all;
   }
 
-  /* ================================================================
-     CATEGORY THUMB STYLES — pure CSS gradients + geometric patterns
-     ================================================================ */
-
-  /* ── IP LICENSE — interconnected nodes ── */
-  .cat-ip .port-thumb {
-    background: linear-gradient(135deg, #002547 0%, #003668 40%, #1B5E9C 100%);
-  }
-  .cat-ip .thumb-deco {
-    background:
-      radial-gradient(circle at 75% 25%, rgba(243, 152, 0, 0.20) 0%, transparent 40%),
-      radial-gradient(circle at 25% 70%, rgba(255, 255, 255, 0.06) 0%, transparent 35%);
-  }
-  .cat-ip .thumb-deco-2 {
-    background:
-      radial-gradient(circle 80px at 70% 30%, rgba(255, 255, 255, 0.08) 0%, transparent 100%),
-      radial-gradient(circle 60px at 30% 65%, rgba(255, 255, 255, 0.05) 0%, transparent 100%),
-      radial-gradient(circle 40px at 55% 50%, rgba(243, 152, 0, 0.10) 0%, transparent 100%),
-      radial-gradient(circle 2px at 70% 30%, rgba(255, 255, 255, 0.30) 0%, transparent 100%),
-      radial-gradient(circle 2px at 30% 65%, rgba(255, 255, 255, 0.25) 0%, transparent 100%),
-      radial-gradient(circle 2px at 55% 50%, rgba(243, 152, 0, 0.35) 0%, transparent 100%);
-  }
-
-  /* ── MERCHANDISING — subtle grid pattern ── */
-  .cat-merch .port-thumb {
-    background: linear-gradient(135deg, #002547 0%, #003668 30%, #1a4a6e 100%);
-  }
-  .cat-merch .thumb-deco {
-    background:
-      radial-gradient(circle at 80% 20%, rgba(243, 152, 0, 0.25) 0%, transparent 45%),
-      radial-gradient(circle at 20% 80%, rgba(243, 152, 0, 0.10) 0%, transparent 35%);
-  }
-  .cat-merch .thumb-deco-2 {
-    opacity: 0.4;
-    background-image:
-      radial-gradient(circle 1.5px at center, rgba(255, 255, 255, 0.25) 0%, transparent 100%);
-    background-size: 28px 28px;
-    background-position: 14px 14px;
-  }
-
-  /* ── POP-UP — dynamic diagonal energy ── */
-  .cat-popup .port-thumb {
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 35%, #002547 100%);
-  }
-  .cat-popup .thumb-deco {
-    background:
-      radial-gradient(circle at 85% 15%, rgba(233, 69, 96, 0.30) 0%, transparent 40%),
-      radial-gradient(circle at 10% 90%, rgba(243, 152, 0, 0.18) 0%, transparent 40%);
-  }
-  .cat-popup .thumb-deco-2 {
-    opacity: 0.12;
-    background: repeating-linear-gradient(
-      -45deg,
-      transparent,
-      transparent 20px,
-      rgba(255, 255, 255, 0.15) 20px,
-      rgba(255, 255, 255, 0.15) 21px
-    );
-  }
-
-  /* ── DISTRIBUTION — flowing horizontal lines ── */
-  .cat-distribution .port-thumb {
-    background: linear-gradient(135deg, #002547 0%, #003668 35%, #0d5c4a 100%);
-  }
-  .cat-distribution .thumb-deco {
-    background:
-      radial-gradient(circle at 80% 30%, rgba(39, 174, 96, 0.22) 0%, transparent 45%),
-      radial-gradient(circle at 15% 75%, rgba(255, 255, 255, 0.05) 0%, transparent 35%);
-  }
-  .cat-distribution .thumb-deco-2 {
-    opacity: 0.10;
-    background: repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 14px,
-      rgba(255, 255, 255, 0.20) 14px,
-      rgba(255, 255, 255, 0.20) 15px
-    );
-  }
-
-  /* ── VISUAL STUDIO — concentric circles (lens) ── */
-  .cat-vs .port-thumb {
-    background: linear-gradient(135deg, #1a1a2e 0%, #2c1654 45%, #3d1c6e 100%);
-  }
-  .cat-vs .thumb-deco {
-    background:
-      radial-gradient(circle at 65% 40%, rgba(168, 85, 247, 0.22) 0%, transparent 45%),
-      radial-gradient(circle at 30% 75%, rgba(243, 152, 0, 0.12) 0%, transparent 35%);
-  }
-  .cat-vs .thumb-deco-2 {
-    opacity: 0.08;
-    background:
-      radial-gradient(circle 120px at 60% 45%, transparent 58%, rgba(255, 255, 255, 0.35) 59%, transparent 60%),
-      radial-gradient(circle 80px at 60% 45%, transparent 58%, rgba(255, 255, 255, 0.30) 59%, transparent 60%),
-      radial-gradient(circle 45px at 60% 45%, transparent 56%, rgba(255, 255, 255, 0.25) 58%, transparent 60%),
-      radial-gradient(circle 8px at 60% 45%, rgba(255, 255, 255, 0.15) 0%, transparent 100%);
-  }
-
-  /* ── AI SOLUTION — dot matrix / digital grid ── */
-  .cat-ai .port-thumb {
-    background: linear-gradient(135deg, #0a0e1a 0%, #002547 40%, #003668 100%);
-  }
-  .cat-ai .thumb-deco {
-    background:
-      radial-gradient(circle at 75% 25%, rgba(0, 201, 255, 0.22) 0%, transparent 45%),
-      radial-gradient(circle at 20% 80%, rgba(243, 152, 0, 0.12) 0%, transparent 40%);
-  }
-  .cat-ai .thumb-deco-2 {
-    opacity: 0.18;
-    background-image:
-      radial-gradient(circle 1px at center, rgba(0, 201, 255, 0.40) 0%, transparent 100%);
-    background-size: 20px 20px;
+  /* ── Description ── */
+  .pf-desc {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--fg-secondary);
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 </style>

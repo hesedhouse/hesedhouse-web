@@ -1,62 +1,271 @@
 ---
 import PageLayout from '../layouts/PageLayout.astro';
-import Hero from '../components/Hero.astro';
 import CTABanner from '../components/CTABanner.astro';
 import PortfolioCard from '../components/PortfolioCard.astro';
 import { getCollection } from 'astro:content';
 
-const sections = [
-  { key: 'ip', label: 'IP LICENSE & COLLABO', href: '/works-ipco' },
-  { key: 'merch', label: 'MERCHANDISING', href: '/works-merch' },
-  { key: 'popup', label: 'POP-UP OPERATION', href: '/works-popup' },
-  { key: 'distribution', label: 'DISTRIBUTION', href: '/works-distribution' },
-  { key: 'vs', label: 'VISUAL STUDIO', href: '/works-vs' },
-  { key: 'ai', label: 'AI SOLUTION', href: '/works-ai' },
+const tabs = [
+  { key: 'all', label: '전체' },
+  { key: 'ip', label: 'IP 라이선스' },
+  { key: 'merch', label: '굿즈 제작' },
+  { key: 'popup', label: '팝업·이벤트' },
+  { key: 'distribution', label: '유통' },
+  { key: 'vs', label: '비주얼' },
+  { key: 'ai', label: 'AI 솔루션' },
 ];
-const all = (await getCollection('portfolio')).filter((p) => !p.data.draft);
-const byCat = (key: string) => all.filter((p) => p.data.category === key).sort((a, b) => a.data.order - b.data.order);
+
+const all = (await getCollection('portfolio'))
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => a.data.order - b.data.order);
+
+const totalProjects = all.length;
+const clients = [...new Set(all.map((p) => p.data.client).filter(Boolean).filter((c) => c !== 'HESEDCORP'))];
 ---
-<PageLayout title="WORKS" description="헤세드코퍼레이션 포트폴리오 — IP 라이선스, 굿즈 제작, 팝업 운영, 유통, 비주얼, AI 솔루션">
-  <Hero dark={false} eyebrow="WORKS" title="PORTFOLIO" subtitle="헤세드코퍼레이션이 만든 것들" />
-  <section class="portfolio">
-    <div class="portfolio-inner">
-      {sections.map((s) => {
-        const items = byCat(s.key);
-        if (!items.length) return null;
-        return (
-          <div class="cat-block">
-            <div class="cat-head">
-              <h2 class="cat-title">{s.label}</h2>
-              <a class="cat-more" href={s.href}>VIEW ALL →</a>
-            </div>
-            <div class="portfolio-grid">
-              {items.map((item) => (
-                <PortfolioCard
-                  category={item.data.category}
-                  client={item.data.client}
-                  title={item.data.title}
-                  year={item.data.year}
-                  tag={item.data.tag || undefined}
-                  image={item.data.image}
-                />
-              ))}
-            </div>
-          </div>
-        );
-      })}
+
+<PageLayout title="WORKS — 포트폴리오" description="헤세드코퍼레이션 포트폴리오 — IP 라이선스, 굿즈 제작, 팝업 운영, 유통, 비주얼, AI 솔루션">
+
+  <!-- Hero -->
+  <section class="works-hero">
+    <div class="hero-inner">
+      <p class="hero-eyebrow">PORTFOLIO</p>
+      <h1 class="hero-title">{totalProjects}+ 프로젝트,<br/>브랜드와 만든 제작 사례</h1>
+      <p class="hero-sub">IP 라이선스부터 굿즈 제작, 팝업 운영, AI 서비스까지 —<br class="br-desktop" />헤세드코퍼레이션이 만든 것들.</p>
     </div>
   </section>
-  <CTABanner title="프로젝트를 함께 만들어요" buttonText="CONTACT US" buttonHref="/contact" />
+
+  <!-- Filter Tabs + Grid -->
+  <section class="works-main">
+    <div class="works-inner">
+
+      <!-- Tab Bar -->
+      <div class="tab-bar" role="tablist">
+        {tabs.map((t, i) => (
+          <button
+            class={`tab-btn${i === 0 ? ' is-active' : ''}`}
+            role="tab"
+            aria-selected={i === 0 ? 'true' : 'false'}
+            data-filter={t.key}
+          >
+            {t.label}
+            <span class="tab-count">
+              {t.key === 'all' ? all.length : all.filter(p => p.data.category === t.key).length}
+            </span>
+          </button>
+        ))}
+      </div>
+
+      <!-- Portfolio Grid -->
+      <div class="pf-grid" id="pfGrid">
+        {all.map((item) => (
+          <div class="pf-grid-item" data-category={item.data.category}>
+            <PortfolioCard
+              category={item.data.category}
+              client={item.data.client}
+              title={item.data.title}
+              description={item.data.description}
+              year={item.data.year}
+              tag={item.data.tag || undefined}
+              image={item.data.image}
+            />
+          </div>
+        ))}
+      </div>
+
+      <!-- Empty state -->
+      <div class="pf-empty" id="pfEmpty" style="display:none;">
+        <p>해당 카테고리에 등록된 프로젝트가 없습니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <CTABanner
+    title="다음 프로젝트, 함께 만들어요"
+    subtitle="IP 기획부터 굿즈 제작, 팝업 운영, AI 서비스까지 — 헤세드가 함께합니다."
+    buttonText="프로젝트 문의하기"
+    buttonHref="/contact"
+  />
 </PageLayout>
+
+<!-- Tab Filter Script -->
+<script>
+  (function initTabFilter() {
+    const buttons = document.querySelectorAll<HTMLButtonElement>('.tab-btn');
+    const items = document.querySelectorAll<HTMLElement>('.pf-grid-item');
+    const grid = document.getElementById('pfGrid');
+    const empty = document.getElementById('pfEmpty');
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const filter = btn.dataset.filter!;
+
+        // Update active tab
+        buttons.forEach((b) => {
+          b.classList.remove('is-active');
+          b.setAttribute('aria-selected', 'false');
+        });
+        btn.classList.add('is-active');
+        btn.setAttribute('aria-selected', 'true');
+
+        // Filter items with animation
+        let visibleCount = 0;
+        items.forEach((item) => {
+          const cat = item.dataset.category;
+          const show = filter === 'all' || cat === filter;
+          if (show) {
+            item.style.display = '';
+            item.style.animation = 'fadeUp 0.35s ease forwards';
+            item.style.animationDelay = `${visibleCount * 0.04}s`;
+            visibleCount++;
+          } else {
+            item.style.display = 'none';
+            item.style.animation = '';
+          }
+        });
+
+        // Empty state
+        if (empty) {
+          empty.style.display = visibleCount === 0 ? '' : 'none';
+        }
+      });
+    });
+  })();
+</script>
+
 <style>
-  .portfolio { padding: 72px 20px; }
-  .portfolio-inner { max-width: var(--content-max); margin: 0 auto; }
-  .cat-block { margin-bottom: 72px; }
-  .cat-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid rgba(0,0,0,0.08); padding-bottom: 12px; }
-  .cat-title { font-size: 14px; font-weight: 700; letter-spacing: 2px; color: var(--hc-navy); margin: 0; }
-  .cat-more { font-size: 12px; font-weight: 600; letter-spacing: 1px; color: var(--hc-orange); text-decoration: none; }
-  .cat-more:hover { text-decoration: underline; }
-  .portfolio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-  @media (max-width: 1024px) { .portfolio-grid { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 640px) { .portfolio-grid { grid-template-columns: 1fr; } }
+  /* ── Hero ── */
+  .works-hero {
+    padding: 96px 20px 56px;
+    text-align: center;
+    background: var(--bg-page);
+  }
+  .hero-inner {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .hero-eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--hc-orange);
+    margin-bottom: 16px;
+  }
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: 2.8rem;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+    color: var(--fg-primary);
+    margin: 0 0 16px;
+  }
+  .hero-sub {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--fg-secondary);
+  }
+  .br-desktop { display: inline; }
+
+  /* ── Main ── */
+  .works-main {
+    padding: 0 20px 64px;
+    background: var(--bg-page);
+  }
+  .works-inner {
+    max-width: var(--content-max);
+    margin: 0 auto;
+  }
+
+  /* ── Tab Bar ── */
+  .tab-bar {
+    display: flex;
+    gap: 6px;
+    padding: 6px;
+    background: var(--hc-gray-50);
+    border-radius: var(--r-pill);
+    margin-bottom: 40px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .tab-bar::-webkit-scrollbar { display: none; }
+
+  .tab-btn {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 20px;
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--fg-tertiary);
+    background: transparent;
+    border: none;
+    border-radius: var(--r-pill);
+    cursor: pointer;
+    transition: all 0.25s var(--ease-std);
+    white-space: nowrap;
+  }
+  .tab-btn:hover {
+    color: var(--fg-primary);
+    background: rgba(0, 0, 0, 0.03);
+  }
+  .tab-btn.is-active {
+    color: var(--hc-white);
+    background: var(--hc-navy);
+    box-shadow: 0 2px 8px rgba(0, 54, 104, 0.15);
+  }
+  .tab-count {
+    font-size: 11px;
+    font-weight: 700;
+    opacity: 0.5;
+  }
+  .tab-btn.is-active .tab-count {
+    opacity: 0.7;
+  }
+
+  /* ── Grid ── */
+  .pf-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+  }
+
+  .pf-grid-item {
+    animation: fadeUp 0.4s ease forwards;
+  }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* ── Empty state ── */
+  .pf-empty {
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--fg-tertiary);
+    font-size: 15px;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .works-hero { padding: 80px 20px 40px; }
+    .hero-title { font-size: 2rem; }
+    .hero-sub { font-size: 0.95rem; }
+    .br-desktop { display: none; }
+    .tab-bar { margin-bottom: 28px; }
+    .tab-btn { padding: 8px 16px; font-size: 13px; }
+  }
+  @media (max-width: 640px) {
+    .pf-grid { grid-template-columns: 1fr; gap: 20px; }
+  }
 </style>
