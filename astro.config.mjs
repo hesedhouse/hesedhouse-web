@@ -19,4 +19,12 @@ export default defineConfig({
   build: {
     assets: '_assets',
   },
+  vite: {
+    optimizeDeps: {
+      exclude: ['@keystatic/core', '@keystatic/astro'],
+    },
+    ssr: {
+      noExternal: ['react-aria', /^@react-aria/, /^@react-stately/, /^@react-types/],
+    },
+  },
 });
