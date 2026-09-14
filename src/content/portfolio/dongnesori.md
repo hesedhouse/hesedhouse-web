@@ -7,5 +7,5 @@ year: '2026'
 tag: AI SERVICE DEVELOPMENT
 order: 13
 draft: false
-image: /portfolio/dongnesori.jpg
+image: /portfolio/동네소리500px.png
 ---
