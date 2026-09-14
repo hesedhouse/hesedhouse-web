@@ -5,12 +5,14 @@ const isProd = import.meta.env.PROD;
 export default config({
   storage: isProd
     ? {
-        kind: 'github',
-        repo: 'hesedhouse/hesedhouse-web',
+        kind: 'cloud',
       }
     : {
         kind: 'local',
       },
+  cloud: {
+    project: 'hesedhouse/hesedhouse',
+  },
 
   collections: {
     blog: collection({
