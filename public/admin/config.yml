@@ -2,8 +2,6 @@ backend:
   name: github
   repo: hesedhouse/hesedhouse-web
   branch: master
-  auth_type: pkce
-  app_id: Ov23liR5Jsnyu1qzDRvU
 
 media_folder: public/portfolio
 public_folder: /portfolio
