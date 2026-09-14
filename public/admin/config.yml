@@ -1,0 +1,116 @@
+backend:
+  name: github
+  repo: hesedhouse/hesedhouse-web
+  branch: master
+  auth_type: pkce
+
+media_folder: public/portfolio
+public_folder: /portfolio
+
+collections:
+  - name: portfolio
+    label: 포트폴리오
+    folder: src/content/portfolio
+    create: true
+    slug: "{{slug}}"
+    extension: md
+    fields:
+      - name: title
+        label: 제목
+        widget: string
+
+      - name: category
+        label: 카테고리
+        widget: select
+        options:
+          - { label: "IP 기획", value: ip }
+          - { label: "굿즈 · MD", value: merch }
+          - { label: "팝업 · 이벤트", value: popup }
+          - { label: "유통 · 영업", value: distribution }
+          - { label: "버추얼 · SNS", value: vs }
+          - { label: "AI 서비스", value: ai }
+
+      - name: client
+        label: 클라이언트
+        widget: string
+
+      - name: description
+        label: 설명
+        widget: text
+
+      - name: year
+        label: 연도
+        widget: string
+
+      - name: tag
+        label: 태그
+        widget: string
+        hint: "예: IP CHARACTER DESIGN"
+
+      - name: order
+        label: 정렬 순서
+        widget: number
+        value_type: int
+        min: 1
+
+      - name: draft
+        label: 초안 (비공개)
+        widget: boolean
+        default: false
+
+      - name: image
+        label: 대표 이미지
+        widget: image
+        required: false
+        hint: "public/portfolio/ 폴더에 업로드됩니다"
+
+      - name: body
+        label: 본문
+        widget: markdown
+        required: false
+
+  - name: blog
+    label: 블로그
+    folder: src/content/blog
+    create: true
+    slug: "{{slug}}"
+    extension: md
+    fields:
+      - name: title
+        label: 제목
+        widget: string
+
+      - name: description
+        label: 설명 (SEO)
+        widget: text
+
+      - name: pubDate
+        label: 발행일
+        widget: datetime
+        format: YYYY-MM-DD
+        date_format: YYYY-MM-DD
+        time_format: false
+
+      - name: category
+        label: 카테고리
+        widget: string
+        hint: "예: ai-biz, goods, popup, ip"
+
+      - name: author
+        label: 작성자
+        widget: string
+        default: indeok
+
+      - name: tags
+        label: 태그
+        widget: list
+        hint: "태그를 추가하세요 (예: AI트렌드, IP비즈니스)"
+
+      - name: draft
+        label: 초안 (비공개)
+        widget: boolean
+        default: false
+
+      - name: body
+        label: 본문
+        widget: markdown
