@@ -22,3 +22,9 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# wrangler
+.wrangler/
+
+# old deps
+node_modules_old/

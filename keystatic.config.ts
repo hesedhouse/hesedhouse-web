@@ -95,6 +95,11 @@ export default config({
         year: fields.text({ label: '연도', defaultValue: '2026' }),
         tag: fields.text({ label: '태그 (카드 상단)' }),
         order: fields.integer({ label: '정렬 순서', defaultValue: 0 }),
+        image: fields.image({
+          label: '대표 이미지',
+          directory: 'public/portfolio',
+          publicPath: '/portfolio/',
+        }),
         draft: fields.checkbox({ label: '초안 (비공개)', defaultValue: false }),
         content: fields.markdoc({ label: '상세 내용 (선택)' }),
       },

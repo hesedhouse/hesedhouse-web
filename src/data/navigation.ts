@@ -1,4 +1,5 @@
 export const services = [
+  { label: "GOODS STUDIO", href: "/goods" },
   { label: "IP LICENSE & COLLABO", href: "/iplicensecollabo" },
   { label: "MERCHANDISING", href: "/merchandising" },
   { label: "DISTRIBUTION", href: "/distribution" },

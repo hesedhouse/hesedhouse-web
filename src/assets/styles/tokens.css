@@ -30,10 +30,10 @@
 
 /* Design Tokens ----------------------------- */
 :root {
-  /* Brand */
-  --hc-navy: #003668;
-  --hc-navy-deep: #002547;
-  --hc-navy-ink: #001a33;
+  /* Brand — navy removed, using black/charcoal instead */
+  --hc-navy: #1a1a1a;
+  --hc-navy-deep: #111111;
+  --hc-navy-ink: #0a0a0a;
   --hc-orange: #f39800;
   --hc-orange-deep: #F08300;
   --hc-orange-soft: #ffb845;
