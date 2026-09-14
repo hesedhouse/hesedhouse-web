@@ -7,7 +7,7 @@ import cloudflare from '@astrojs/cloudflare';
 
 export default defineConfig({
   site: 'https://hesedhouse.net',
-  output: 'hybrid',
+  output: 'static',
   adapter: cloudflare(),
   integrations: [
     sitemap({
