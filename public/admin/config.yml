@@ -4,7 +4,6 @@ backend:
   branch: master
   auth_type: pkce
   app_id: Ov23liR5Jsnyu1qzDRvU
-  base_url: https://api.github.com
 
 media_folder: public/portfolio
 public_folder: /portfolio
