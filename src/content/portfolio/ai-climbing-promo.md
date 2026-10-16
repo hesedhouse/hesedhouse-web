@@ -6,4 +6,5 @@ year: "2026"
 tag: AI CONTENT PRODUCTION
 order: 23
 draft: false
+image: /portfolio/ai-climbing-promo.jpg
 ---

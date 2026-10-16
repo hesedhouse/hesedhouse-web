@@ -7,4 +7,5 @@ year: "2024"
 tag: IP COLLABORATION
 order: 12
 draft: false
+image: /portfolio/cjenm-collaboration.jpg
 ---

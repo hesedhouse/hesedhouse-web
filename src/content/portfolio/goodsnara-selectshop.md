@@ -7,4 +7,5 @@ year: "2024"
 tag: ONLINE STORE
 order: 21
 draft: false
+image: /portfolio/goodsnara-selectshop.jpg
 ---

@@ -6,4 +6,5 @@ year: "2026"
 tag: MARKETING AUTOMATION
 order: 18
 draft: false
+image: /portfolio/marketing-automation.jpg
 ---

@@ -7,4 +7,5 @@ year: "2026"
 tag: AI ANIMATION SERIES
 order: 15
 draft: false
+image: /portfolio/rainbow-ark.jpg
 ---

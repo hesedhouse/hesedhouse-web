@@ -7,4 +7,5 @@ year: "2026"
 tag: ORIGINAL UNIVERSE
 order: 16
 draft: false
+image: /portfolio/hesed-palace.jpg
 ---

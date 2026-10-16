@@ -7,4 +7,5 @@ year: "2026"
 tag: GEO AUTOMATION
 order: 19
 draft: false
+image: /portfolio/geo-automation.jpg
 ---

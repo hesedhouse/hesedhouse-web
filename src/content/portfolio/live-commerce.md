@@ -7,4 +7,5 @@ year: "2025"
 tag: LIVE COMMERCE
 order: 22
 draft: false
+image: /portfolio/live-commerce.jpg
 ---
