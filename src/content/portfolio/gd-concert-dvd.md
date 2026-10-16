@@ -5,5 +5,5 @@ description: "지드래곤 콘서트 DVD 패키지 제작 프로젝트. 기획·
 year: "2026"
 tag: CONCERT PACKAGE
 order: 10
-draft: false
+draft: true
 ---
