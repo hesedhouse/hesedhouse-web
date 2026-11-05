@@ -1,5 +1,5 @@
 /* 골프 내기 계산기 — 오프라인 캐시 (네트워크 우선, 실패 시 캐시) */
-const CACHE = 'golfbet-v1';
+const CACHE = 'golfbet-v2';
 const CORE = ['/golf/', '/golf/index.html', '/golf/manifest.webmanifest', '/golf/icon-192.png', '/golf/icon-512.png', '/golf/icon-180.png'];
 
 self.addEventListener('install', e => {

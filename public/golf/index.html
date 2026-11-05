@@ -194,6 +194,13 @@ body.capturing .tscroll{overflow:visible}
 <body>
 <div id="app">
 
+<!-- 카카오톡 내장 브라우저 안내 -->
+<div id="kakaoBar" style="display:none;background:#0A8A3F;color:#fff;padding:12px 16px;font-size:13px;line-height:1.5">
+  <b>카카오톡 안에서 열렸습니다.</b> 입력 내용이 안전하게 저장되도록 기본 브라우저로 여는 중입니다…<br>
+  <button onclick="openExternal()" style="margin-top:8px;padding:9px 14px;background:#fff;color:#0A8A3F;font-weight:700;font-size:13px">자동으로 안 열리면 여기를 누르세요</button>
+  <div style="margin-top:6px;font-size:11px;opacity:.85">그래도 안 되면 오른쪽 위 ⋮ 또는 공유 버튼 → "다른 브라우저로 열기"</div>
+</div>
+
 <!-- ========== 설정 화면 ========== -->
 <section id="scr-setup" class="screen">
   <header>
@@ -755,6 +762,22 @@ async function saveImage(){
     hb.innerHTML = hbText;
   }
 }
+
+/* ================= 카카오톡 내장 브라우저 탈출 ================= */
+function openExternal(){
+  const url = location.href.split('#')[0];
+  const ua = navigator.userAgent;
+  if(/iPhone|iPad|iPod/i.test(ua)){
+    location.href = 'kakaotalk://web/openExternal?url=' + encodeURIComponent(url);
+  } else {
+    location.href = 'intent://' + url.replace(/^https?:\/\//,'') + '#Intent;scheme=https;package=com.android.chrome;end';
+  }
+}
+(function kakaoEscape(){
+  if(!/KAKAOTALK/i.test(navigator.userAgent) || !location.protocol.startsWith('http')) return;
+  document.getElementById('kakaoBar').style.display = '';
+  setTimeout(openExternal, 400);
+})();
 
 /* ================= 링크 공유 · 오프라인 ================= */
 async function shareLink(){
