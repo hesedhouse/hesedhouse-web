@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="골프 내기">
+<meta name="theme-color" content="#111111">
+<meta name="description" content="골프 스트로크 내기 자동 계산기 — 핸디·배판·니어·총정산">
+<meta property="og:title" content="골프 내기 계산기">
+<meta property="og:description" content="타당 금액·핸디·배판·니어를 자동 계산하고 18홀 정산까지. by 헤세드코퍼레이션">
+<meta property="og:image" content="https://hesedhouse.net/golf/icon-512.png">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="./icon-180.png">
+<title>골프 내기 계산기</title>
+<style>
+:root{
+  --g:#0A8A3F;        /* 포인트 초록 */
+  --gd:#06672E;
+  --gl:#EAF6EE;
+  --k:#111111;        /* 검정 */
+  --k2:#333333;
+  --sub:#777777;
+  --line:#E3E3E3;
+  --line2:#111111;
+  --bg:#FFFFFF;
+  --loss:#C8321E;
+  --mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,"Courier New",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:Paperlogy,Pretendard,-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Gothic Neo",sans-serif;background:#F4F4F2;color:var(--k);-webkit-tap-highlight-color:transparent;font-size:15px;line-height:1.4;-webkit-font-smoothing:antialiased}
+button{font-family:inherit;border:0;background:none;cursor:pointer;color:inherit;border-radius:0}
+input,select{font-family:inherit;font-size:16px;border-radius:0}
+#app{max-width:430px;margin:0 auto;min-height:100vh;background:var(--bg);display:flex;flex-direction:column;position:relative;border-left:1px solid var(--line);border-right:1px solid var(--line)}
+.screen{display:none;flex:1;flex-direction:column}
+.screen.on{display:flex}
+
+/* ---- 모노 라벨 ---- */
+.lb{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--g);font-weight:500}
+.lb.k{color:var(--k)} .lb.s{color:var(--sub)}
+
+/* ---- 헤더 (검정) ---- */
+header{background:var(--k);color:#fff;padding:14px 18px 16px;position:sticky;top:0;z-index:5}
+header .top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+header h1{font-size:26px;font-weight:300;letter-spacing:-.02em;line-height:1.1}
+header .lb{color:#9FE3B8;margin-bottom:6px;display:block}
+header .ic{width:40px;height:40px;border:1px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff;font-weight:300}
+header .ic:disabled{opacity:.25}
+header .credit{font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:rgba(255,255,255,.55);white-space:nowrap;padding-bottom:4px}
+.holenav{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.holenav .center{text-align:center}
+.holenav .num{font-size:40px;font-weight:300;letter-spacing:-.03em;line-height:1}
+.holenav .num b{font-weight:600}
+.holenav .par{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:#9FE3B8;margin-top:6px;text-transform:uppercase}
+
+/* ---- 본문: 괘선 섹션 ---- */
+main{display:flex;flex-direction:column;padding-bottom:96px}
+.sec{padding:16px 18px;border-bottom:1px solid var(--line)}
+.sec .lb{display:block;margin-bottom:12px}
+.sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.sec-head .lb{margin-bottom:0}
+.row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.muted{color:var(--sub);font-size:12px}
+.hint{font-size:12px;color:var(--sub);line-height:1.6}
+.pos{color:var(--g)} .neg{color:var(--loss)} .zero{color:var(--sub)}
+
+/* ---- 태그 ---- */
+.tag{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.06em;padding:2px 6px;border:1px solid var(--line);color:var(--k2);line-height:1.5}
+.tag.g{border-color:var(--g);color:var(--g)}
+.tag.k{background:var(--k);border-color:var(--k);color:#fff}
+.tag.r{border-color:var(--loss);color:var(--loss)}
+
+/* ---- 입력 ---- */
+.field{margin-bottom:16px}
+.field:last-child{margin-bottom:0}
+.field label{display:block;margin-bottom:6px}
+.field input[type=text],.field input[type=number],.field select{width:100%;padding:12px 12px;border:1px solid var(--line2);background:#fff;color:var(--k);appearance:none;-webkit-appearance:none}
+.field select{background-image:linear-gradient(45deg,transparent 50%,#111 50%),linear-gradient(135deg,#111 50%,transparent 50%);background-position:calc(100% - 20px) 50%,calc(100% - 15px) 50%;background-size:5px 5px;background-repeat:no-repeat}
+.field input:focus,.field select:focus,.prow input:focus{outline:2px solid var(--g);outline-offset:-1px}
+.chips{display:flex;flex-wrap:wrap;gap:0;margin-top:8px;border:1px solid var(--line2)}
+.chip{flex:1;padding:9px 0;font-family:var(--mono);font-size:12px;border-left:1px solid var(--line2);text-align:center;min-width:52px}
+.chip:first-child{border-left:0}
+.chip.sel{background:var(--k);color:#fff}
+.chip.sel.o{background:var(--g);color:#fff}
+.chips.wrap .chip{flex:0 0 auto;padding:9px 14px}
+.seg{display:flex;border:1px solid var(--line2)}
+.seg button{flex:1;padding:11px 0;font-weight:500;font-size:14px;color:var(--sub);border-left:1px solid var(--line2)}
+.seg button:first-child{border-left:0}
+.seg button.sel{background:var(--k);color:#fff}
+.plist{display:flex;flex-direction:column}
+.prow{display:grid;grid-template-columns:32px 1fr 84px;align-items:stretch;border-left:1px solid var(--line2);border-right:1px solid var(--line2);border-bottom:1px solid var(--line2)}
+.prow.hd{border-top:1px solid var(--line2);border-bottom:1px solid var(--line2);background:#F7F7F5}
+.prow.hd div{padding:6px 10px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--sub);text-transform:uppercase}
+.prow .idx{display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;color:var(--sub);border-right:1px solid var(--line)}
+.prow input{padding:12px 10px;border:0;background:#fff;width:100%;min-width:0}
+.prow input.hd{border-left:1px solid var(--line);text-align:center;font-family:var(--mono)}
+.opt{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.opt:first-of-type{border-top:0;padding-top:0}
+.opt input{width:18px;height:18px;margin-top:2px;accent-color:var(--g);flex:0 0 auto}
+.opt .t{font-weight:600;font-size:14px}
+.opt .d{font-size:12px;color:var(--sub);margin-top:2px;line-height:1.5}
+
+/* ---- 버튼 ---- */
+.btn{display:flex;align-items:center;justify-content:center;width:100%;padding:15px;font-weight:600;font-size:15px;letter-spacing:-.01em}
+.btn-k{background:var(--k);color:#fff}
+.btn-g{background:var(--g);color:#fff}
+.btn-w{background:#fff;color:var(--k);border:1px solid var(--line2)}
+.btn-s{padding:8px 12px;font-size:12px;width:auto;font-family:var(--mono);letter-spacing:.04em}
+.btn:active{opacity:.85}
+.btn:disabled{opacity:.4}
+.btn .ar{margin-left:8px;font-weight:300}
+footer{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:#fff;border-top:1px solid var(--line2);display:flex;z-index:5;padding-bottom:env(safe-area-inset-bottom)}
+footer .btn{padding:18px}
+footer .btn-w{border:0;border-right:1px solid var(--line2)}
+
+/* ---- 누적 그리드 ---- */
+.totals{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(84px,1fr);overflow-x:auto;border-bottom:1px solid var(--line);scrollbar-width:none}
+.totals::-webkit-scrollbar{display:none}
+.tot{padding:12px 12px;border-right:1px solid var(--line)}
+.tot:last-child{border-right:0}
+.tot .n{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-transform:uppercase}
+.tot .v{font-size:20px;font-weight:300;letter-spacing:-.02em;margin-top:4px;white-space:nowrap}
+.tot .v.pos,.tot .v.neg{font-weight:500}
+
+/* ---- 배판 블록 ---- */
+.banner{padding:16px 18px;border-bottom:1px solid var(--line);display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
+.banner .big{font-size:28px;font-weight:300;letter-spacing:-.02em;line-height:1}
+.banner .big b{font-weight:600}
+.banner .sm{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;margin-top:8px;opacity:.75}
+.banner.k{background:var(--k);color:#fff}
+.banner.k .big b{color:#9FE3B8}
+.banner.g{background:var(--g);color:#fff}
+.banner.x{background:#fff;color:var(--k)}
+.banner.x .sm{color:var(--sub)}
+.reasons{display:flex;flex-wrap:wrap;gap:5px;padding:10px 18px;border-bottom:1px solid var(--line);background:#F7F7F5}
+
+/* ---- 스코어 행 ---- */
+.srow{display:grid;grid-template-columns:1fr auto 74px;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.srow:first-child{border-top:0;padding-top:0}
+.srow .name{display:flex;flex-direction:column;gap:4px;min-width:0}
+.srow .name .nm{font-weight:600;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.srow .name .tags{display:flex;gap:3px;flex-wrap:wrap}
+.step{display:flex;align-items:center;border:1px solid var(--line2)}
+.step button{width:42px;height:42px;font-size:22px;font-weight:300;display:flex;align-items:center;justify-content:center}
+.step button:first-child{border-right:1px solid var(--line2)}
+.step button:last-child{border-left:1px solid var(--line2)}
+.step button:active{background:var(--k);color:#fff}
+.step .v{width:44px;text-align:center;font-size:24px;font-weight:300;letter-spacing:-.02em}
+.step .v.empty{color:#BDBDBD}
+.srow .net{text-align:right;font-weight:500;font-size:15px;white-space:nowrap;font-variant-numeric:tabular-nums}
+
+/* ---- 정산 목록 ---- */
+.tr{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);font-size:14px}
+.tr:first-child{border-top:0;padding-top:0}
+.tr .who{display:flex;align-items:center;gap:6px;font-weight:600;min-width:0}
+.tr .who .muted{font-family:var(--mono);font-size:10px;letter-spacing:.02em}
+.tr .arrow{color:var(--sub);font-weight:300}
+.tr .amt{font-weight:500;font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* ---- 정산 화면 ---- */
+.rank{display:grid;grid-template-columns:28px 1fr auto;gap:10px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+.rank:first-child{border-top:0;padding-top:0}
+.rank .r{font-family:var(--mono);font-size:11px;color:var(--sub)}
+.rank .r.one{color:var(--g);font-weight:700}
+.rank .nm{font-weight:600;font-size:16px}
+.rank .sc{font-family:var(--mono);font-size:10px;color:var(--sub);margin-top:3px;letter-spacing:.04em}
+.rank .v{font-size:22px;font-weight:300;letter-spacing:-.02em;white-space:nowrap;font-variant-numeric:tabular-nums}
+.rank .v.pos,.rank .v.neg{font-weight:500}
+table{width:100%;border-collapse:collapse;font-size:12px;font-variant-numeric:tabular-nums}
+th,td{padding:7px 5px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--sub);font-weight:500;text-transform:uppercase;border-bottom:1px solid var(--line2)}
+th:first-child,td:first-child{text-align:left}
+td.h{font-family:var(--mono);font-size:11px;color:var(--sub)}
+tr.sum td{border-top:1px solid var(--line2);border-bottom:0;font-weight:600}
+.tscroll{overflow-x:auto;margin:0 -18px;padding:0 18px}
+sup{font-family:var(--mono);font-size:8px;color:var(--g)}
+.center{text-align:center}
+
+/* ---- 이미지 캡처 모드 ---- */
+.caponly{display:none}
+body.capturing .nocap{display:none !important}
+body.capturing .caponly{display:flex}
+body.capturing #scr-result header{position:static}
+body.capturing #scr-result main{padding-bottom:0}
+body.capturing .tscroll{overflow:visible}
+.capfoot{padding:14px 18px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--sub);text-transform:uppercase;display:flex;justify-content:space-between;border-top:1px solid var(--line2)}
+.hbtn{height:40px;padding:0 12px;border:1px solid rgba(255,255,255,.3);color:#fff;font-family:var(--mono);font-size:11px;letter-spacing:.06em;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.hbtn:disabled{opacity:.5}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- ========== 설정 화면 ========== -->
+<section id="scr-setup" class="screen">
+  <header>
+    <span class="lb">Golf Betting Calculator</span>
+    <div class="top" style="align-items:flex-end"><h1>골프 내기<br><b style="font-weight:600">계산기</b></h1><span class="credit">by 헤세드코퍼레이션</span></div>
+  </header>
+  <main>
+    <div id="resumeBox" class="sec" style="display:none;background:var(--gl)">
+      <div class="row">
+        <div><span class="lb">진행 중인 라운드</span><div class="muted" id="resumeInfo" style="margin-top:-6px"></div></div>
+        <button class="btn btn-k btn-s" onclick="resumeGame()">이어하기 →</button>
+      </div>
+    </div>
+
+    <div class="sec">
+      <span class="lb">01 — 기본 설정</span>
+      <div class="field">
+        <label class="lb s">플레이어 수</label>
+        <select id="inpN" onchange="buildPlayerInputs()">
+          <option value="2">2인</option><option value="3">3인</option><option value="4" selected>4인</option><option value="5">5인</option>
+          <option value="6">6인</option><option value="7">7인</option><option value="8">8인</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="lb s">타당 금액 (원)</label>
+        <input type="number" id="inpUnit" value="1000" min="100" step="100" inputmode="numeric">
+        <div class="chips">
+          <button class="chip" onclick="setUnit(1000)">1,000</button>
+          <button class="chip" onclick="setUnit(2000)">2,000</button>
+          <button class="chip" onclick="setUnit(3000)">3,000</button>
+          <button class="chip" onclick="setUnit(5000)">5,000</button>
+          <button class="chip" onclick="setUnit(10000)">10,000</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <span class="lb">02 — 플레이어 · 핸디</span>
+      <div class="plist">
+        <div class="prow hd"><div>#</div><div>이름</div><div style="text-align:center">핸디(타)</div></div>
+        <div id="playerInputs" style="display:contents"></div>
+      </div>
+      <div class="hint" style="margin-top:10px">핸디는 <b>시작 전에 금액으로 정산</b>합니다. 두 사람의 핸디 차이 × 타당 금액을 핸디가 낮은 쪽이 높은 쪽에게 줍니다. (예: 타당 1,000원, A 핸디 0 · B 핸디 5 → A가 B에게 5,000원) 홀별 타수 보정은 하지 않습니다.</div>
+    </div>
+
+    <div class="sec">
+      <span class="lb">03 — 규칙 옵션</span>
+      <label class="opt"><input type="checkbox" id="optTieCarry" checked>
+        <div><div class="t">전원 동타 시 다음 홀 배판</div><div class="d">모든 플레이어가 같은 타수면 다음 홀 기본 금액이 2배가 됩니다.</div></div></label>
+      <label class="opt"><input type="checkbox" id="optBB">
+        <div><div class="t">배배판(×4) 허용</div><div class="d">다음 홀 배판 상태에서 배판 조건이 또 생기면 4배까지 적용합니다. 끄면 최대 2배로 제한.</div></div></label>
+      <label class="opt"><input type="checkbox" id="optLongi">
+        <div><div class="t">롱기스트 적용 (파5)</div><div class="d">파5 홀에서 롱기 선택 가능. 롱기 한 사람이 파 이상이면 -1타. (니어와 같은 방식)</div></div></label>
+    </div>
+
+    <div class="sec">
+      <span class="lb">04 — 배판 규칙 (고정)</span>
+      <div class="hint">
+        트리플보기 이상 (파3은 더블보기 이상) → 배판<br>
+        버디 → 배판 + 해당자 추가 -1타<br>
+        이글 → 배판 + 추가 -3타 &nbsp;/&nbsp; 홀인원 → 배판 + 추가 -10타<br>
+        3명 이상 동타 (전원 동타 포함) → 배판<br>
+        니어(파3): 니어 한 사람이 파 이상이면 -1타
+      </div>
+    </div>
+
+    <div class="sec" style="border-bottom:0">
+      <button class="btn btn-g" onclick="startGame()">라운드 시작 <span class="ar">→</span></button>
+    </div>
+    <div class="sec" id="shareSec" style="display:none;border-bottom:0;padding-top:0">
+      <button class="btn btn-w" onclick="shareLink()">동반자에게 링크 공유 <span class="ar">↗</span></button>
+      <div class="hint" style="margin-top:8px;text-align:center">홈 화면에 추가하면 앱처럼 쓸 수 있습니다. (아이폰: 공유 → 홈 화면에 추가 / 안드로이드: 메뉴 → 홈 화면에 추가)</div>
+    </div>
+  </main>
+</section>
+
+<!-- ========== 플레이 화면 ========== -->
+<section id="scr-play" class="screen">
+  <header>
+    <div class="holenav">
+      <button class="ic" id="btnPrev" onclick="moveHole(-1)">←</button>
+      <div class="center">
+        <div class="num" id="hNum">1<b>H</b></div>
+        <div class="par" id="hSub"></div>
+      </div>
+      <button class="ic" id="btnNext" onclick="moveHole(1)">→</button>
+    </div>
+  </header>
+  <main>
+    <div class="totals" id="totals"></div>
+    <div class="sec" id="handiCard" style="display:none;background:var(--gl)">
+      <span class="lb">시작 전 핸디 정산 — 누적에 반영됨</span>
+      <div id="handiList"></div>
+    </div>
+    <div id="holeBanner"></div>
+
+    <div class="sec">
+      <div class="sec-head"><span class="lb">홀 파 (PAR)</span><span class="lb s" id="unitNow"></span></div>
+      <div class="seg" id="parSeg">
+        <button onclick="setPar(3)">파3</button><button onclick="setPar(4)">파4</button><button onclick="setPar(5)">파5</button>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><span class="lb">스코어 입력 (파 기준 ±)</span>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-w btn-s" onclick="allPar()">전원 파</button>
+          <button class="btn btn-w btn-s" onclick="clearHole()">지우기</button>
+        </div></div>
+      <div id="scoreRows"></div>
+    </div>
+
+    <div class="sec" id="nearCard" style="display:none">
+      <span class="lb" id="nearTitle">니어리스트 (파3)</span>
+      <div class="chips wrap" id="nearChips" style="margin-top:0"></div>
+      <div class="muted" id="nearStatus" style="margin-top:8px"></div>
+    </div>
+
+    <div class="sec" style="border-bottom:0">
+      <span class="lb">이 홀 정산</span>
+      <div id="transfers"></div>
+    </div>
+  </main>
+  <footer>
+    <button class="btn btn-w" style="flex:0 0 72px" onclick="goSetup()">설정</button>
+    <button class="btn btn-w" style="flex:1" onclick="showResult()">정산 보기</button>
+    <button class="btn btn-g" style="flex:1.4" id="btnNextHole" onclick="nextHole()">다음 홀로 가기 <span class="ar">→</span></button>
+  </footer>
+</section>
+
+<!-- ========== 정산 화면 ========== -->
+<section id="scr-result" class="screen">
+  <header>
+    <div class="top">
+      <div><span class="lb" id="resSub">Settlement</span><h1>총 <b style="font-weight:600">정산</b></h1></div>
+      <div style="display:flex;gap:6px" class="nocap">
+        <button class="hbtn" id="btnSaveImg" onclick="saveImage()">⤓ 이미지 저장</button>
+        <button class="ic" onclick="show('play')">←</button>
+      </div>
+    </div>
+  </header>
+  <main>
+    <div class="sec"><span class="lb">01 — 최종 손익</span><div id="ranking"></div></div>
+    <div class="sec"><span class="lb">02 — 주고받을 돈 (상계 후)</span><div id="pairNet"></div></div>
+    <div class="sec"><span class="lb">03 — 홀별 손익</span><div class="tscroll" id="holeTable"></div></div>
+    <div class="sec"><span class="lb">04 — 홀별 스코어 (파 기준 ±)</span><div class="tscroll" id="scoreTable"></div></div>
+    <div class="caponly capfoot"><span id="capDate"></span><span>골프 내기 계산기 · by 헤세드코퍼레이션</span></div>
+    <div class="sec nocap" style="border-bottom:0;display:flex;flex-direction:column;gap:8px">
+      <button class="btn btn-k" onclick="saveImage()">정산 화면 이미지로 저장 <span class="ar">⤓</span></button>
+      <button class="btn btn-w" onclick="show('play')">계속 입력</button>
+      <button class="btn btn-g" onclick="newGame()">새 라운드 시작 <span class="ar">→</span></button>
+    </div>
+  </main>
+</section>
+
+</div>
+
+<script>
+/* ================= 상태 ================= */
+const KEY = 'golfbet_v1';
+const DEFAULT_PARS = [4,4,3,5,4,4,3,4,5, 4,4,3,5,4,4,3,4,5];
+let S = null;      // {setup:{n,unit,players:[{name,handi}],opts:{tieCarry,bb,longi}}, holes:[{par,scores:[],near,longi}], cur}
+let R = null;      // 계산 결과 캐시
+
+const won = n => n.toLocaleString('ko-KR') + '원';
+const signed = n => (n > 0 ? '+' : n < 0 ? '−' : '') + Math.abs(n).toLocaleString('ko-KR');
+const cls = n => n > 0 ? 'pos' : n < 0 ? 'neg' : 'zero';
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+function load(){ try{ const j = localStorage.getItem(KEY); return j ? JSON.parse(j) : null; }catch(e){ return null; } }
+
+function show(id){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
+  document.getElementById('scr-' + id).classList.add('on');
+  window.scrollTo(0,0);
+}
+
+/* ================= 설정 화면 ================= */
+function setUnit(v){ document.getElementById('inpUnit').value = v; }
+function buildPlayerInputs(){
+  const n = +document.getElementById('inpN').value;
+  const box = document.getElementById('playerInputs');
+  const prev = [...box.querySelectorAll('.prow')].map(r => ({name: r.querySelector('.nm').value, handi: r.querySelector('.hd').value}));
+  let h = '';
+  for(let i=0;i<n;i++){
+    const p = prev[i] || {name:'', handi:''};
+    h += `<div class="prow"><div class="idx">${String(i+1).padStart(2,'0')}</div>
+      <input type="text" class="nm" placeholder="이름 ${i+1}" value="${esc(p.name)}" maxlength="8">
+      <input type="number" class="hd" placeholder="0" value="${esc(p.handi)}" min="0" max="99" inputmode="numeric"></div>`;
+  }
+  box.innerHTML = h;
+}
+function readSetup(){
+  const n = +document.getElementById('inpN').value;
+  const unit = Math.max(100, +document.getElementById('inpUnit').value || 1000);
+  const rows = [...document.querySelectorAll('#playerInputs .prow')];
+  const players = rows.map((r,i) => ({
+    name: (r.querySelector('.nm').value.trim() || `P${i+1}`),
+    handi: Math.max(0, Math.min(99, +r.querySelector('.hd').value || 0))
+  }));
+  return { n, unit, players, opts:{
+    tieCarry: document.getElementById('optTieCarry').checked,
+    bb: document.getElementById('optBB').checked,
+    longi: document.getElementById('optLongi').checked } };
+}
+function fillSetupFrom(setup){
+  document.getElementById('inpN').value = setup.n;
+  document.getElementById('inpUnit').value = setup.unit;
+  buildPlayerInputs();
+  [...document.querySelectorAll('#playerInputs .prow')].forEach((r,i)=>{
+    r.querySelector('.nm').value = setup.players[i]?.name || '';
+    r.querySelector('.hd').value = setup.players[i]?.handi || 0;
+  });
+  document.getElementById('optTieCarry').checked = !!setup.opts.tieCarry;
+  document.getElementById('optBB').checked = !!setup.opts.bb;
+  document.getElementById('optLongi').checked = !!setup.opts.longi;
+}
+function startGame(){
+  const setup = readSetup();
+  if(S && S.setup && S.setup.n === setup.n && S.holes.some(h => h.scores.some(s => s !== null))){
+    if(confirm('진행 중인 스코어를 유지하고 설정만 바꿀까요?\n[취소]를 누르면 새 라운드를 시작합니다.')){
+      S.setup = setup; save(); renderPlay(); show('play'); return;
+    }
+  }
+  S = { setup, holes: DEFAULT_PARS.map(p => ({par:p, scores:Array(setup.n).fill(null), near:-1, longi:-1})), cur:0 };
+  save(); renderPlay(); show('play');
+}
+function resumeGame(){ renderPlay(); show('play'); }
+function goSetup(){ fillSetupFrom(S.setup); document.getElementById('resumeBox').style.display='none'; show('setup'); }
+function newGame(){
+  if(!confirm('현재 라운드를 지우고 새로 시작할까요?')) return;
+  const keep = S ? S.setup : null;
+  localStorage.removeItem(KEY); S = null;
+  if(keep) fillSetupFrom(keep);
+  document.getElementById('resumeBox').style.display='none';
+  show('setup');
+}
+
+/* ================= 계산 ================= */
+const rel = (s, par) => { const d = s - par; return d > 0 ? String(d) : d < 0 ? '−' + Math.abs(d) : '0'; };
+function scoreLabel(s, par){
+  if(s === 1) return '홀인원';
+  if(s >= par * 2) return '더블파';
+  const d = s - par;
+  if(d <= -3) return '알바트로스';
+  if(d === -2) return '이글';
+  if(d === -1) return '버디';
+  if(d === 0) return '파';
+  if(d === 1) return '보기';
+  if(d === 2) return '더블보기';
+  if(d === 3) return '트리플보기';
+  if(d === 4) return '쿼드러플';
+  return `+${d}`;
+}
+function bonusStroke(s, par){
+  if(s === 1) return -10;          // 홀인원
+  if(s <= par-2) return -3;        // 이글 이상
+  if(s === par-1) return -1;       // 버디
+  return 0;
+}
+function computeAll(){
+  const n = S.setup.n, unit = S.setup.unit, opts = S.setup.opts;
+  const cap = opts.bb ? 4 : 2;
+  const names = S.setup.players.map(p => p.name);
+  let carry = 1;
+  const out = [];
+  const total = Array(n).fill(0);
+  const owe = Array.from({length:n}, () => Array(n).fill(0)); // owe[from][to]
+
+  // 시작 전 핸디 정산: 핸디 차이 × 타당 금액, 핸디 낮은 쪽 → 높은 쪽
+  const handi = { transfers: [], net: Array(n).fill(0) };
+  for(let i=0;i<n;i++) for(let j=i+1;j<n;j++){
+    const hi = S.setup.players[i].handi || 0, hj = S.setup.players[j].handi || 0;
+    const d = hj - hi;
+    if(d === 0) continue;
+    const amt = Math.abs(d) * unit;
+    const from = d > 0 ? i : j, to = d > 0 ? j : i;
+    handi.transfers.push({from, to, amt, strokes: Math.abs(d)});
+    handi.net[from] -= amt; handi.net[to] += amt;
+    owe[from][to] += amt;
+  }
+  for(let i=0;i<n;i++) total[i] += handi.net[i];
+
+  for(let h=0; h<18; h++){
+    const hole = S.holes[h], par = hole.par, sc = hole.scores;
+    const complete = sc.every(s => s !== null);
+    const res = { complete, par, carryIn: carry, mult: Math.min(carry, cap), reasons: [], net: Array(n).fill(0), transfers: [], adj: [], allTie:false, bonus: [], nearOk:null, longiOk:null };
+    if(!complete){ out.push(res); continue; }
+
+    // 배판 조건
+    const tripleThr = par === 3 ? 2 : 3;
+    for(let i=0;i<n;i++){
+      const d = sc[i] - par;
+      if(d >= tripleThr) res.reasons.push(`${names[i]} ${par===3?'더블보기':'트리플보기'} 이상`);
+      if(sc[i] === 1) res.reasons.push(`${names[i]} 홀인원 (-10타)`);
+      else if(d <= -2) res.reasons.push(`${names[i]} 이글 (-3타)`);
+      else if(d === -1) res.reasons.push(`${names[i]} 버디 (-1타)`);
+    }
+    const freq = {}; sc.forEach(s => freq[s] = (freq[s]||0)+1);
+    const maxTie = Math.max(...Object.values(freq));
+    if(maxTie === n){ res.allTie = true; }                       // 전원 동타 → 다음 홀 배판
+    if(maxTie >= 3){ res.reasons.push(`${maxTie}명 동타`); }     // 3명 이상 동타(전원 포함) → 이 홀 배판
+
+    const cond = res.reasons.length > 0;
+    res.mult = Math.min(carry * (cond ? 2 : 1), cap);
+
+    // 보정 타수
+    res.bonus = sc.map(s => bonusStroke(s, par));
+    if(par === 3 && hole.near >= 0 && hole.near < n) res.nearOk = sc[hole.near] <= par;
+    if(opts.longi && par === 5 && hole.longi >= 0 && hole.longi < n) res.longiOk = sc[hole.longi] <= par;
+    for(let i=0;i<n;i++){
+      let a = sc[i] + res.bonus[i];
+      if(res.nearOk && hole.near === i) a -= 1;
+      if(res.longiOk && hole.longi === i) a -= 1;
+      res.adj.push(a);
+    }
+    // 1:1 정산
+    for(let i=0;i<n;i++) for(let j=i+1;j<n;j++){
+      const d = res.adj[i] - res.adj[j];
+      if(d === 0) continue;
+      const amt = Math.abs(d) * unit * res.mult;
+      const from = d > 0 ? i : j, to = d > 0 ? j : i;
+      res.transfers.push({from, to, amt, strokes: Math.abs(d)});
+      res.net[from] -= amt; res.net[to] += amt;
+      owe[from][to] += amt;
+    }
+    for(let i=0;i<n;i++) total[i] += res.net[i];
+    out.push(res);
+    carry = (opts.tieCarry && res.allTie) ? Math.min(carry*2, cap) : 1;
+  }
+  R = { holes: out, total, owe, handi };
+  return R;
+}
+
+/* ================= 플레이 화면 ================= */
+function renderPlay(){
+  computeAll();
+  const h = S.cur, hole = S.holes[h], n = S.setup.n, names = S.setup.players.map(p=>p.name);
+  const r = R.holes[h];
+  document.getElementById('hNum').innerHTML = `${h+1}<b>H</b>`;
+  const played = R.holes.filter(x=>x.complete).length;
+  document.getElementById('hSub').textContent = `PAR ${hole.par} · 입력 ${played}/18`;
+  document.getElementById('btnPrev').disabled = h === 0;
+  document.getElementById('btnNext').disabled = h === 17;
+  document.getElementById('btnNextHole').innerHTML = h === 17 ? '최종 정산 보기 <span class="ar">→</span>' : `${h+2}번 홀로 가기 <span class="ar">→</span>`;
+
+  // 누적
+  document.getElementById('totals').innerHTML = names.map((nm,i)=>
+    `<div class="tot"><div class="n">${esc(nm)}</div><div class="v ${cls(R.total[i])}">${signed(R.total[i])}</div></div>`).join('');
+
+  // 배판 블록
+  const multNow = r.complete ? r.mult : Math.min(r.carryIn, S.setup.opts.bb?4:2);
+  const effUnit = S.setup.unit * multNow;
+  document.getElementById('unitNow').textContent = `이 홀 타당 ${won(effUnit)}`;
+  let bn = '';
+  if(r.complete){
+    if(r.allTie){
+      const sm = [];
+      sm.push(r.transfers.length ? '보정 타수로 금액 이동 있음' : '금액 이동 없음');
+      if(S.setup.opts.tieCarry && h<17) sm.push('다음 홀 배판');
+      bn = `<div class="banner g"><div><div class="big">전원 <b>동타</b></div><div class="sm">${sm.join(' · ')}</div></div><div class="big">×${r.mult}</div></div>`;
+    }
+    else if(r.mult >= 4) bn = `<div class="banner k"><div><div class="big">배배판 <b>×4</b></div><div class="sm">타당 ${won(effUnit)}</div></div></div>`;
+    else if(r.mult === 2) bn = `<div class="banner k"><div><div class="big">배판 <b>×2</b></div><div class="sm">타당 ${won(effUnit)}</div></div></div>`;
+    else bn = `<div class="banner x"><div><div class="big">기본 홀</div><div class="sm">타당 ${won(effUnit)}</div></div></div>`;
+    if(r.reasons.length || (r.carryIn>1)){
+      const chips = [];
+      if(r.carryIn>1) chips.push(`<span class="tag k">이전 홀 전원 동타 → 배판</span>`);
+      r.reasons.forEach(x=>chips.push(`<span class="tag g">${esc(x)}</span>`));
+      bn += `<div class="reasons">${chips.join('')}</div>`;
+    }
+  } else {
+    bn = r.carryIn > 1
+      ? `<div class="banner k"><div><div class="big">이 홀 배판 <b>×${multNow}</b></div><div class="sm">이전 홀 전원 동타 · 타당 ${won(effUnit)}</div></div></div>`
+      : `<div class="banner x"><div><div class="big">스코어 입력 대기</div><div class="sm">전원 입력 시 자동 계산</div></div></div>`;
+  }
+  document.getElementById('holeBanner').innerHTML = bn;
+
+  // 파 세그먼트
+  [...document.querySelectorAll('#parSeg button')].forEach((b,i)=> b.classList.toggle('sel', hole.par === i+3));
+
+  // 스코어 행
+  document.getElementById('scoreRows').innerHTML = names.map((nm,i)=>{
+    const s = hole.scores[i];
+    const tags = [];
+    if(s !== null){
+      const lb = scoreLabel(s, hole.par);
+      const d = s - hole.par;
+      tags.push(`<span class="tag ${d<0?'g':d===0?'':'r'}">${lb}</span>`);
+      if(r.bonus[i] < 0) tags.push(`<span class="tag g">추가 ${r.bonus[i]}타</span>`);
+      if(r.nearOk && hole.near === i) tags.push(`<span class="tag g">니어 −1</span>`);
+      if(r.longiOk && hole.longi === i) tags.push(`<span class="tag g">롱기 −1</span>`);
+    }
+    const net = r.complete ? `<span class="${cls(r.net[i])}">${signed(r.net[i])}</span>` : `<span class="zero">—</span>`;
+    return `<div class="srow">
+      <div class="name"><span class="nm">${esc(nm)}</span><div class="tags">${tags.join('')}</div></div>
+      <div class="step"><button onclick="adj(${i},-1)">−</button><div class="v ${s===null?'empty':''}">${s===null?'0':rel(s,hole.par)}</div><button onclick="adj(${i},1)">+</button></div>
+      <div class="net">${net}</div></div>`;
+  }).join('');
+
+  // 니어 / 롱기
+  const nearCard = document.getElementById('nearCard');
+  const isNear = hole.par === 3, isLongi = S.setup.opts.longi && hole.par === 5;
+  if(isNear || isLongi){
+    nearCard.style.display = '';
+    const key = isNear ? 'near' : 'longi';
+    document.getElementById('nearTitle').textContent = isNear ? '니어리스트 (파3) — 누가 니어?' : '롱기스트 (파5) — 누가 롱기?';
+    const sel = hole[key];
+    document.getElementById('nearChips').innerHTML =
+      `<button class="chip ${sel<0?'sel':''}" onclick="setNear('${key}',-1)">없음</button>` +
+      names.map((nm,i)=>`<button class="chip ${sel===i?'sel o':''}" onclick="setNear('${key}',${i})">${esc(nm)}</button>`).join('');
+    let st = '';
+    if(sel >= 0){
+      const ok = isNear ? r.nearOk : r.longiOk;
+      if(ok === null || ok === undefined) st = `${esc(names[sel])} 선택됨 · 스코어 입력 후 성공 여부 판정`;
+      else st = ok ? `<span class="pos">✓ ${esc(names[sel])} ${isNear?'니어':'롱기'} 성공 (파 이상) → −1타 적용</span>` : `✕ ${esc(names[sel])} ${isNear?'니어':'롱기'} 실패 (보기 이상) → 적용 없음`;
+    } else st = '니어/롱기 없으면 "없음" 그대로 두세요.';
+    document.getElementById('nearStatus').innerHTML = st;
+  } else nearCard.style.display = 'none';
+
+  // 시작 전 핸디 정산 (1번 홀에서만)
+  const hc = document.getElementById('handiCard');
+  if(h === 0 && R.handi.transfers.length){
+    hc.style.display = '';
+    document.getElementById('handiList').innerHTML = R.handi.transfers.map(t=>`<div class="tr"><div class="who"><span class="neg">${esc(names[t.from])}</span><span class="arrow">→</span><span class="pos">${esc(names[t.to])}</span><span class="muted">핸디 ${t.strokes}타 차</span></div><div class="amt">${won(t.amt)}</div></div>`).join('');
+  } else hc.style.display = 'none';
+
+  // 정산 목록
+  let tr = '';
+  if(!r.complete) tr = `<div class="muted">스코어가 모두 입력되면 표시됩니다.</div>`;
+  else if(!r.transfers.length) tr = `<div class="muted">이 홀은 주고받을 금액이 없습니다.</div>`;
+  else tr = r.transfers.map(t=>`<div class="tr"><div class="who"><span class="neg">${esc(names[t.from])}</span><span class="arrow">→</span><span class="pos">${esc(names[t.to])}</span><span class="muted">${t.strokes}타 × ${(S.setup.unit*r.mult).toLocaleString('ko-KR')}</span></div><div class="amt">${won(t.amt)}</div></div>`).join('');
+  document.getElementById('transfers').innerHTML = tr;
+}
+function adj(i, d){
+  const hole = S.holes[S.cur];
+  const cur = hole.scores[i] === null ? hole.par : hole.scores[i];
+  hole.scores[i] = Math.max(1, Math.min(hole.par * 2, cur + d));   // 최소 홀인원 ~ 최대 더블파
+  save(); renderPlay();
+}
+function setPar(p){
+  const hole = S.holes[S.cur];
+  // 파 변경 시 입력된 상대 스코어(언더/오버)는 유지하고 타수만 환산
+  hole.scores = hole.scores.map(s => s === null ? null : Math.max(1, Math.min(p * 2, s - hole.par + p)));
+  hole.par = p; save(); renderPlay();
+}
+function allPar(){ const hole = S.holes[S.cur]; hole.scores = hole.scores.map(s => s === null ? hole.par : s); save(); renderPlay(); }
+function clearHole(){ const hole = S.holes[S.cur]; hole.scores = hole.scores.map(()=>null); hole.near=-1; hole.longi=-1; save(); renderPlay(); }
+function setNear(key, i){ S.holes[S.cur][key] = i; save(); renderPlay(); }
+function moveHole(d){ S.cur = Math.max(0, Math.min(17, S.cur + d)); save(); renderPlay(); }
+function nextHole(){
+  if(S.cur >= 17){ showResult(); return; }
+  const hole = S.holes[S.cur];
+  if(hole.scores.some(s => s === null) && !confirm('아직 스코어를 입력하지 않은 사람이 있습니다.\n그래도 다음 홀로 갈까요?')) return;
+  moveHole(1);
+}
+
+/* ================= 정산 화면 ================= */
+function showResult(){
+  computeAll();
+  const n = S.setup.n, names = S.setup.players.map(p=>p.name);
+  const played = R.holes.filter(x=>x.complete).length;
+  document.getElementById('resSub').textContent = `${played}/18 holes · 타당 ${won(S.setup.unit)}`;
+
+  // 순위
+  const strokes = names.map((_,i)=> S.holes.reduce((a,h)=> a + (h.scores[i] ?? 0), 0));
+  const parPlayed = S.holes.reduce((a,h,i)=> a + (R.holes[i].complete ? h.par : 0), 0);
+  const relTot = i => { const d = strokes[i] - parPlayed; return d > 0 ? '+' + d : d < 0 ? '−' + Math.abs(d) : 'E'; };
+  const order = names.map((_,i)=>i).sort((a,b)=> R.total[b]-R.total[a]);
+  document.getElementById('ranking').innerHTML = order.map((i,k)=>
+    `<div class="rank"><div class="r ${k===0&&R.total[i]>0?'one':''}">${String(k+1).padStart(2,'0')}</div>
+      <div><div class="nm">${esc(names[i])}</div><div class="sc">${strokes[i]}타 (${relTot(i)}) · 핸디 ${S.setup.players[i].handi}</div></div>
+      <div class="v ${cls(R.total[i])}">${signed(R.total[i])}</div></div>`).join('');
+
+  // 상계
+  const lines = [];
+  for(let i=0;i<n;i++) for(let j=i+1;j<n;j++){
+    const d = R.owe[i][j] - R.owe[j][i];
+    if(d > 0) lines.push({from:i,to:j,amt:d}); else if(d < 0) lines.push({from:j,to:i,amt:-d});
+  }
+  lines.sort((a,b)=>b.amt-a.amt);
+  document.getElementById('pairNet').innerHTML = lines.length
+    ? lines.map(t=>`<div class="tr"><div class="who"><span class="neg">${esc(names[t.from])}</span><span class="arrow">→</span><span class="pos">${esc(names[t.to])}</span></div><div class="amt">${won(t.amt)}</div></div>`).join('')
+    : `<div class="muted">아직 주고받을 금액이 없습니다.</div>`;
+
+  // 홀별 손익 표
+  let th = `<table><tr><th>홀</th><th>배판</th>${names.map(nm=>`<th>${esc(nm)}</th>`).join('')}</tr>`;
+  if(R.handi.transfers.length) th += `<tr><td class="h">핸디</td><td>·</td>${R.handi.net.map(v=>`<td class="${cls(v)}">${signed(v)}</td>`).join('')}</tr>`;
+  R.holes.forEach((r,h)=>{
+    if(!r.complete) return;
+    th += `<tr><td class="h">${String(h+1).padStart(2,'0')}</td><td>${r.mult>1?`<span class="tag k">×${r.mult}</span>`:'·'}</td>${r.net.map(v=>`<td class="${cls(v)}">${signed(v)}</td>`).join('')}</tr>`;
+  });
+  th += `<tr class="sum"><td class="h">합계</td><td></td>${R.total.map(v=>`<td class="${cls(v)}">${signed(v)}</td>`).join('')}</tr></table>`;
+  document.getElementById('holeTable').innerHTML = (played || R.handi.transfers.length) ? th : `<div class="muted">입력된 홀이 없습니다.</div>`;
+
+  // 홀별 스코어 표
+  let st = `<table><tr><th>홀</th><th>파</th>${names.map(nm=>`<th>${esc(nm)}</th>`).join('')}</tr>`;
+  S.holes.forEach((hole,h)=>{
+    if(!R.holes[h].complete) return;
+    st += `<tr><td class="h">${String(h+1).padStart(2,'0')}</td><td>${hole.par}</td>${hole.scores.map((s,i)=>{
+      const d = s-hole.par; const c = d<0?'pos':d>0?'neg':'';
+      const extra = (hole.near===i && R.holes[h].nearOk) ? '<sup>N</sup>' : (hole.longi===i && R.holes[h].longiOk) ? '<sup>L</sup>' : '';
+      return `<td class="${c}">${rel(s,hole.par)}${extra}</td>`; }).join('')}</tr>`;
+  });
+  st += `<tr class="sum"><td class="h">합계</td><td>${parPlayed}</td>${strokes.map((v,i)=>`<td>${relTot(i)}<br><span class="muted" style="font-weight:400">${v}타</span></td>`).join('')}</tr></table>`;
+  document.getElementById('scoreTable').innerHTML = played ? st : `<div class="muted">입력된 홀이 없습니다.</div>`;
+  show('result');
+}
+
+/* ================= 이미지 저장 ================= */
+function loadH2C(){
+  if(window.html2canvas) return Promise.resolve();
+  return new Promise((ok, fail)=>{
+    const s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+    s.onload = ok; s.onerror = ()=>fail(new Error('캡처 라이브러리를 불러오지 못했습니다 (인터넷 연결 확인)'));
+    document.head.appendChild(s);
+  });
+}
+function pad2(n){ return String(n).padStart(2,'0'); }
+async function saveImage(){
+  const btns = [...document.querySelectorAll('#scr-result button')];
+  btns.forEach(b=>b.disabled=true);
+  const hb = document.getElementById('btnSaveImg'); const hbText = hb.innerHTML; hb.innerHTML = '생성 중…';
+  const d = new Date();
+  const stamp = `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())} ${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
+  document.getElementById('capDate').textContent = stamp;
+  const app = document.getElementById('app');
+  try{
+    await loadH2C();
+    // 표가 화면보다 넓으면 캡처 폭을 늘림
+    const tw = Math.max(0, ...[...document.querySelectorAll('#scr-result table')].map(t=>t.scrollWidth));
+    const width = Math.max(430, tw + 36);
+    document.body.classList.add('capturing');
+    app.style.maxWidth = width + 'px'; app.style.width = width + 'px';
+    const el = document.getElementById('scr-result');
+    const canvas = await html2canvas(el, { backgroundColor:'#ffffff', scale:2, useCORS:true, logging:false, width, windowWidth: width, scrollX:0, scrollY:-window.scrollY });
+    document.body.classList.remove('capturing');
+    app.style.maxWidth = ''; app.style.width = '';
+    const blob = await new Promise(r=>canvas.toBlob(r,'image/png'));
+    const name = `골프정산_${d.getFullYear()}${pad2(d.getMonth()+1)}${pad2(d.getDate())}_${pad2(d.getHours())}${pad2(d.getMinutes())}.png`;
+    const file = new File([blob], name, {type:'image/png'});
+    if(navigator.canShare && navigator.canShare({files:[file]})){
+      try{ await navigator.share({files:[file], title:'골프 내기 정산'}); }
+      catch(e){ if(e.name !== 'AbortError') throw e; }
+    } else {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob); a.download = name;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(()=>URL.revokeObjectURL(a.href), 10000);
+    }
+  }catch(e){
+    document.body.classList.remove('capturing');
+    app.style.maxWidth = ''; app.style.width = '';
+    alert('이미지 저장에 실패했습니다.\n' + (e && e.message ? e.message : e) + '\n\n폰의 화면 캡처 기능을 대신 이용해 주세요.');
+  }finally{
+    btns.forEach(b=>b.disabled=false);
+    hb.innerHTML = hbText;
+  }
+}
+
+/* ================= 링크 공유 · 오프라인 ================= */
+async function shareLink(){
+  const url = location.origin + location.pathname;
+  const data = { title:'골프 내기 계산기', text:'골프 내기 자동 계산기 — 핸디·배판·니어·총정산', url };
+  try{
+    if(navigator.share){ await navigator.share(data); return; }
+  }catch(e){ if(e.name === 'AbortError') return; }
+  try{ await navigator.clipboard.writeText(url); alert('링크를 복사했습니다.\n' + url); }
+  catch(e){ prompt('아래 링크를 복사하세요', url); }
+}
+if(location.protocol.startsWith('http')){
+  document.getElementById('shareSec').style.display = '';
+  if('serviceWorker' in navigator){ window.addEventListener('load', ()=>navigator.serviceWorker.register('./sw.js').catch(()=>{})); }
+}
+
+/* ================= 초기화 ================= */
+(function init(){
+  buildPlayerInputs();
+  const saved = load();
+  if(saved && saved.setup && saved.holes){
+    S = saved;
+    const played = S.holes.filter(h => h.scores.every(s => s !== null)).length;
+    fillSetupFrom(S.setup);
+    document.getElementById('resumeBox').style.display = '';
+    document.getElementById('resumeInfo').textContent = `${S.setup.players.map(p=>p.name).join(', ')} · ${played}/18홀 입력`;
+  }
+  show('setup');
+})();
+</script>
+</body>
+</html>
