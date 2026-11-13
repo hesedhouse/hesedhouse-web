@@ -3,12 +3,12 @@ import PageLayout from "../layouts/PageLayout.astro";
 import Hero from "../components/Hero.astro";
 import CTABanner from "../components/CTABanner.astro";
 import { clientBusiness, ownBusiness } from "../data/business";
+import { homeStats, sinceYear } from "../data/home";
 
+// 실적 수치는 홈과 같은 데이터(data/home.ts)를 쓴다 — 두 페이지 값이 어긋나지 않게
 const stats = [
-  { value: "500+", label: "Services" },
-  { value: "1000+", label: "Projects" },
-  { value: "500+", label: "Partners" },
-  { value: "Global", label: "Reach" },
+  ...homeStats.map((s) => ({ value: `${s.value}+`, label: s.short })),
+  { value: String(sinceYear), label: "Since" },
 ];
 ---
 

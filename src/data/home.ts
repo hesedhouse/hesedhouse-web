@@ -42,12 +42,18 @@ export const workCategoryLabels: Record<string, string> = {
   ai: "AI Solution",
 };
 
-/** 수치: 현 사이트(hesedhouse.net) 값 그대로. 최신값 확인 필요 */
+/**
+ * 실적 수치 — 홈과 About 이 함께 쓰는 단일 출처 (2026-11-13 대표: "홈 값으로 통일").
+ * 값은 리디자인 이전 홈에 있던 그대로다. 최신값이 확인되면 여기만 고치면 두 페이지에 반영된다.
+ * short 는 About 의 짧은 영문 라벨.
+ */
 export const homeStats = [
-  { value: 500, label: "PROJECTS 프로젝트" },
-  { value: 50, label: "PARTNERS 파트너사" },
-  { value: 10, label: "AI AGENTS 운영 중인 AI 에이전트" },
+  { value: 500, label: "PROJECTS 프로젝트", short: "Projects" },
+  { value: 50, label: "PARTNERS 파트너사", short: "Partners" },
+  { value: 10, label: "AI AGENTS 운영 중인 AI 에이전트", short: "AI Agents" },
 ];
+/** 설립 연도 (홈의 "SINCE 2016") */
+export const sinceYear = 2016;
 
 export const homeProcess = [
   { n: "01", title: "기획", en: "DIRECTION", desc: "목표·예산·일정을 함께 정리하고 IP·채널·제작 방식을 결정합니다.", accent: false },
