@@ -23,7 +23,7 @@ const years = all.map((p) => Number(p.data.year)).filter((y) => y > 0);
 const yearRange = `${Math.min(...years)}–${Math.max(...years)}`;
 ---
 
-<PageLayout title="WORKS — 포트폴리오" description="헤세드코퍼레이션 포트폴리오 — IP 라이선스, 굿즈 제작, 팝업 운영, 유통, 비주얼, AI 솔루션">
+<PageLayout accent="mint" title="WORKS — 포트폴리오" description="헤세드코퍼레이션 포트폴리오 — IP 라이선스, 굿즈 제작, 팝업 운영, 유통, 비주얼, AI 솔루션">
 
   <!-- Hero -->
   <section class="works-hero">
@@ -147,7 +147,7 @@ const yearRange = `${Math.min(...years)}–${Math.max(...years)}`;
     font-size: 11.5px;
     font-weight: 700;
     letter-spacing: 2.4px;
-    color: var(--hc-orange);
+    color: var(--hc-accent);
     margin: 0 0 20px;
   }
   .hero-title {
@@ -178,7 +178,7 @@ const yearRange = `${Math.min(...years)}–${Math.max(...years)}`;
     margin: 0;
   }
   .hero-meta strong {
-    color: var(--hc-orange);
+    color: var(--hc-accent);
     font-weight: 700;
     font-size: 14px;
   }
@@ -228,7 +228,7 @@ const yearRange = `${Math.min(...years)}–${Math.max(...years)}`;
     background: rgba(255, 255, 255, 0.06);
   }
   .tab-btn:focus-visible {
-    outline: 2px solid var(--hc-orange);
+    outline: 2px solid var(--hc-accent);
     outline-offset: 2px;
   }
   .tab-btn.is-active {
@@ -239,7 +239,10 @@ const yearRange = `${Math.min(...years)}–${Math.max(...years)}`;
     font-family: var(--font-mono);
     font-size: 10.5px;
     font-weight: 700;
-    color: var(--hc-orange);
+    color: var(--hc-accent);
+  }
+  .tab-btn.is-active .tab-count {
+    color: var(--hc-accent-on-light);
   }
 
   /* ── Grid ── */

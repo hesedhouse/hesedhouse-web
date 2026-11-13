@@ -9,7 +9,7 @@ const items = (await getCollection('portfolio'))
   .filter((p) => p.data.category === 'merch' && !p.data.draft)
   .sort((a, b) => a.data.order - b.data.order);
 ---
-<PageLayout title="WORKS - MERCHANDISING" description="헤세드코퍼레이션의 MD 상품 기획 및 제작 포트폴리오">
+<PageLayout accent="mint" title="WORKS - MERCHANDISING" description="헤세드코퍼레이션의 MD 상품 기획 및 제작 포트폴리오">
   <Hero dark={false} eyebrow="WORKS" title="MERCHANDISING" subtitle="MD 상품 기획 및 제작 포트폴리오" />
   <section class="portfolio">
     <div class="portfolio-inner">

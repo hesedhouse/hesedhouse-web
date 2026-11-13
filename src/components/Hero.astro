@@ -84,7 +84,7 @@ const titleHtml = renderTitle(title, accentWord);
     font-weight: 700;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    color: var(--hc-orange);
+    color: var(--hc-accent-on-light);
     margin-bottom: 16px;
   }
 
@@ -102,7 +102,15 @@ const titleHtml = renderTitle(title, accentWord);
   }
 
   .title :global(.accent) {
-    color: var(--hc-orange);
+    color: var(--hc-accent-on-light);
+  }
+
+  /* 어두운 히어로에서는 밝은 포인트 색 그대로 */
+  .hero.dark .eyebrow,
+  .hero.fullscreen .eyebrow,
+  .hero.dark .title :global(.accent),
+  .hero.fullscreen .title :global(.accent) {
+    color: var(--hc-accent);
   }
 
   .subtitle {
