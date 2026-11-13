@@ -1,316 +1,147 @@
 ---
+// 리디자인 2026 헤더 — 모든 페이지 공용.
+// transparent: 히어로 위에 투명하게 시작(스크롤 시 solid). 홈에서만 사용.
+// autohide: 아래로 스크롤하면 숨고 위로 스크롤하면 다시 나타남. 홈에서만 사용.
+import "pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css";
+import "../assets/styles/rd-base.css";
 import { services, works } from "../data/navigation";
 
 interface Props {
   transparent?: boolean;
+  autohide?: boolean;
 }
 
-const { transparent = false } = Astro.props;
+const { transparent = false, autohide = false } = Astro.props;
+const isHome = Astro.url.pathname === "/";
+const servicesHref = isHome ? "#services" : "/#services";
+
+const pages = [
+  { label: "ABOUT", href: "/about" },
+  { label: "SERVICE", href: servicesHref, children: services },
+  { label: "WORKS", href: "/works", children: works },
+  { label: "BLOG", href: "/blog" },
+  { label: "CONTACT", href: "/contact" },
+];
 ---
 
-<header class:list={["gnb", { "gnb--transparent": transparent }]} data-transparent={transparent ? "true" : "false"}>
-  <nav class="gnb-inner container">
-    <a class="brand" href="/">HESEDCORP<span class="dot">.</span></a>
+<header
+  class:list={["rd", "rd-nav", { "is-solid": !transparent }]}
+  data-transparent={transparent ? "true" : "false"}
+  data-autohide={autohide ? "true" : "false"}
+>
+  <a class="rd-logo" href="/" aria-label="HESEDCORP 홈">
+    <span class="rd-logo-mark" aria-hidden="true">H</span>
+    <span class="rd-logo-text">HESEDCORP<i>.</i></span>
+  </a>
 
-    <!-- Desktop nav -->
-    <ul class="nav-links">
-      <li><a href="/about">ABOUT</a></li>
-      <li class="has-dropdown">
-        <a href="/services">SERVICE</a>
-        <ul class="dropdown">
-          {services.map((s) => (
-            <li><a href={s.href}>{s.label}</a></li>
-          ))}
-        </ul>
-      </li>
-      <li class="has-dropdown">
-        <a href="/works">WORKS</a>
-        <ul class="dropdown">
-          {works.map((w) => (
-            <li><a href={w.href}>{w.label}</a></li>
-          ))}
-        </ul>
-      </li>
-      <li><a href="/blog">BLOG</a></li>
-      <li><a href="/contact">CONTACT</a></li>
+  <nav aria-label="주 메뉴">
+    <ul class="rd-menu">
+      {pages.map((p) => (
+        <li>
+          <a href={p.href}>{p.label}</a>
+          {p.children && (
+            <ul class="rd-dd">
+              {p.children.map((c) => (
+                <li><a href={c.href}>{c.label}</a></li>
+              ))}
+            </ul>
+          )}
+        </li>
+      ))}
     </ul>
-
-    <!-- Mobile hamburger -->
-    <button class="burger" aria-label="메뉴 열기" aria-expanded="false">
-      <span></span><span></span>
-    </button>
   </nav>
+
+  <div class="rd-nav-right">
+    <div class="rd-clock" aria-hidden="true">GOYANG --:--</div>
+    <a class="rd-pill rd-pill--light" href="/contact">프로젝트 문의</a>
+    <button class="rd-pill rd-pill--dark rd-menu-btn" type="button" aria-expanded="false" aria-controls="rdOverlay">Menu ≡</button>
+  </div>
 </header>
 
-<!-- Mobile overlay (sibling of header — header's backdrop-filter creates a containing block that would trap a position:fixed child to the 48px header bounds) -->
-<div class="mobile-overlay" aria-hidden="true">
-  <div class="mobile-nav">
-    <a class="mobile-brand" href="/">HESEDCORP<span class="dot">.</span></a>
-    <ul class="mobile-links">
-      <li><a href="/about">ABOUT</a></li>
-      <li>
-        <span class="mobile-group-label">SERVICE</span>
-        <ul>
-          {services.map((s) => (
-            <li><a href={s.href}>{s.label}</a></li>
-          ))}
-        </ul>
-      </li>
-      <li>
-        <span class="mobile-group-label">WORKS</span>
-        <ul>
-          {works.map((w) => (
-            <li><a href={w.href}>{w.label}</a></li>
-          ))}
-        </ul>
-      </li>
-      <li><a href="/blog">BLOG</a></li>
-      <li><a href="/contact">CONTACT</a></li>
+<!-- 메뉴 오버레이: header 의 backdrop-filter 가 fixed 자식을 가두므로 형제로 둔다 -->
+<div class="rd rd-overlay" id="rdOverlay" aria-hidden="true">
+  <div class="rd-overlay-bar">
+    <a class="rd-logo" href="/" tabindex="-1">
+      <span class="rd-logo-mark" aria-hidden="true">H</span>
+      <span class="rd-logo-text">HESEDCORP<i>.</i></span>
+    </a>
+    <button class="rd-pill rd-pill--dark rd-menu-close" type="button" tabindex="-1">Close ×</button>
+  </div>
+  <div class="rd-overlay-body">
+    <ul class="rd-overlay-main">
+      {pages.map((p, i) => (
+        <li><a href={p.href} tabindex="-1"><small>0{i + 1}</small>{p.label}</a></li>
+      ))}
     </ul>
+    <div class="rd-overlay-col">
+      <h5>Services</h5>
+      <ul>{services.map((s) => <li><a href={s.href} tabindex="-1">{s.label}</a></li>)}</ul>
+    </div>
+    <div class="rd-overlay-col">
+      <h5>Works</h5>
+      <ul>{works.map((w) => <li><a href={w.href} tabindex="-1">{w.label}</a></li>)}</ul>
+    </div>
+    <div class="rd-overlay-col">
+      <h5>Contact</h5>
+      <ul>
+        <li><a href="tel:031-994-7740" tabindex="-1">031.994.7740</a></li>
+        <li><a href="mailto:hesed@hesedhouse.net" tabindex="-1">hesed@hesedhouse.net</a></li>
+        <li><a href="http://pf.kakao.com/_Kxnkxou" target="_blank" rel="noopener" tabindex="-1">카카오톡 @헤세드하우스</a></li>
+        <li><a href="https://www.instagram.com/hesed.palace" target="_blank" rel="noopener" tabindex="-1">Instagram @hesed.palace</a></li>
+      </ul>
+    </div>
   </div>
 </div>
 
-<style>
-  /* ── Sticky bar ── */
-  .gnb {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 9000;
-    height: 48px;
-    background: rgba(0, 0, 0, 0.80);
-    backdrop-filter: saturate(180%) blur(20px);
-    -webkit-backdrop-filter: saturate(180%) blur(20px);
-    transition: background 0.35s var(--ease-std), backdrop-filter 0.35s;
-  }
-
-  /* Transparent mode (over hero image) */
-  .gnb--transparent {
-    background: transparent;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
-
-  /* Scrolled state — dark bar fades in */
-  .gnb--transparent.gnb--scrolled {
-    background: rgba(0, 0, 0, 0.80);
-    backdrop-filter: saturate(180%) blur(20px);
-    -webkit-backdrop-filter: saturate(180%) blur(20px);
-  }
-
-  .gnb-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 100%;
-  }
-
-  /* ── Brand ── */
-  .brand,
-  .mobile-brand {
-    font-family: var(--font-display);
-    font-size: 1.125rem;
-    font-weight: 700;
-    color: var(--hc-white);
-    letter-spacing: -0.3px;
-  }
-
-  .dot {
-    color: var(--hc-orange);
-  }
-
-  /* ── Desktop links ── */
-  .nav-links {
-    display: flex;
-    gap: 32px;
-    align-items: center;
-  }
-
-  .nav-links > li > a {
-    font-family: var(--font-display);
-    font-size: 0.8125rem;
-    font-weight: 500;
-    color: var(--hc-white-80);
-    letter-spacing: 0.5px;
-    transition: color 0.2s var(--ease-std);
-    padding: 14px 0;
-    display: block;
-  }
-
-  .nav-links > li > a:hover {
-    color: var(--hc-white);
-  }
-
-  /* ── Dropdown ── */
-  .has-dropdown {
-    position: relative;
-  }
-
-  .dropdown {
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    min-width: 220px;
-    background: rgba(0, 0, 0, 0.88);
-    backdrop-filter: saturate(180%) blur(20px);
-    -webkit-backdrop-filter: saturate(180%) blur(20px);
-    border-radius: var(--r-md);
-    padding: 8px 0;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.18s var(--ease-std), visibility 0.18s;
-    pointer-events: none;
-  }
-
-  .has-dropdown:hover .dropdown {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-  }
-
-  .dropdown li a {
-    display: block;
-    padding: 8px 20px;
-    font-size: 0.8125rem;
-    font-weight: 400;
-    color: var(--hc-white-80);
-    transition: color 0.15s, background 0.15s;
-  }
-
-  .dropdown li a:hover {
-    color: var(--hc-orange);
-    background: rgba(255, 255, 255, 0.06);
-  }
-
-  /* ── Burger (mobile) ── */
-  .burger {
-    display: none;
-    flex-direction: column;
-    justify-content: center;
-    gap: 5px;
-    width: 36px;
-    height: 36px;
-    padding: 8px 6px;
-  }
-
-  .burger span {
-    display: block;
-    height: 1.5px;
-    background: var(--hc-white);
-    border-radius: 1px;
-    transition: transform 0.3s var(--ease-std), opacity 0.2s;
-  }
-
-  /* ── Mobile overlay ── */
-  .mobile-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 8999;
-    background: rgba(0, 0, 0, 0.95);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s var(--ease-std), visibility 0.3s;
-    overflow-y: auto;
-  }
-
-  .mobile-overlay[aria-hidden="false"] {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  .mobile-nav {
-    padding: 72px 28px 48px;
-  }
-
-  .mobile-brand {
-    display: block;
-    font-size: 1.5rem;
-    margin-bottom: 40px;
-  }
-
-  .mobile-links > li {
-    margin-bottom: 28px;
-  }
-
-  .mobile-links > li > a {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: var(--hc-white);
-  }
-
-  .mobile-group-label {
-    display: block;
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--hc-white-48);
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 12px;
-  }
-
-  .mobile-links ul {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding-left: 4px;
-  }
-
-  .mobile-links ul a {
-    font-size: 1.0625rem;
-    font-weight: 400;
-    color: var(--hc-white-80);
-  }
-
-  .mobile-links ul a:hover {
-    color: var(--hc-orange);
-  }
-
-  /* ── Responsive ── */
-  @media (max-width: 768px) {
-    .nav-links {
-      display: none;
-    }
-    .burger {
-      display: flex;
-    }
-  }
-</style>
-
 <script>
-  const header = document.querySelector('.gnb') as HTMLElement;
-  const burger = document.querySelector('.burger') as HTMLButtonElement;
-  const overlay = document.querySelector('.mobile-overlay') as HTMLDivElement;
+  const nav = document.querySelector<HTMLElement>(".rd-nav");
+  const overlay = document.querySelector<HTMLElement>("#rdOverlay");
 
-  // Scroll handling for transparent header
-  if (header?.dataset.transparent === 'true') {
+  if (nav) {
+    // 스크롤: 투명 → solid, (홈) 아래로 스크롤 시 숨김
+    const transparent = nav.dataset.transparent === "true";
+    const autohide = nav.dataset.autohide === "true";
+    let lastY = window.scrollY;
     const onScroll = () => {
-      if (window.scrollY > 60) {
-        header.classList.add('gnb--scrolled');
-      } else {
-        header.classList.remove('gnb--scrolled');
-      }
+      const y = window.scrollY;
+      if (transparent) nav.classList.toggle("is-solid", y > 60);
+      if (autohide) nav.classList.toggle("is-hidden", y > 160 && y > lastY);
+      lastY = y;
     };
-    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
+
+    // 실시간 시계 (KST)
+    const clock = nav.querySelector<HTMLElement>(".rd-clock");
+    if (clock) {
+      const fmt = new Intl.DateTimeFormat("ko-KR", { hour12: false, hour: "2-digit", minute: "2-digit", timeZone: "Asia/Seoul" });
+      const tick = () => { clock.textContent = `GOYANG ${fmt.format(new Date())}`; };
+      tick();
+      setInterval(tick, 1000);
+    }
   }
 
-  // Mobile menu
-  burger?.addEventListener('click', () => {
-    const isOpen = overlay.getAttribute('aria-hidden') === 'false';
-    overlay.setAttribute('aria-hidden', isOpen ? 'true' : 'false');
-    burger.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
-    document.body.style.overflow = isOpen ? '' : 'hidden';
-  });
-
-  overlay?.querySelectorAll('a').forEach((link) => {
-    link.addEventListener('click', () => {
-      overlay.setAttribute('aria-hidden', 'true');
-      burger.setAttribute('aria-expanded', 'false');
-      document.body.style.overflow = '';
+  // 메뉴 오버레이
+  if (nav && overlay) {
+    const openBtn = nav.querySelector<HTMLButtonElement>(".rd-menu-btn");
+    const closeBtn = overlay.querySelector<HTMLButtonElement>(".rd-menu-close");
+    const focusables = () => Array.from(overlay.querySelectorAll<HTMLElement>("a,button"));
+    const setOpen = (open: boolean) => {
+      overlay.setAttribute("aria-hidden", open ? "false" : "true");
+      openBtn?.setAttribute("aria-expanded", open ? "true" : "false");
+      focusables().forEach((el) => (el.tabIndex = open ? 0 : -1));
+      document.documentElement.style.overflow = open ? "hidden" : "";
+      // 홈의 스무스 스크롤(Lenis)이 듣는다
+      window.dispatchEvent(new CustomEvent(open ? "rd:menu-open" : "rd:menu-close"));
+      if (open) closeBtn?.focus(); else openBtn?.focus();
+    };
+    openBtn?.addEventListener("click", () => setOpen(true));
+    closeBtn?.addEventListener("click", () => setOpen(false));
+    overlay.addEventListener("click", (e) => {
+      if ((e.target as HTMLElement).closest("a")) setOpen(false);
     });
-  });
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && overlay.getAttribute("aria-hidden") === "false") setOpen(false);
+    });
+  }
 </script>

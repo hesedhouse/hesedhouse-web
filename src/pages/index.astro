@@ -1,1482 +1,313 @@
 ---
-import PageLayout from "../layouts/PageLayout.astro";
-import LogoIntro from "../components/LogoIntro.astro";
-import ServiceCard from "../components/ServiceCard.astro";
-import CTABanner from "../components/CTABanner.astro";
+// 홈 — 리디자인 2026. 시안: 10_공용자산/웹사이트_소스/hesedcorp-homepage-2026/design
+// 스타일 rd-home.css · 모션 scripts/redesign/home.js · 콘텐츠 data/home.ts
+import "../assets/styles/rd-home.css";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { getCollection } from "astro:content";
+import {
+  homeServices, rotatingWords, introKeywords, marqueeWords, workCategoryLabels,
+  homeStats, homeProcess, homePartners, partnersArePlaceholder, homeFaq, contactLinks,
+} from "../data/home";
 
-const services = [
-  {
-    eyebrow: "01",
-    title: "IP LICENSE & COLLABO",
-    description: "IP 라이선스 확보부터 브랜드 콜라보레이션까지, 최적의 파트너십을 설계합니다.",
-    href: "/iplicensecollabo",
-  },
-  {
-    eyebrow: "02",
-    title: "MERCHANDISING",
-    description: "트렌디한 굿즈와 MD 상품을 기획, 디자인, 생산합니다.",
-    href: "/merchandising",
-  },
-  {
-    eyebrow: "03",
-    title: "DISTRIBUTION",
-    description: "온·오프라인 유통 채널을 통해 글로벌 마켓에 진출합니다.",
-    href: "/distribution",
-  },
-  {
-    eyebrow: "04",
-    title: "POP-UP OPERATION",
-    description: "팝업스토어, 전시, 이벤트의 기획부터 운영까지 원스톱으로.",
-    href: "/popupoperation",
-  },
-  {
-    eyebrow: "05",
-    title: "VISUAL STUDIO",
-    description: "브랜드 아이덴티티를 완성하는 비주얼 콘텐츠를 제작합니다.",
-    href: "/visualstudio",
-  },
-  {
-    eyebrow: "06",
-    title: "AI SOLUTION",
-    description: "AI로 업무를 설계하고, 비즈니스를 자동화합니다. AI 여론 리서치 서비스 MindScope Korea를 운영합니다.",
-    href: "/ai-solution",
-    accent: true,
-  },
-  {
-    eyebrow: "07",
-    title: "INVESTMENT & BIZ DEV",
-    description: "IP·콘텐츠·테크 분야의 성장 가능성을 발굴하고, 전략적 투자와 사업개발로 가치를 만듭니다.",
-    href: "/investment",
-    accent: true,
-  },
-];
+// 작업 아카이브: 포트폴리오 컬렉션에서 공개 항목을 order 순으로 8개
+const works = (await getCollection("portfolio"))
+  .filter((p) => !p.data.draft && p.data.image)
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 8);
+const tallPattern = [true, false, true, false, false, true, false, true];
+const pad = (n: number, len: number) => String(n).padStart(len, "0");
+const marquee = [...marqueeWords, ...marqueeWords.slice(0, 2)];
 ---
 
-<PageLayout
+<BaseLayout
   title="HESEDCORP. | AI-Powered Business Partner"
   description="AI를 기반으로 IP 비즈니스, 콘텐츠, 커머스를 설계하는 기업, 헤세드코퍼레이션"
-  transparentHeader
+  bodyClass="rd rd-home"
 >
-  <LogoIntro />
+  <script is:inline slot="head">
+    // 모션을 쓸 수 있는 환경에서만 "처음엔 숨김" 상태를 건다. 6초 안에 모션 스크립트가 못 뜨면 전부 보이게 되돌린다.
+    (function () {
+      var d = document.documentElement, m = window.matchMedia;
+      if (m("(prefers-reduced-motion: reduce)").matches) return;
+      d.classList.add("rd-js", "rd-intro");
+      if (m("(min-width: 901px)").matches && m("(hover: hover) and (pointer: fine)").matches) d.classList.add("rd-3d");
+      setTimeout(function () {
+        if (!window.__rdReady) d.classList.remove("rd-js", "rd-intro", "rd-3d");
+      }, 6000);
+    })();
+  </script>
 
-  <!-- ══════════════════════════════════════════
-       INTERACTIVE HERO — Canvas particle network
-       ══════════════════════════════════════════ -->
-  <section class="hero-main" id="hero">
-    <!-- Canvas for particle network -->
-    <canvas class="hero-canvas" id="heroCanvas"></canvas>
+  <div class="pre" id="pre" aria-hidden="true">
+    <div class="lbl">HESEDCORP. / LOADING</div>
+    <div class="cnt" id="preCnt">0</div>
+  </div>
 
-    <!-- Mouse-following glow -->
-    <div class="hero-glow" id="heroGlow"></div>
+  <Header transparent autohide />
 
-    <!-- Dark gradient base -->
-    <div class="hero-bg"></div>
-
-    <!-- Content -->
-    <div class="hero-content">
-      <p class="hero-eyebrow" data-animate="fade">HESEDCORP.</p>
-
-      <h1 class="hero-title" data-animate="chars">
-        <span class="hero-title-line">AI로 비즈니스를</span>
-        <span class="hero-title-line"><span class="hero-accent">설계</span>합니다</span>
-      </h1>
-
-      <p class="hero-subtitle" data-animate="fade">
-        IP 라이선스, 굿즈 제작, 유통, 팝업 운영, 커머스까지<br class="mobile-br" />
-        10년의 현장 경험 위에 AI를 더합니다
-      </p>
-
-      <div class="hero-actions" data-animate="fade">
-        <a class="hero-btn hero-btn--primary" href="/contact">
-          <span class="btn-pulse"></span>
-          프로젝트 문의
-        </a>
-        <a class="hero-btn hero-btn--ghost" href="/ai-solution">AI Solution →</a>
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-grid"></div>
+      <div class="hero-glow"></div>
+      <div class="streaks" aria-hidden="true">
+        <span class="streak" style="left:5%;top:14%;width:220px"></span>
+        <span class="streak soft" style="left:40%;top:9%;width:420px"></span>
+        <span class="streak a" style="left:62%;top:22%;width:300px"></span>
+        <span class="streak soft" style="left:10%;top:72%;width:520px"></span>
+        <span class="streak" style="left:70%;top:84%;width:260px"></span>
+        <span class="streak a" style="left:30%;top:92%;width:180px"></span>
       </div>
 
-      <!-- Stats bar with count-up -->
-      <div class="hero-stats" data-animate="fade" id="heroStats">
-        <div class="stat">
-          <span class="stat-num"><span class="count-up" data-target="500">0</span><span class="stat-plus">+</span></span>
-          <span class="stat-label">프로젝트</span>
-        </div>
-        <div class="stat-divider"></div>
-        <div class="stat">
-          <span class="stat-num"><span class="count-up" data-target="50">0</span><span class="stat-plus">+</span></span>
-          <span class="stat-label">파트너사</span>
-        </div>
-        <div class="stat-divider"></div>
-        <div class="stat">
-          <span class="stat-num"><span class="count-up" data-target="10">0</span><span class="stat-plus">+</span></span>
-          <span class="stat-label">AI 에이전트</span>
-        </div>
-        <div class="stat-divider"></div>
-        <div class="stat">
-          <span class="stat-num"><span class="count-up" data-target="10">0</span><span class="stat-plus">yr</span></span>
-          <span class="stat-label">Since 2016</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Scroll indicator -->
-    <div class="scroll-hint" data-animate="fade">
-      <div class="scroll-line"></div>
-    </div>
-  </section>
-
-  <!-- ══════════════════════════════════════════
-       INTERACTIVE ORBITAL — Service Ecosystem
-       ══════════════════════════════════════════ -->
-  <section class="orbital-section" id="orbitalSection">
-    <div class="orbital-bg"></div>
-
-    <div class="orbital-header">
-      <p class="orbital-eyebrow">ECOSYSTEM</p>
-      <h2 class="orbital-title">비즈니스의 모든 궤도</h2>
-      <p class="orbital-desc">IP 라이선스부터 AI 솔루션까지, 7개 서비스가 하나의 생태계로 연결됩니다</p>
-    </div>
-
-    <div class="orbital-stage" id="orbitalStage">
-      <!-- SVG orbit rings -->
-      <svg class="orbit-svg" viewBox="0 0 700 700" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <radialGradient id="hubGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#f39800" stop-opacity="0.15"/>
-            <stop offset="100%" stop-color="#f39800" stop-opacity="0"/>
-          </radialGradient>
-        </defs>
-        <!-- Outer ring -->
-        <circle cx="350" cy="350" r="310" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1" stroke-dasharray="4 6"/>
-        <!-- Inner ring -->
-        <circle cx="350" cy="350" r="190" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1" stroke-dasharray="4 6"/>
-        <!-- Hub glow -->
-        <circle cx="350" cy="350" r="120" fill="url(#hubGlow)"/>
-        <!-- Connection lines (drawn by JS) -->
-        <g id="orbitConnections"></g>
-      </svg>
-
-      <!-- Central hub -->
-      <div class="orbital-hub" id="orbitalHub">
-        <div class="hub-pulse"></div>
-        <div class="hub-inner">
-          <span class="hub-logo">HESED</span>
-          <span class="hub-sub">CORP.</span>
+      <div class="hero-copy">
+        <div class="eyebrow">AI Business Partner · Since 2016</div>
+        <h1 class="hero-title">AI로<br />비즈니스를<br /><span class="l2">설계합니다<span class="dot">.</span></span></h1>
+        <p class="hero-sub">10년의 현장 감각<span class="dot">.</span> <span class="acc">AI의 속도.</span></p>
+        <div class="hero-actions">
+          <a class="btn btn--primary" href="/contact">프로젝트 문의 <span class="arr">→</span></a>
+          <a class="btn btn--ghost" href="#services">서비스 살펴보기</a>
         </div>
       </div>
 
-      <!-- Orbit nodes — inner ring (3) -->
-      <div class="orbit-ring-group" id="innerRing" data-radius="190" data-speed="0.0003">
-        <a href="/iplicensecollabo" class="orbital-node" data-index="0" data-color="#f39800">
-          <div class="node-dot"></div>
-          <span class="node-label">IP LICENSE</span>
-          <div class="node-card">
-            <span class="node-num">01</span>
-            <span class="node-title">IP LICENSE & COLLABO</span>
-            <span class="node-desc">IP 라이선스 확보부터 브랜드 콜라보레이션까지</span>
-          </div>
-        </a>
-        <a href="/merchandising" class="orbital-node" data-index="1" data-color="#64c8ff">
-          <div class="node-dot"></div>
-          <span class="node-label">MERCH</span>
-          <div class="node-card">
-            <span class="node-num">02</span>
-            <span class="node-title">MERCHANDISING</span>
-            <span class="node-desc">트렌디한 굿즈와 MD 상품을 기획·디자인·생산</span>
-          </div>
-        </a>
-        <a href="/distribution" class="orbital-node" data-index="2" data-color="#a78bfa">
-          <div class="node-dot"></div>
-          <span class="node-label">DISTRIBUTION</span>
-          <div class="node-card">
-            <span class="node-num">03</span>
-            <span class="node-title">DISTRIBUTION</span>
-            <span class="node-desc">온·오프라인 유통 채널로 글로벌 마켓 진출</span>
-          </div>
-        </a>
+      <div class="obj" aria-hidden="true"><div class="rim"></div><div class="cube"></div><div class="shadow"></div></div>
+
+      <a class="hero-side" href="/ai-solution" aria-label="AI Solution 바로가기">
+        <div class="tab">H.</div>
+        <div class="tab2"><span>AI SOLUTION</span></div>
+      </a>
+
+      <div class="hero-meta">
+        <div class="scroll"><i></i><span class="mono">Scroll</span></div>
+        <span class="mono est">Est. 2016 · Goyang, Korea · Working with IP, Goods &amp; AI</span>
       </div>
+    </section>
 
-      <!-- Orbit nodes — outer ring (4) -->
-      <div class="orbit-ring-group" id="outerRing" data-radius="310" data-speed="-0.00018">
-        <a href="/popupoperation" class="orbital-node" data-index="0" data-color="#34d399">
-          <div class="node-dot"></div>
-          <span class="node-label">POP-UP</span>
-          <div class="node-card">
-            <span class="node-num">04</span>
-            <span class="node-title">POP-UP OPERATION</span>
-            <span class="node-desc">팝업스토어·전시·이벤트 기획부터 운영까지</span>
-          </div>
-        </a>
-        <a href="/visualstudio" class="orbital-node" data-index="1" data-color="#f472b6">
-          <div class="node-dot"></div>
-          <span class="node-label">VISUAL</span>
-          <div class="node-card">
-            <span class="node-num">05</span>
-            <span class="node-title">VISUAL STUDIO</span>
-            <span class="node-desc">브랜드 아이덴티티를 완성하는 비주얼 콘텐츠</span>
-          </div>
-        </a>
-        <a href="/ai-solution" class="orbital-node" data-index="2" data-color="#f39800">
-          <div class="node-dot"></div>
-          <span class="node-label">AI</span>
-          <div class="node-card">
-            <span class="node-num">06</span>
-            <span class="node-title">AI SOLUTION</span>
-            <span class="node-desc">AI로 업무를 설계하고 비즈니스를 자동화</span>
-          </div>
-        </a>
-        <a href="/investment" class="orbital-node" data-index="3" data-color="#fbbf24">
-          <div class="node-dot"></div>
-          <span class="node-label">INVEST</span>
-          <div class="node-card">
-            <span class="node-num">07</span>
-            <span class="node-title">INVESTMENT & BIZ DEV</span>
-            <span class="node-desc">IP·콘텐츠·테크 분야의 전략적 투자와 사업개발</span>
-          </div>
-        </a>
-      </div>
-
-      <!-- Drag hint -->
-      <div class="orbital-hint" id="orbitalHint">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M12 2v4m0 12v4M2 12h4m12 0h4M6.34 6.34l2.83 2.83m5.66 5.66l2.83 2.83M17.66 6.34l-2.83 2.83m-5.66 5.66l-2.83 2.83"/>
-        </svg>
-        <span>드래그하여 회전</span>
-      </div>
-    </div>
-
-    <!-- Mobile fallback list -->
-    <div class="orbital-mobile-list">
-      {services.map((s, i) => (
-        <a href={s.href} class="orbital-mobile-item">
-          <span class="mobile-item-num">{s.eyebrow}</span>
-          <div class="mobile-item-text">
-            <span class="mobile-item-title">{s.title}</span>
-            <span class="mobile-item-desc">{s.description}</span>
-          </div>
-          <span class="mobile-item-arrow">→</span>
-        </a>
-      ))}
-    </div>
-  </section>
-
-  <section class="services-section">
-    <div class="services-inner">
-      <h2 class="services-title">Services</h2>
-      <div class="services-grid">
-        {services.map((s) => (
-          <ServiceCard
-            eyebrow={s.eyebrow}
-            title={s.title}
-            description={s.description}
-            href={s.href}
-            accent={s.accent ?? false}
-          />
+    <!-- SERVICE INDEX -->
+    <div class="wrap">
+      <div class="svc-index">
+        {homeServices.map((s) => (
+          <a class="item" href={`#svc-${s.num}`} data-svc={s.num}>
+            <span class={`ico ${s.ico}`}><b></b></span>
+            <span><span class="num">{s.num}</span><span class="name">{s.short}</span></span>
+          </a>
         ))}
       </div>
     </div>
-  </section>
 
-  <CTABanner
-    title="프로젝트를 함께 시작하세요"
-    subtitle="IP 비즈니스의 A to Z, 헤세드코퍼레이션이 함께합니다."
-    buttonText="CONTACT US"
-    buttonHref="/contact"
-  />
-</PageLayout>
+    <!-- INTRO -->
+    <section class="section wrap intro-sec">
+      <div class="intro">
+        <div class="intro-left">
+          <div>
+            <div class="eyebrow">About HESEDCORP</div>
+            <div class="chip-row"><span class="chip">현장 경험 10년</span><span class="chip">AI 속도</span><span class="chip">하나의 창구</span></div>
+          </div>
+        </div>
+        <div class="intro-right">
+          <h2 class="h-section">하나의 팀이<br /><span class="dim">당신의</span> <span class="acc rot" data-words={rotatingWords.join(",")}>{rotatingWords[0]}</span> 모양이 됩니다.</h2>
+          <p class="lead">IP 라이선스 확보부터 굿즈 기획·생산, 온·오프라인 유통, 팝업 운영, 비주얼 콘텐츠, AI 자동화까지. 7개 서비스가 하나의 생태계로 연결되어 있어, 여러 업체를 오가는 대신 HESEDCORP 한 곳과 이야기하면 됩니다.</p>
+          <div class="kw-list">
+            {introKeywords.map((k, i) => <span class={i % 2 === 0 ? "on" : undefined}>{k}</span>)}
+          </div>
+        </div>
+      </div>
+    </section>
 
-<!-- ═══════════════════════════════════════════
-     INTERACTIVE SCRIPTS
-     ═══════════════════════════════════════════ -->
+    <!-- FEATURE VISUAL (PLACEHOLDER: 실제 프로젝트 사진·영상으로 교체 예정) -->
+    <section class="wrap feature">
+      <div class="frame">
+        <div class="band"></div><div class="band b"></div><div class="band c"></div>
+        <div class="cap"><span class="mono">Fig. 01 · Pop-up Store</span><span class="mono">Field Record</span></div>
+        <div class="cap2"><span class="mono">00:00:12</span></div>
+        <div class="title">기획부터 운영까지<span class="dot">.</span><br />한 번에.</div>
+        <div class="cap3"><span class="mono">실제 프로젝트 사진 또는 영상으로 교체 · 현장 기록</span></div>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section class="section wrap services" id="services">
+      <div class="head">
+        <div>
+          <div class="eyebrow mb">Services</div>
+          <h2 class="h-section">7가지 방식으로<br />함께 일합니다<span class="dot">.</span></h2>
+        </div>
+        <p class="lead">각 서비스는 단독으로도, 함께 묶어서도 진행합니다. IP 하나로 굿즈·유통·팝업까지 이어지는 흐름을 한 팀이 설계합니다.</p>
+      </div>
+      <div class="svc-list">
+        {homeServices.map((s) => (
+          <a class:list={["svc-row", { hl: s.highlight }]} href={s.href} id={`svc-${s.num}`} data-label={s.en}>
+            <div class="num">{s.num}</div>
+            <div class="ttl">{s.title}<small>{s.en}</small></div>
+            <div class="desc">{s.desc}</div>
+            <div class="go" aria-hidden="true">→</div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- MARQUEE -->
+    <div class="marquee" aria-hidden="true">
+      <div class="mq-wrap">
+        <div class="mq-track">
+          {marquee.map((w, i) => (<><span class={i % 2 === 1 ? "o" : undefined}>{w}</span><i></i></>))}
+        </div>
+      </div>
+    </div>
+
+    <!-- WORKS -->
+    <section class="section wrap works">
+      <div class="head">
+        <div>
+          <div class="eyebrow mb">Works · Archive</div>
+          <h2 class="h-section">아이디어가<br />형태를 갖춥니다<span class="dot">.</span></h2>
+        </div>
+        <a class="btn btn--ghost" href="/works">전체 작업 보기 →</a>
+      </div>
+      <div class="works-grid">
+        {works.map((w, i) => (
+          <a class:list={["work", { tall: tallPattern[i] }]} href="/works">
+            <div class="thumb">
+              <img src={w.data.image} alt={w.data.title} loading="lazy" decoding="async" />
+              <span class="tag">{workCategoryLabels[w.data.category]}</span>
+              <span class="idx">{pad(i + 1, 3)}</span>
+            </div>
+            <div class="cap"><b>{w.data.title}</b><span>{w.data.year}</span></div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- PARTNERS (PLACEHOLDER: data/home.ts 의 homePartners 를 실제 파트너사로 교체) -->
+    <section class="section flush wrap partners">
+      <div class="head">
+        <div>
+          <div class="eyebrow mb">Partners</div>
+          <h2 class="h-section">함께한<br />파트너<span class="dot">.</span></h2>
+        </div>
+        <p class="lead">IP 홀더, 유통사, 리테일, 플랫폼까지. 2016년부터 50개가 넘는 파트너와 프로젝트를 함께했습니다.</p>
+      </div>
+      <div class="partner-grid">
+        {homePartners.map((p, i) => (
+          <div class="partner">
+            <span class="ind">{p.industry}</span>
+            <span class="idx">{pad(i + 1, 2)}</span>
+            <span class="mark">{p.logo ? <img src={p.logo} alt={p.name ?? ""} loading="lazy" /> : <><i></i>{p.name ?? "PARTNER"}</>}</span>
+          </div>
+        ))}
+      </div>
+      <div class="note">
+        <span class="mono">{partnersArePlaceholder ? `로고 ${homePartners.length}개 · 실제 파트너사 로고로 교체 예정` : ""}</span>
+        <span class="mono">50+ partners · 2016–2026</span>
+      </div>
+    </section>
+
+    <!-- STATS -->
+    <section class="section flush wrap stats">
+      <div class="head">
+        <div class="eyebrow mb">Studio</div>
+        <h2 class="h-section">2016년부터<span class="dot">.</span><br /><span class="dim">하나의 창구로.</span></h2>
+      </div>
+      <div class="stat-grid">
+        {homeStats.map((s) => (
+          <div class="stat"><div class="v" data-count={s.value}>{s.value}<sup>+</sup></div><div class="k">{s.label}</div></div>
+        ))}
+        <div class="stat acc"><div class="v">10년의 현장,<br />하나의 담당자.</div><div class="k">SINCE 2016 · GOYANG</div></div>
+      </div>
+    </section>
+
+    <!-- PROCESS -->
+    <section class="section flush wrap process">
+      <div class="head">
+        <div>
+          <div class="eyebrow mb">Process</div>
+          <h2 class="h-section">사람이 방향을 잡고<span class="dot">,</span><br />AI가 속도를 냅니다<span class="dot">.</span></h2>
+        </div>
+        <p class="lead">기획·검수·커뮤니케이션은 10년 차 담당자가, 리서치·시안·문서·반복 업무는 AI 에이전트가 맡습니다. 결과물의 품질은 사람이 책임집니다.</p>
+      </div>
+      <div class="proc-grid">
+        {homeProcess.map((p) => (
+          <div class="proc">
+            <div class:list={["ico", { a: p.accent }]}><b></b></div>
+            <div><div class="n">{p.n}</div><div class="t">{p.title}<small>{p.en}</small></div></div>
+            <div class="d">{p.desc}</div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- COMPARE -->
+    <section class="section flush wrap compare">
+      <div class="head">
+        <div class="eyebrow mb">Why HESEDCORP</div>
+        <h2 class="h-section">전달이 아니라<span class="dot">,</span><br /><span class="dim">오케스트레이션.</span></h2>
+      </div>
+      <div class="cmp-grid">
+        <div class="cmp">
+          <h4><span>일반적인 방식</span><span>5~10개 업체</span></h4>
+          <div class="flow">
+            <div class="node you">클라이언트 <em>YOU</em></div>
+            <div class="arrow">↓ ↓ ↓</div>
+            <div class="row"><div class="node">라이선스 대행</div><div class="node">굿즈 공장</div><div class="node">디자인 스튜디오</div></div>
+            <div class="row"><div class="node">유통사</div><div class="node">팝업 운영사</div><div class="node">영상 제작사</div></div>
+            <div class="row"><div class="node">마케팅</div><div class="node">개발사</div><div class="node">회계·정산</div></div>
+          </div>
+          <p>각 업체와 따로 계약하고, 따로 회의하고, 따로 정산합니다. 일정이 어긋나면 책임 소재가 흐려집니다.</p>
+        </div>
+        <div class="cmp me">
+          <h4><span>HESEDCORP 방식</span><span>1개의 창구</span></h4>
+          <div class="flow">
+            <div class="node you">클라이언트 <em>YOU</em></div>
+            <div class="arrow">↓</div>
+            <div class="node hub">HESEDCORP 담당자 + AI 에이전트 <em>ONE CONTACT</em></div>
+            <div class="arrow">↓ ↓ ↓</div>
+            <div class="row"><div class="node">IP · 콜라보</div><div class="node">굿즈 · MD</div><div class="node">유통 · 해외</div></div>
+            <div class="row"><div class="node">팝업 · 전시</div><div class="node">비주얼</div><div class="node">AI · 투자</div></div>
+          </div>
+          <p>계약도, 회의도, 정산도 한 곳. 7개 서비스를 한 팀이 조율하니 일정과 품질을 끝까지 책임집니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ (placeholder 답변은 화면에 "(예시 문구)" 로 표시됨) -->
+    <section class="section flush wrap">
+      <div class="faq">
+        <div>
+          <div class="eyebrow mb">FAQ</div>
+          <h2 class="h-section">알아두면<br />좋은 것들<span class="dot">.</span></h2>
+          <p class="lead">더 궁금한 점은 카카오톡 @헤세드하우스 또는 031.994.7740으로 문의하세요.</p>
+        </div>
+        <div class="faq-list">
+          {homeFaq.map((f, i) => (
+            <div class="faq-item">
+              <button class="q" type="button" aria-expanded="false" aria-controls={`faq-a-${i}`}><span>{f.q}</span><span class="pm" aria-hidden="true">+</span></button>
+              <div class="a" id={`faq-a-${i}`}>{f.a}{f.placeholder && <em class="ph">(예시 문구)</em>}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+      <div class="glow"></div>
+      <div class="streaks" aria-hidden="true">
+        <span class="streak soft" style="left:8%;top:30%;width:300px"></span>
+        <span class="streak a" style="left:70%;top:70%;width:260px"></span>
+        <span class="streak" style="left:20%;top:80%;width:160px"></span>
+      </div>
+      <h2>다음 프로젝트<span class="dot">,</span><br />함께 설계합시다<span class="dot">.</span></h2>
+      <p>간단한 메모만 남겨도 됩니다. 담당자가 1영업일 안에 연락드립니다.</p>
+      <div class="actions">
+        <a class="btn btn--primary" href="/contact">프로젝트 문의 →</a>
+        <a class="btn btn--ghost" href={contactLinks.kakao} target="_blank" rel="noopener">카카오톡 @헤세드하우스</a>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
 <script>
-  // ── 1. Particle Network Canvas ──
-  (function initParticles() {
-    const canvas = document.getElementById('heroCanvas') as HTMLCanvasElement;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    let w = 0, h = 0;
-    let mouse = { x: -9999, y: -9999 };
-    let particles: Particle[] = [];
-    let raf: number;
-
-    const ORANGE = { r: 243, g: 152, b: 0 };
-    const CYAN   = { r: 100, g: 200, b: 255 };
-    const WHITE  = { r: 255, g: 255, b: 255 };
-
-    const COLORS = [ORANGE, CYAN, WHITE, WHITE, WHITE];
-    const CONNECT_DIST = 140;
-    const MOUSE_RADIUS = 200;
-    const PARTICLE_COUNT_FACTOR = 0.00008; // particles per px²
-
-    interface Particle {
-      x: number; y: number;
-      vx: number; vy: number;
-      r: number;
-      color: typeof ORANGE;
-      baseAlpha: number;
-    }
-
-    function resize() {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      w = canvas.offsetWidth;
-      h = canvas.offsetHeight;
-      canvas.width = w * dpr;
-      canvas.height = h * dpr;
-      ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
-      initParticleArray();
-    }
-
-    function initParticleArray() {
-      const count = Math.min(Math.floor(w * h * PARTICLE_COUNT_FACTOR), 160);
-      particles = [];
-      for (let i = 0; i < count; i++) {
-        const color = COLORS[Math.floor(Math.random() * COLORS.length)];
-        particles.push({
-          x: Math.random() * w,
-          y: Math.random() * h,
-          vx: (Math.random() - 0.5) * 0.4,
-          vy: (Math.random() - 0.5) * 0.4,
-          r: Math.random() * 1.5 + 0.5,
-          color,
-          baseAlpha: color === WHITE ? 0.15 + Math.random() * 0.15 : 0.3 + Math.random() * 0.3,
-        });
-      }
-    }
-
-    function draw() {
-      ctx!.clearRect(0, 0, w, h);
-
-      // Update & draw particles
-      for (const p of particles) {
-        // Mouse repulsion / attraction
-        const dx = p.x - mouse.x;
-        const dy = p.y - mouse.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < MOUSE_RADIUS) {
-          const force = (1 - dist / MOUSE_RADIUS) * 0.02;
-          p.vx += dx * force;
-          p.vy += dy * force;
-        }
-
-        // Damping
-        p.vx *= 0.98;
-        p.vy *= 0.98;
-
-        p.x += p.vx;
-        p.y += p.vy;
-
-        // Wrap
-        if (p.x < -10) p.x = w + 10;
-        if (p.x > w + 10) p.x = -10;
-        if (p.y < -10) p.y = h + 10;
-        if (p.y > h + 10) p.y = -10;
-
-        // Draw particle
-        ctx!.beginPath();
-        ctx!.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx!.fillStyle = `rgba(${p.color.r},${p.color.g},${p.color.b},${p.baseAlpha})`;
-        ctx!.fill();
-      }
-
-      // Draw connections
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const a = particles[i], b = particles[j];
-          const dx = a.x - b.x, dy = a.y - b.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < CONNECT_DIST) {
-            const alpha = (1 - dist / CONNECT_DIST) * 0.12;
-            // Use the color of the brighter particle for lines
-            const c = a.color === WHITE ? b.color : a.color;
-            ctx!.beginPath();
-            ctx!.moveTo(a.x, a.y);
-            ctx!.lineTo(b.x, b.y);
-            ctx!.strokeStyle = `rgba(${c.r},${c.g},${c.b},${alpha})`;
-            ctx!.lineWidth = 0.6;
-            ctx!.stroke();
-          }
-        }
-      }
-
-      raf = requestAnimationFrame(draw);
-    }
-
-    // Mouse tracking
-    const hero = document.getElementById('hero')!;
-    hero.addEventListener('mousemove', (e) => {
-      const rect = hero.getBoundingClientRect();
-      mouse.x = e.clientX - rect.left;
-      mouse.y = e.clientY - rect.top;
-
-      // Move glow
-      const glow = document.getElementById('heroGlow');
-      if (glow) {
-        glow.style.left = `${mouse.x}px`;
-        glow.style.top = `${mouse.y}px`;
-        glow.style.opacity = '1';
-      }
-    });
-    hero.addEventListener('mouseleave', () => {
-      mouse.x = -9999;
-      mouse.y = -9999;
-      const glow = document.getElementById('heroGlow');
-      if (glow) glow.style.opacity = '0';
-    });
-
-    // Touch support
-    hero.addEventListener('touchmove', (e) => {
-      const rect = hero.getBoundingClientRect();
-      const touch = e.touches[0];
-      mouse.x = touch.clientX - rect.left;
-      mouse.y = touch.clientY - rect.top;
-    }, { passive: true });
-    hero.addEventListener('touchend', () => {
-      mouse.x = -9999;
-      mouse.y = -9999;
-    });
-
-    window.addEventListener('resize', resize);
-    resize();
-    draw();
-
-    // Cleanup on navigation
-    document.addEventListener('astro:before-swap', () => {
-      cancelAnimationFrame(raf);
-    });
-  })();
-
-  // ── 2. Text char-split animation ──
-  (function initCharAnimations() {
-    const titleEl = document.querySelector('[data-animate="chars"]') as HTMLElement;
-    if (!titleEl) return;
-
-    const lines = titleEl.querySelectorAll('.hero-title-line');
-    let charIndex = 0;
-
-    lines.forEach((line) => {
-      const walker = document.createTreeWalker(line, NodeFilter.SHOW_TEXT);
-      const textNodes: Text[] = [];
-      let node: Text | null;
-      while ((node = walker.nextNode() as Text | null)) {
-        textNodes.push(node);
-      }
-
-      textNodes.forEach((textNode) => {
-        const text = textNode.textContent || '';
-        const frag = document.createDocumentFragment();
-        for (const char of text) {
-          const span = document.createElement('span');
-          span.className = 'char';
-          span.textContent = char === ' ' ? '\u00a0' : char;
-          span.style.setProperty('--ci', String(charIndex));
-          charIndex++;
-          frag.appendChild(span);
-        }
-        textNode.parentNode!.replaceChild(frag, textNode);
-      });
-    });
-
-    // Trigger animation
-    requestAnimationFrame(() => {
-      titleEl.classList.add('chars-ready');
-    });
-  })();
-
-  // ── 3. Fade-in animations with stagger ──
-  (function initFadeAnimations() {
-    const elements = document.querySelectorAll('[data-animate="fade"]');
-    let delay = 0.6; // Start after title animation
-    elements.forEach((el) => {
-      const htmlEl = el as HTMLElement;
-      htmlEl.style.opacity = '0';
-      htmlEl.style.transform = 'translateY(28px)';
-      setTimeout(() => {
-        htmlEl.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
-        htmlEl.style.opacity = '1';
-        htmlEl.style.transform = 'translateY(0)';
-      }, delay * 1000);
-      delay += 0.18;
-    });
-  })();
-
-  // ── 4. Interactive Orbital ──
-  (function initOrbital() {
-    const stage = document.getElementById('orbitalStage');
-    if (!stage) return;
-
-    const innerRing = document.getElementById('innerRing');
-    const outerRing = document.getElementById('outerRing');
-    const connectionsGroup = document.getElementById('orbitConnections');
-    const hint = document.getElementById('orbitalHint');
-    if (!innerRing || !outerRing) return;
-
-    const rings = [
-      { el: innerRing, angle: 0, speed: 0.0003, radius: 190 },
-      { el: outerRing, angle: Math.PI * 0.3, speed: -0.00018, radius: 310 },
-    ];
-
-    let isDragging = false;
-    let dragStartAngle = 0;
-    let dragStartMouse = 0;
-    let activeRingIdx = -1;
-    let hoveredNode: HTMLElement | null = null;
-    let paused = false;
-    let raf: number;
-    let lastTime = 0;
-    let hintHidden = false;
-
-    const CENTER = 350; // SVG viewbox center
-
-    function positionNodes(ring: typeof rings[0], time: number) {
-      const nodes = ring.el.querySelectorAll('.orbital-node');
-      const count = nodes.length;
-      const angleStep = (Math.PI * 2) / count;
-
-      nodes.forEach((node, i) => {
-        const el = node as HTMLElement;
-        const angle = ring.angle + i * angleStep;
-        const x = Math.cos(angle) * ring.radius;
-        const y = Math.sin(angle) * ring.radius;
-
-        el.style.transform = `translate(${x}px, ${y}px)`;
-        el.dataset.currentAngle = String(angle);
-
-        // Draw connection line
-        if (connectionsGroup) {
-          const lineId = `conn-${ring.el.id}-${i}`;
-          let line = connectionsGroup.querySelector(`#${lineId}`) as SVGLineElement | null;
-          if (!line) {
-            line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-            line.id = lineId;
-            line.setAttribute('stroke-width', '0.5');
-            connectionsGroup.appendChild(line);
-          }
-          const nx = CENTER + x;
-          const ny = CENTER + y;
-          line.setAttribute('x1', String(CENTER));
-          line.setAttribute('y1', String(CENTER));
-          line.setAttribute('x2', String(nx));
-          line.setAttribute('y2', String(ny));
-
-          const isHovered = el === hoveredNode;
-          const color = el.dataset.color || '#f39800';
-          line.setAttribute('stroke', isHovered ? color : 'rgba(255,255,255,0.04)');
-          line.style.transition = 'stroke 0.4s ease';
-        }
-      });
-    }
-
-    function animate(time: number) {
-      if (!lastTime) lastTime = time;
-      const dt = time - lastTime;
-      lastTime = time;
-
-      if (!paused && !isDragging) {
-        rings.forEach(ring => {
-          ring.angle += ring.speed * dt;
-        });
-      }
-
-      rings.forEach(ring => positionNodes(ring, time));
-      raf = requestAnimationFrame(animate);
-    }
-
-    // Drag to rotate
-    stage.addEventListener('mousedown', (e) => {
-      if ((e.target as HTMLElement).closest('.orbital-node')) return;
-      isDragging = true;
-      dragStartMouse = Math.atan2(
-        e.clientY - stage.getBoundingClientRect().top - stage.offsetHeight / 2,
-        e.clientX - stage.getBoundingClientRect().left - stage.offsetWidth / 2
-      );
-      // Rotate both rings together
-      activeRingIdx = -1;
-      rings.forEach((r, i) => { (r as any)._dragStart = r.angle; });
-      stage.style.cursor = 'grabbing';
-
-      if (!hintHidden && hint) {
-        hint.style.opacity = '0';
-        hintHidden = true;
-      }
-    });
-
-    window.addEventListener('mousemove', (e) => {
-      if (!isDragging) return;
-      const rect = stage.getBoundingClientRect();
-      const currentAngle = Math.atan2(
-        e.clientY - rect.top - stage.offsetHeight / 2,
-        e.clientX - rect.left - stage.offsetWidth / 2
-      );
-      const delta = currentAngle - dragStartMouse;
-      rings.forEach(r => {
-        r.angle = (r as any)._dragStart + delta * (r.speed > 0 ? 1 : -1);
-      });
-    });
-
-    window.addEventListener('mouseup', () => {
-      if (isDragging) {
-        isDragging = false;
-        stage.style.cursor = '';
-      }
-    });
-
-    // Touch drag
-    let touchStartAngle = 0;
-    stage.addEventListener('touchstart', (e) => {
-      if ((e.target as HTMLElement).closest('.orbital-node')) return;
-      const touch = e.touches[0];
-      const rect = stage.getBoundingClientRect();
-      touchStartAngle = Math.atan2(
-        touch.clientY - rect.top - stage.offsetHeight / 2,
-        touch.clientX - rect.left - stage.offsetWidth / 2
-      );
-      rings.forEach(r => { (r as any)._dragStart = r.angle; });
-      isDragging = true;
-      if (!hintHidden && hint) { hint.style.opacity = '0'; hintHidden = true; }
-    }, { passive: true });
-
-    stage.addEventListener('touchmove', (e) => {
-      if (!isDragging) return;
-      const touch = e.touches[0];
-      const rect = stage.getBoundingClientRect();
-      const currentAngle = Math.atan2(
-        touch.clientY - rect.top - stage.offsetHeight / 2,
-        touch.clientX - rect.left - stage.offsetWidth / 2
-      );
-      const delta = currentAngle - touchStartAngle;
-      rings.forEach(r => {
-        r.angle = (r as any)._dragStart + delta * (r.speed > 0 ? 1 : -1);
-      });
-    }, { passive: true });
-
-    stage.addEventListener('touchend', () => { isDragging = false; });
-
-    // Hover effects on nodes
-    const allNodes = stage.querySelectorAll('.orbital-node');
-    allNodes.forEach((node) => {
-      const el = node as HTMLElement;
-      el.addEventListener('mouseenter', () => {
-        paused = true;
-        hoveredNode = el;
-        el.classList.add('is-active');
-        // Dim other nodes
-        allNodes.forEach(n => {
-          if (n !== el) (n as HTMLElement).classList.add('is-dimmed');
-        });
-      });
-      el.addEventListener('mouseleave', () => {
-        paused = false;
-        hoveredNode = null;
-        el.classList.remove('is-active');
-        allNodes.forEach(n => (n as HTMLElement).classList.remove('is-dimmed'));
-      });
-    });
-
-    // Scroll-triggered entry animation
-    const section = document.getElementById('orbitalSection');
-    if (section) {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            section.classList.add('orbital-visible');
-            observer.disconnect();
-          }
-        });
-      }, { threshold: 0.2 });
-      observer.observe(section);
-    }
-
-    // Start
-    raf = requestAnimationFrame(animate);
-
-    // Cleanup
-    document.addEventListener('astro:before-swap', () => {
-      cancelAnimationFrame(raf);
-    });
-  })();
-
-  // ── 5. Count-up numbers ──
-  (function initCountUp() {
-    const counters = document.querySelectorAll('.count-up');
-    let started = false;
-
-    function animateCounters() {
-      if (started) return;
-      started = true;
-
-      counters.forEach((el) => {
-        const target = parseInt(el.getAttribute('data-target') || '0');
-        const duration = 1800;
-        const startTime = performance.now();
-
-        function update(now: number) {
-          const elapsed = now - startTime;
-          const progress = Math.min(elapsed / duration, 1);
-          // Ease out cubic
-          const eased = 1 - Math.pow(1 - progress, 3);
-          el.textContent = String(Math.floor(target * eased));
-          if (progress < 1) requestAnimationFrame(update);
-        }
-        requestAnimationFrame(update);
-      });
-    }
-
-    // Start count-up after hero animations complete
-    setTimeout(animateCounters, 1400);
-  })();
+  import "../scripts/redesign/home.js";
 </script>
-
-<style>
-  /* ============================================
-     INTERACTIVE HERO
-     ============================================ */
-  .hero-main {
-    position: relative;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    padding: 0 20px;
-    cursor: crosshair;
-  }
-
-  /* ── Canvas ── */
-  .hero-canvas {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    pointer-events: none;
-  }
-
-  /* ── Mouse-following glow ── */
-  .hero-glow {
-    position: absolute;
-    width: 400px;
-    height: 400px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(243, 152, 0, 0.10) 0%, transparent 65%);
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-    z-index: 1;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    filter: blur(30px);
-  }
-
-  /* ── Dark gradient base ── */
-  .hero-bg {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    background:
-      radial-gradient(ellipse 80% 50% at 50% 45%, #141414 0%, transparent 70%),
-      linear-gradient(180deg, #080808 0%, #101010 35%, #1a1a1a 60%, #0a0a0a 100%);
-  }
-
-  /* ── Content ── */
-  .hero-content {
-    position: relative;
-    z-index: 2;
-    max-width: 760px;
-    text-align: center;
-  }
-
-  /* ── Eyebrow ── */
-  .hero-eyebrow {
-    font-family: var(--font-display);
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--hc-orange);
-    margin-bottom: 24px;
-  }
-
-  /* ── Title with char animation ── */
-  .hero-title {
-    font-family: var(--font-display);
-    font-size: 3.8rem;
-    font-weight: 800;
-    line-height: 1.18;
-    letter-spacing: -1px;
-    color: #fff;
-    margin-bottom: 24px;
-  }
-  .hero-title-line {
-    display: block;
-  }
-
-  /* Individual char animation */
-  .hero-title :global(.char) {
-    display: inline-block;
-    opacity: 0;
-    transform: translateY(40px) rotateX(-40deg);
-    filter: blur(6px);
-    transition: none;
-  }
-  .hero-title.chars-ready :global(.char) {
-    opacity: 1;
-    transform: translateY(0) rotateX(0deg);
-    filter: blur(0);
-    transition:
-      opacity 0.5s ease,
-      transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-      filter 0.5s ease;
-    transition-delay: calc(0.3s + var(--ci) * 0.035s);
-  }
-
-  .hero-accent {
-    color: var(--hc-orange);
-    position: relative;
-  }
-  .hero-accent :global(.char) {
-    color: var(--hc-orange);
-  }
-  .hero-accent::after {
-    content: '';
-    position: absolute;
-    bottom: 4px;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: var(--hc-orange);
-    opacity: 0;
-    border-radius: 2px;
-    animation: accentLine 0.6s ease 1.2s forwards;
-  }
-
-  @keyframes accentLine {
-    from { opacity: 0; transform: scaleX(0); }
-    to   { opacity: 0.4; transform: scaleX(1); }
-  }
-
-  /* ── Subtitle ── */
-  .hero-subtitle {
-    font-family: var(--font-text);
-    font-size: 1.15rem;
-    line-height: 1.65;
-    color: rgba(255, 255, 255, 0.55);
-    max-width: 560px;
-    margin: 0 auto 36px;
-  }
-  .mobile-br { display: none; }
-
-  /* ── CTA buttons ── */
-  .hero-actions {
-    display: flex;
-    gap: 14px;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 56px;
-  }
-  .hero-btn {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    font-family: var(--font-display);
-    font-size: 15px;
-    font-weight: 600;
-    padding: 14px 32px;
-    border-radius: var(--r-pill);
-    transition: all 0.25s var(--ease-std);
-    overflow: hidden;
-  }
-  .hero-btn--primary {
-    background: var(--hc-orange);
-    color: #fff;
-  }
-  .hero-btn--primary:hover {
-    background: var(--hc-orange-deep);
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 8px 32px rgba(243, 152, 0, 0.35);
-  }
-
-  /* Pulse ring on primary CTA */
-  .btn-pulse {
-    position: absolute;
-    inset: 0;
-    border-radius: var(--r-pill);
-    border: 2px solid var(--hc-orange);
-    opacity: 0;
-    animation: btnPulse 2.5s ease-in-out infinite 2s;
-  }
-  @keyframes btnPulse {
-    0%   { opacity: 0.6; transform: scale(1); }
-    100% { opacity: 0; transform: scale(1.3); }
-  }
-
-  .hero-btn--ghost {
-    background: rgba(255, 255, 255, 0.05);
-    color: rgba(255, 255, 255, 0.82);
-    border: 1px solid rgba(255, 255, 255, 0.10);
-    backdrop-filter: blur(8px);
-  }
-  .hero-btn--ghost:hover {
-    background: rgba(255, 255, 255, 0.10);
-    border-color: rgba(255, 255, 255, 0.22);
-    transform: translateY(-2px);
-  }
-
-  /* ── Stats bar ── */
-  .hero-stats {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.07);
-    border-radius: var(--r-lg);
-    padding: 20px 8px;
-    backdrop-filter: blur(16px);
-  }
-  .stat {
-    flex: 1;
-    text-align: center;
-    padding: 0 20px;
-  }
-  .stat-divider {
-    width: 1px;
-    height: 32px;
-    background: rgba(255, 255, 255, 0.08);
-    flex-shrink: 0;
-  }
-  .stat-num {
-    display: block;
-    font-family: var(--font-display);
-    font-size: 1.6rem;
-    font-weight: 800;
-    color: #fff;
-    line-height: 1.2;
-  }
-  .stat-plus {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--hc-orange);
-  }
-  .stat-label {
-    display: block;
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.38);
-    letter-spacing: 0.5px;
-    margin-top: 4px;
-  }
-
-  /* ── Scroll indicator ── */
-  .scroll-hint {
-    position: absolute;
-    bottom: 32px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 2;
-  }
-  .scroll-line {
-    width: 1px;
-    height: 40px;
-    background: linear-gradient(180deg, rgba(255,255,255,0.3), transparent);
-    animation: scrollBounce 2s ease-in-out infinite;
-  }
-  @keyframes scrollBounce {
-    0%, 100% { opacity: 0.4; transform: translateY(0); }
-    50%      { opacity: 1; transform: translateY(8px); }
-  }
-
-  /* ── Responsive ── */
-  @media (max-width: 768px) {
-    .hero-main {
-      min-height: 100svh;
-      padding: 0 16px;
-    }
-    .hero-title {
-      font-size: 2.4rem;
-      letter-spacing: -0.5px;
-    }
-    .hero-subtitle {
-      font-size: 1rem;
-    }
-    .mobile-br { display: inline; }
-    .hero-actions {
-      flex-direction: column;
-      gap: 10px;
-    }
-    .hero-btn {
-      width: 100%;
-      justify-content: center;
-    }
-    .hero-stats {
-      padding: 16px 6px;
-    }
-    .stat {
-      padding: 0 10px;
-    }
-    .stat-num {
-      font-size: 1.25rem;
-    }
-    .stat-divider {
-      height: 24px;
-    }
-    .hero-glow {
-      display: none;
-    }
-  }
-
-  @media (max-width: 380px) {
-    .hero-stats {
-      border-radius: var(--r-md);
-    }
-    .stat {
-      padding: 0 6px;
-    }
-    .stat-num {
-      font-size: 1.1rem;
-    }
-    .stat-label {
-      font-size: 10px;
-    }
-  }
-
-  /* Reduced motion */
-  @media (prefers-reduced-motion: reduce) {
-    .hero-title :global(.char) {
-      opacity: 1 !important;
-      transform: none !important;
-      filter: none !important;
-      transition: none !important;
-    }
-    .btn-pulse { animation: none; }
-    .scroll-line { animation: none; opacity: 0.4; }
-  }
-
-  /* ============================================
-     INTERACTIVE ORBITAL
-     ============================================ */
-  .orbital-section {
-    position: relative;
-    padding: 80px 20px 100px;
-    overflow: hidden;
-    background: #0a0a0a;
-  }
-
-  .orbital-bg {
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 60% 40% at 50% 50%, rgba(243, 152, 0, 0.04) 0%, transparent 60%),
-      radial-gradient(ellipse 80% 50% at 30% 60%, rgba(200, 200, 200, 0.03) 0%, transparent 50%),
-      linear-gradient(180deg, #0a0a0a 0%, #141414 50%, #0a0a0a 100%);
-    z-index: 0;
-  }
-
-  .orbital-header {
-    position: relative;
-    z-index: 2;
-    text-align: center;
-    margin-bottom: 48px;
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
-  }
-  .orbital-visible .orbital-header {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .orbital-eyebrow {
-    font-family: var(--font-display);
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--hc-orange);
-    margin-bottom: 12px;
-  }
-
-  .orbital-title {
-    font-family: var(--font-display);
-    font-size: 2.6rem;
-    font-weight: 800;
-    color: #fff;
-    letter-spacing: -1px;
-    margin-bottom: 14px;
-  }
-
-  .orbital-desc {
-    font-family: var(--font-text);
-    font-size: 1.05rem;
-    color: rgba(255, 255, 255, 0.45);
-    line-height: 1.6;
-  }
-
-  /* ── Stage ── */
-  .orbital-stage {
-    position: relative;
-    z-index: 2;
-    width: 700px;
-    height: 700px;
-    max-width: 90vw;
-    max-height: 90vw;
-    margin: 0 auto;
-    cursor: grab;
-    user-select: none;
-    -webkit-user-select: none;
-    opacity: 0;
-    transform: scale(0.85);
-    transition: opacity 1s ease 0.2s, transform 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
-  }
-  .orbital-visible .orbital-stage {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-  .orbit-svg {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-  }
-
-  /* ── Hub ── */
-  .orbital-hub {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 3;
-    pointer-events: none;
-  }
-
-  .hub-pulse {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 100px;
-    height: 100px;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(243, 152, 0, 0.12) 0%, transparent 70%);
-    animation: hubPulse 3s ease-in-out infinite;
-  }
-  @keyframes hubPulse {
-    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
-    50% { transform: translate(-50%, -50%) scale(1.6); opacity: 0; }
-  }
-
-  .hub-inner {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0;
-  }
-
-  .hub-logo {
-    font-family: var(--font-display);
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: #fff;
-    letter-spacing: 3px;
-    line-height: 1;
-  }
-
-  .hub-sub {
-    font-family: var(--font-display);
-    font-size: 0.7rem;
-    font-weight: 600;
-    color: var(--hc-orange);
-    letter-spacing: 5px;
-    line-height: 1.4;
-  }
-
-  /* ── Orbit ring groups ── */
-  .orbit-ring-group {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    z-index: 2;
-  }
-
-  /* ── Nodes ── */
-  .orbital-node {
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-    will-change: transform;
-    transition: opacity 0.4s ease;
-  }
-
-  .orbital-node.is-dimmed {
-    opacity: 0.2;
-  }
-
-  .node-dot {
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background: var(--hc-orange);
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 0 12px rgba(243, 152, 0, 0.3);
-    flex-shrink: 0;
-    transition: all 0.35s ease;
-    position: relative;
-  }
-  .orbital-node[data-color="#64c8ff"] .node-dot {
-    background: #64c8ff;
-    box-shadow: 0 0 12px rgba(100, 200, 255, 0.3);
-  }
-  .orbital-node[data-color="#a78bfa"] .node-dot {
-    background: #a78bfa;
-    box-shadow: 0 0 12px rgba(167, 139, 250, 0.3);
-  }
-  .orbital-node[data-color="#34d399"] .node-dot {
-    background: #34d399;
-    box-shadow: 0 0 12px rgba(52, 211, 153, 0.3);
-  }
-  .orbital-node[data-color="#f472b6"] .node-dot {
-    background: #f472b6;
-    box-shadow: 0 0 12px rgba(244, 114, 182, 0.3);
-  }
-  .orbital-node[data-color="#fbbf24"] .node-dot {
-    background: #fbbf24;
-    box-shadow: 0 0 12px rgba(251, 191, 36, 0.3);
-  }
-
-  .orbital-node.is-active .node-dot {
-    width: 18px;
-    height: 18px;
-    box-shadow: 0 0 24px rgba(243, 152, 0, 0.5);
-  }
-  .orbital-node.is-active[data-color="#64c8ff"] .node-dot { box-shadow: 0 0 24px rgba(100, 200, 255, 0.5); }
-  .orbital-node.is-active[data-color="#a78bfa"] .node-dot { box-shadow: 0 0 24px rgba(167, 139, 250, 0.5); }
-  .orbital-node.is-active[data-color="#34d399"] .node-dot { box-shadow: 0 0 24px rgba(52, 211, 153, 0.5); }
-  .orbital-node.is-active[data-color="#f472b6"] .node-dot { box-shadow: 0 0 24px rgba(244, 114, 182, 0.5); }
-  .orbital-node.is-active[data-color="#fbbf24"] .node-dot { box-shadow: 0 0 24px rgba(251, 191, 36, 0.5); }
-
-  /* ── Node label (always visible) ── */
-  .node-label {
-    position: absolute;
-    left: 22px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-family: var(--font-display);
-    font-size: 11px;
-    font-weight: 700;
-    color: rgba(255, 255, 255, 0.6);
-    letter-spacing: 1px;
-    white-space: nowrap;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-  }
-  .orbital-node.is-active .node-label {
-    opacity: 0;
-  }
-  .orbital-node.is-dimmed .node-label {
-    opacity: 0.2;
-  }
-
-  /* ── Node card (tooltip on hover) ── */
-  .node-card {
-    position: absolute;
-    left: 24px;
-    top: 50%;
-    transform: translateY(-50%) translateX(-6px);
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    background: rgba(255, 255, 255, 0.06);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 12px;
-    padding: 12px 16px;
-    min-width: 180px;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.35s ease, transform 0.35s ease;
-    white-space: nowrap;
-  }
-
-  .orbital-node.is-active .node-card {
-    opacity: 1;
-    transform: translateY(-50%) translateX(0);
-    pointer-events: auto;
-  }
-
-  .node-num {
-    font-family: var(--font-display);
-    font-size: 10px;
-    font-weight: 700;
-    color: var(--hc-orange);
-    letter-spacing: 2px;
-  }
-
-  .node-title {
-    font-family: var(--font-display);
-    font-size: 14px;
-    font-weight: 700;
-    color: #fff;
-    letter-spacing: 1px;
-  }
-
-  .node-desc {
-    font-family: var(--font-text);
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.5);
-    white-space: normal;
-    max-width: 200px;
-    line-height: 1.5;
-  }
-
-  /* ── Drag hint ── */
-  .orbital-hint {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-family: var(--font-text);
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.25);
-    transition: opacity 0.5s ease;
-    z-index: 5;
-  }
-  .orbital-hint svg {
-    color: rgba(255, 255, 255, 0.25);
-    animation: hintRotate 4s ease-in-out infinite;
-  }
-  @keyframes hintRotate {
-    0%, 100% { transform: rotate(0deg); }
-    25% { transform: rotate(20deg); }
-    75% { transform: rotate(-20deg); }
-  }
-
-  /* ── Mobile fallback ── */
-  .orbital-mobile-list {
-    display: none;
-  }
-
-  @media (max-width: 768px) {
-    .orbital-stage {
-      display: none;
-    }
-    .orbital-hint {
-      display: none;
-    }
-    .orbital-mobile-list {
-      display: flex;
-      flex-direction: column;
-      gap: 1px;
-      max-width: 540px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 2;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.6s ease 0.3s, transform 0.6s ease 0.3s;
-    }
-    .orbital-visible .orbital-mobile-list {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .orbital-mobile-item {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 16px 18px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 12px;
-      text-decoration: none;
-      transition: background 0.25s ease;
-    }
-    .orbital-mobile-item:hover,
-    .orbital-mobile-item:active {
-      background: rgba(255, 255, 255, 0.08);
-    }
-    .mobile-item-num {
-      font-family: var(--font-display);
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--hc-orange);
-      letter-spacing: 1px;
-      flex-shrink: 0;
-      width: 24px;
-    }
-    .mobile-item-text {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-    .mobile-item-title {
-      font-family: var(--font-display);
-      font-size: 14px;
-      font-weight: 700;
-      color: #fff;
-      letter-spacing: 0.5px;
-    }
-    .mobile-item-desc {
-      font-size: 12px;
-      color: rgba(255, 255, 255, 0.4);
-      line-height: 1.4;
-    }
-    .mobile-item-arrow {
-      font-size: 16px;
-      color: rgba(255, 255, 255, 0.2);
-      flex-shrink: 0;
-    }
-
-    .orbital-title {
-      font-size: 2rem;
-    }
-    .orbital-desc {
-      font-size: 0.95rem;
-    }
-  }
-
-  /* ── Reduced motion ── */
-  @media (prefers-reduced-motion: reduce) {
-    .hub-pulse { animation: none; opacity: 0.3; }
-    .orbital-hint svg { animation: none; }
-    .orbit-ring-group .orbital-node {
-      transition: none !important;
-    }
-  }
-
-  /* ── Services section ── */
-  .services-section {
-    padding: 72px 20px;
-    background: var(--hc-gray-50);
-  }
-  .services-inner {
-    max-width: var(--content-max);
-    margin: 0 auto;
-  }
-  .services-title {
-    font-size: 2.5rem;
-    font-weight: 600;
-    text-align: center;
-    margin-bottom: 40px;
-    color: var(--hc-ink);
-  }
-  .services-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 14px;
-  }
-  @media (max-width: 768px) {
-    .services-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-</style>

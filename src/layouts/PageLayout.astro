@@ -22,7 +22,8 @@ const { title, description, ogImage, transparentHeader = false } = Astro.props;
 </BaseLayout>
 
 <style>
+  /* 고정 헤더 높이만큼 본문을 내린다 (rd-base.css 의 --rd-nav-h: 데스크톱 72px, 모바일 64px) */
   .main--with-header-offset {
-    padding-top: 48px;
+    padding-top: var(--rd-nav-h, 72px);
   }
 </style>

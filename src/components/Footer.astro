@@ -1,183 +1,74 @@
 ---
-import { services, works } from "../data/navigation";
+// 리디자인 2026 푸터 — 모든 페이지 공용. 스타일은 rd-base.css (.rd-footer*)
+import "../assets/styles/rd-base.css";
+import { services } from "../data/navigation";
+
+const year = new Date().getFullYear();
 ---
 
-<footer class="footer">
-  <!-- Contact bar -->
-  <div class="contact-bar">
-    <div class="container contact-bar-inner">
-      <a href="tel:031-994-7740" class="contact-item">
-        <span class="contact-label">TEL</span>
-        <span>031.994.7740</span>
+<footer class="rd rd-footer">
+  <div class="rd-footer-top">
+    <div class="rd-footer-brand">
+      <a class="rd-logo" href="/" aria-label="HESEDCORP 홈">
+        <span class="rd-logo-mark" aria-hidden="true">H</span>
+        <span class="rd-logo-text">HESEDCORP<i>.</i></span>
       </a>
-      <a href="mailto:hesed@hesedhouse.net" class="contact-item">
-        <span class="contact-label">EMAIL</span>
-        <span>hesed@hesedhouse.net</span>
-      </a>
-      <a href="http://pf.kakao.com/_Kxnkxou" target="_blank" rel="noopener" class="contact-item">
-        <span class="contact-label">KAKAO</span>
-        <span>@헤세드하우스</span>
-      </a>
+      <p>
+        헤세드코퍼레이션 · 대표 이현우<br />
+        경기도 고양시 일산서구 덕이로 24, B103<br />
+        사업자등록번호 102-81-48503
+      </p>
     </div>
-  </div>
-
-  <!-- Link columns -->
-  <div class="container footer-columns">
-    <div class="col">
-      <h4 class="col-title">Company</h4>
+    <div>
+      <h5>Pages</h5>
       <ul>
         <li><a href="/about">About</a></li>
+        <li><a href="/#services">Service</a></li>
+        <li><a href="/works">Works</a></li>
         <li><a href="/blog">Blog</a></li>
         <li><a href="/contact">Contact</a></li>
       </ul>
     </div>
-    <div class="col">
-      <h4 class="col-title">Services</h4>
+    <div>
+      <h5>Services</h5>
       <ul>
         {services.map((s) => (
           <li><a href={s.href}>{s.label}</a></li>
         ))}
       </ul>
     </div>
-    <div class="col">
-      <h4 class="col-title">Works</h4>
+    <div>
+      <h5>Contact</h5>
       <ul>
-        {works.map((w) => (
-          <li><a href={w.href}>{w.label}</a></li>
-        ))}
-      </ul>
-    </div>
-    <div class="col">
-      <h4 class="col-title">Follow</h4>
-      <ul>
-        <li><a href="https://www.instagram.com/hesed.palace" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href="tel:031-994-7740">031.994.7740</a></li>
+        <li><a href="mailto:hesed@hesedhouse.net">hesed@hesedhouse.net</a></li>
+        <li><a href="http://pf.kakao.com/_Kxnkxou" target="_blank" rel="noopener">카카오톡 @헤세드하우스</a></li>
+        <li><a href="https://www.instagram.com/hesed.palace" target="_blank" rel="noopener">Instagram @hesed.palace</a></li>
+        <li><a href="/contact">프로젝트 문의 →</a></li>
       </ul>
     </div>
   </div>
-
-  <!-- Legal -->
-  <div class="legal">
-    <div class="container legal-inner">
-      <p class="biz-info">
-        헤세드코퍼레이션 &nbsp;|&nbsp; 대표자 이현우 &nbsp;|&nbsp; 사업자등록번호 102-81-48503 &nbsp;|&nbsp; 경기도 고양시 일산서구 덕이로 24, B103
-      </p>
-      <p class="copyright">HESEDCORP. ALL RIGHTS RESERVED.</p>
-    </div>
+  <div class="rd-footer-big" aria-hidden="true">HESEDCORP.</div>
+  <div class="rd-footer-bottom">
+    <span>© {year} HESEDCORP. All rights reserved.</span>
+    <span>Goyang, Korea · Since 2016</span>
   </div>
 </footer>
 
-<style>
-  .footer {
-    background: #000;
-    color: var(--hc-white);
+<script>
+  // 푸터 진입 리빌 (워드마크가 아래에서 올라옴). JS가 없으면 그대로 보인다.
+  const footer = document.querySelector<HTMLElement>(".rd-footer");
+  if (footer && "IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    footer.classList.add("rd-io");
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          footer.classList.add("is-in");
+          io.disconnect();
+        }
+      },
+      { rootMargin: "0px 0px -18% 0px" },
+    );
+    io.observe(footer);
   }
-
-  /* ── Contact bar ── */
-  .contact-bar {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    padding: 28px 0;
-  }
-
-  .contact-bar-inner {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 32px;
-  }
-
-  .contact-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 0.875rem;
-    color: var(--hc-white-80);
-    transition: color 0.2s;
-  }
-
-  .contact-item:hover {
-    color: var(--hc-orange);
-  }
-
-  .contact-label {
-    font-size: 0.6875rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-    color: var(--hc-orange);
-  }
-
-  /* ── Columns ── */
-  .footer-columns {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 24px;
-    padding: 48px 22px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  }
-
-  .col-title {
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    color: var(--hc-white-48);
-    margin-bottom: 16px;
-  }
-
-  .col ul {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .col a {
-    font-size: 0.8125rem;
-    color: var(--hc-white-80);
-    transition: color 0.15s;
-  }
-
-  .col a:hover {
-    color: var(--hc-orange);
-  }
-
-  /* ── Legal ── */
-  .legal {
-    padding: 24px 0 32px;
-  }
-
-  .legal-inner {
-    text-align: center;
-  }
-
-  .biz-info {
-    font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.36);
-    line-height: 1.6;
-    margin-bottom: 8px;
-  }
-
-  .copyright {
-    font-size: 0.6875rem;
-    font-weight: 600;
-    letter-spacing: 1px;
-    color: rgba(255, 255, 255, 0.28);
-  }
-
-  /* ── Responsive ── */
-  @media (max-width: 768px) {
-    .footer-columns {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 32px;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .contact-bar-inner {
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .footer-columns {
-      grid-template-columns: 1fr;
-      gap: 28px;
-    }
-  }
-</style>
+</script>

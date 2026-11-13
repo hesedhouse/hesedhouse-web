@@ -7,6 +7,8 @@ interface Props {
   description?: string;
   ogImage?: string;
   ogType?: string;
+  /** <body> 에 붙일 클래스 (리디자인 홈: "rd rd-home") */
+  bodyClass?: string;
   article?: {
     publishedTime?: string;
     modifiedTime?: string;
@@ -20,6 +22,7 @@ const {
   description = "HESED CORP. - IP License, Merchandising, Pop-up Operation",
   ogImage,
   ogType,
+  bodyClass,
   article,
 } = Astro.props;
 ---
@@ -28,8 +31,9 @@ const {
 <html lang="ko">
   <head>
     <SEOHead title={title} description={description} ogImage={ogImage} ogType={ogType} article={article} />
+    <slot name="head" />
   </head>
-  <body>
+  <body class={bodyClass}>
     <slot />
   </body>
 </html>

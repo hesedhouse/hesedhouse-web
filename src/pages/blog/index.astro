@@ -76,7 +76,7 @@ const categoryList = Object.values(categories);
   /* ── Hero ── */
   .blog-hero {
     background: #1A1614;
-    padding: 96px 22px 64px;
+    padding: 120px 22px 64px;
     text-align: center;
     color: #fff;
   }
@@ -111,7 +111,7 @@ const categoryList = Object.values(categories);
   /* ── Category bar ── */
   .category-bar {
     position: sticky;
-    top: 48px;
+    top: var(--rd-nav-h, 72px);
     z-index: 100;
     background: rgba(245,241,232,0.92);
     backdrop-filter: blur(12px);
@@ -209,7 +209,7 @@ const categoryList = Object.values(categories);
   /* ── Responsive ── */
   @media (max-width: 768px) {
     .blog-hero {
-      padding: 72px 16px 48px;
+      padding: 88px 16px 48px;
     }
 
     .hero-title {
