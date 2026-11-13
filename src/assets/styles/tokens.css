@@ -80,7 +80,7 @@
   --hc-accent-deep: #00a98f;
   --hc-accent-rgb: 0, 217, 184;
   --hc-on-accent: #00140f;
-  --hc-accent-on-light: #00a98f;
+  --hc-accent-on-light: #007a68;   /* 흰 바탕 대비 약 5:1 (#00a98f 는 3:1 미만이라 작은 글자에 부족) */
   --accent-ink: var(--hc-navy);
 
   /* Font families — Pretendard */
