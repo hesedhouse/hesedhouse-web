@@ -30,7 +30,8 @@
 
 /* Design Tokens ----------------------------- */
 :root {
-  /* Brand — navy removed, using black/charcoal instead */
+  /* Brand — navy removed, using black/charcoal instead.
+     hc-orange 계열은 구 포인트 색(2026-11-13 폐기). 새 코드는 아래 --hc-accent 계열을 쓴다 */
   --hc-navy: #1a1a1a;
   --hc-navy-deep: #111111;
   --hc-navy-ink: #0a0a0a;
@@ -69,15 +70,17 @@
   --bg-page: var(--hc-white);
   --bg-section: var(--hc-gray-50);
   --bg-section-dark: var(--hc-black);
-  --accent: var(--hc-orange);
+  --accent: var(--hc-accent);
 
-  /* 포인트 색 (페이지 단위 전환용). 기본은 기존 오렌지.
-     main.accent-mint 안에서는 헤세드 민트로 바뀐다 — 리디자인 2026, 페이지별로 순차 적용 */
-  --hc-accent: var(--hc-orange);
-  --hc-accent-deep: var(--hc-orange-deep);
-  --hc-accent-rgb: 243, 152, 0;
-  --hc-on-accent: var(--hc-white);          /* 포인트 면 위 글자 */
-  --hc-accent-on-light: var(--hc-orange);   /* 밝은 배경 위 작은 글자 */
+  /* 포인트 색 = 헤세드 민트 (2026-11-13 오렌지에서 전환, 전 페이지 공통)
+     - 어두운 배경 위 글자·면: --hc-accent
+     - 밝은 배경 위 글자: --hc-accent-on-light (밝은 민트는 흰 바탕에서 대비 부족)
+     - 민트 면 위 글자: --hc-on-accent */
+  --hc-accent: #00d9b8;
+  --hc-accent-deep: #00a98f;
+  --hc-accent-rgb: 0, 217, 184;
+  --hc-on-accent: #00140f;
+  --hc-accent-on-light: #00a98f;
   --accent-ink: var(--hc-navy);
 
   /* Font families — Pretendard */
@@ -119,13 +122,4 @@
   /* Ease */
   --ease-std: cubic-bezier(0.25, 0.1, 0.25, 1);
   --content-max: 980px;
-}
-
-/* 민트 포인트 페이지 (PageLayout accent="mint") */
-.accent-mint {
-  --hc-accent: #00d9b8;
-  --hc-accent-deep: #00a98f;
-  --hc-accent-rgb: 0, 217, 184;
-  --hc-on-accent: #00140f;
-  --hc-accent-on-light: #00a98f;   /* #00d9b8 은 흰 바탕 작은 글자에 대비 부족 */
 }

@@ -9,7 +9,7 @@ const items = (await getCollection('portfolio'))
   .filter((p) => p.data.category === 'ai' && !p.data.draft)
   .sort((a, b) => a.data.order - b.data.order);
 ---
-<PageLayout accent="mint" title="WORKS - AI SOLUTION" description="헤세드코퍼레이션의 AI 솔루션 프로젝트 포트폴리오">
+<PageLayout title="WORKS - AI SOLUTION" description="헤세드코퍼레이션의 AI 솔루션 프로젝트 포트폴리오">
   <Hero dark={false} eyebrow="WORKS" title="AI SOLUTION" subtitle="AI 솔루션 프로젝트 포트폴리오" />
   <section class="portfolio">
     <div class="portfolio-inner">

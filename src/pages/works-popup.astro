@@ -9,7 +9,7 @@ const items = (await getCollection('portfolio'))
   .filter((p) => p.data.category === 'popup' && !p.data.draft)
   .sort((a, b) => a.data.order - b.data.order);
 ---
-<PageLayout accent="mint" title="WORKS - POP-UP OPERATION" description="헤세드코퍼레이션의 팝업스토어 및 현장 운영 프로젝트 포트폴리오">
+<PageLayout title="WORKS - POP-UP OPERATION" description="헤세드코퍼레이션의 팝업스토어 및 현장 운영 프로젝트 포트폴리오">
   <Hero dark={false} eyebrow="WORKS" title="POP-UP OPERATION" subtitle="팝업스토어 및 현장 운영 프로젝트" />
   <section class="portfolio">
     <div class="portfolio-inner">

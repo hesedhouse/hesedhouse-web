@@ -9,7 +9,7 @@ const items = (await getCollection('portfolio'))
   .filter((p) => p.data.category === 'vs' && !p.data.draft)
   .sort((a, b) => a.data.order - b.data.order);
 ---
-<PageLayout accent="mint" title="WORKS - VISUAL STUDIO" description="헤세드코퍼레이션의 비주얼 콘텐츠 제작 포트폴리오">
+<PageLayout title="WORKS - VISUAL STUDIO" description="헤세드코퍼레이션의 비주얼 콘텐츠 제작 포트폴리오">
   <Hero dark={false} eyebrow="WORKS" title="VISUAL STUDIO" subtitle="비주얼 콘텐츠 제작 포트폴리오" />
   <section class="portfolio">
     <div class="portfolio-inner">

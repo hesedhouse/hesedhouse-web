@@ -208,7 +208,7 @@ const useCases = [
     font-family: var(--font-display);
     font-size: 2rem;
     font-weight: 700;
-    color: var(--hc-orange);
+    color: var(--hc-accent);
     line-height: 1.2;
   }
 
@@ -236,8 +236,8 @@ const useCases = [
     font-weight: 700;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    color: var(--hc-orange);
-    background: rgba(243, 152, 0, 0.08);
+    color: var(--hc-accent-on-light);
+    background: rgba(var(--hc-accent-rgb), 0.10);
     padding: 6px 16px;
     border-radius: var(--r-pill);
     margin-bottom: 20px;
@@ -359,7 +359,8 @@ const useCases = [
   }
 
   .process .section-badge {
-    background: rgba(243, 152, 0, 0.15);
+    color: var(--hc-accent);
+    background: rgba(var(--hc-accent-rgb), 0.15);
   }
 
   .process-timeline {
@@ -388,8 +389,8 @@ const useCases = [
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    background: var(--hc-orange);
-    color: #fff;
+    background: var(--hc-accent);
+    color: var(--hc-on-accent);
     font-family: var(--font-display);
     font-size: 0.875rem;
     font-weight: 700;
@@ -432,8 +433,8 @@ const useCases = [
     font-size: 0.75rem;
     font-weight: 600;
     letter-spacing: 0.5px;
-    color: var(--hc-orange);
-    background: rgba(243, 152, 0, 0.15);
+    color: var(--hc-accent);
+    background: rgba(var(--hc-accent-rgb), 0.15);
     padding: 3px 12px;
     border-radius: var(--r-pill);
   }
@@ -493,15 +494,15 @@ const useCases = [
     font-family: var(--font-display);
     font-size: 1rem;
     font-weight: 600;
-    color: #fff;
-    background: var(--hc-orange);
+    color: var(--hc-on-accent);
+    background: var(--hc-accent);
     padding: 14px 36px;
     border-radius: var(--r-pill);
     transition: background 0.2s, transform 0.2s;
   }
 
   .btn-primary:hover {
-    background: var(--hc-orange-deep);
+    background: var(--hc-accent-deep);
     transform: scale(1.03);
   }
 

@@ -9,7 +9,7 @@ const items = (await getCollection('portfolio'))
   .filter((p) => p.data.category === 'ip' && !p.data.draft)
   .sort((a, b) => a.data.order - b.data.order);
 ---
-<PageLayout accent="mint" title="WORKS - IP LICENSE & COLLABO" description="헤세드코퍼레이션의 IP 라이선스 및 콜라보레이션 프로젝트 포트폴리오">
+<PageLayout title="WORKS - IP LICENSE & COLLABO" description="헤세드코퍼레이션의 IP 라이선스 및 콜라보레이션 프로젝트 포트폴리오">
   <Hero dark={false} eyebrow="WORKS" title="IP LICENSE & COLLABO" subtitle="IP 라이선스 및 콜라보레이션 프로젝트" />
   <section class="portfolio">
     <div class="portfolio-inner">

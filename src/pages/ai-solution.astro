@@ -152,8 +152,8 @@ const crew = (await getCollection('dynasty')).sort((a, b) => a.data.order - b.da
     font-weight: 700;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    color: var(--hc-orange);
-    background: rgba(243, 152, 0, 0.15);
+    color: var(--hc-accent);
+    background: rgba(var(--hc-accent-rgb), 0.15);
     padding: 6px 16px;
     border-radius: var(--r-pill);
     margin-bottom: 20px;
@@ -187,8 +187,8 @@ const crew = (await getCollection('dynasty')).sort((a, b) => a.data.order - b.da
     display: inline-block;
     font-size: 1rem;
     font-weight: 600;
-    color: var(--hc-navy);
-    background: var(--hc-orange);
+    color: var(--hc-on-accent);
+    background: var(--hc-accent);
     padding: 14px 36px;
     border-radius: var(--r-pill);
     text-decoration: none;
@@ -197,7 +197,7 @@ const crew = (await getCollection('dynasty')).sort((a, b) => a.data.order - b.da
 
   .mindscope-cta:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(243, 152, 0, 0.3);
+    box-shadow: 0 8px 24px rgba(var(--hc-accent-rgb), 0.3);
   }
 
   @media (max-width: 768px) {
@@ -231,8 +231,8 @@ const crew = (await getCollection('dynasty')).sort((a, b) => a.data.order - b.da
     font-weight: 700;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    color: var(--hc-orange);
-    background: rgba(243, 152, 0, 0.08);
+    color: var(--hc-accent-on-light);
+    background: rgba(var(--hc-accent-rgb), 0.10);
     padding: 6px 16px;
     border-radius: var(--r-pill);
     margin-bottom: 20px;
@@ -317,8 +317,8 @@ const crew = (await getCollection('dynasty')).sort((a, b) => a.data.order - b.da
     font-size: 0.6875rem;
     font-weight: 600;
     letter-spacing: 0.5px;
-    color: var(--hc-orange);
-    background: rgba(243, 152, 0, 0.08);
+    color: var(--hc-accent-on-light);
+    background: rgba(var(--hc-accent-rgb), 0.10);
     padding: 3px 10px;
     border-radius: var(--r-pill);
     margin-bottom: 12px;
