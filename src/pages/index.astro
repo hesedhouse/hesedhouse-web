@@ -9,6 +9,7 @@ import { getCollection } from "astro:content";
 import {
   homeServices, rotatingWords, introKeywords, marqueeWords, workCategoryLabels,
   homeStats, homeProcess, homePartners, partnersArePlaceholder, homeFaq, contactLinks,
+  partnerCount, sinceYear,
 } from "../data/home";
 
 // 작업 아카이브: 포트폴리오 컬렉션에서 공개 항목을 order 순으로 8개
@@ -185,7 +186,7 @@ const marquee = [...marqueeWords, ...marqueeWords.slice(0, 2)];
           <div class="eyebrow mb">Partners</div>
           <h2 class="h-section">함께한<br />파트너<span class="dot">.</span></h2>
         </div>
-        <p class="lead">IP 홀더, 유통사, 리테일, 플랫폼까지. 2016년부터 50개가 넘는 파트너와 프로젝트를 함께했습니다.</p>
+        <p class="lead">IP 홀더, 유통사, 리테일, 플랫폼까지. {sinceYear}년부터 {partnerCount}개가 넘는 파트너와 프로젝트를 함께했습니다.</p>
       </div>
       <div class="partner-grid">
         {homePartners.map((p, i) => (
@@ -198,7 +199,7 @@ const marquee = [...marqueeWords, ...marqueeWords.slice(0, 2)];
       </div>
       <div class="note">
         <span class="mono">{partnersArePlaceholder ? `로고 ${homePartners.length}개 · 실제 파트너사 로고로 교체 예정` : ""}</span>
-        <span class="mono">50+ partners · 2016–2026</span>
+        <span class="mono">{partnerCount}+ partners · {sinceYear}–2026</span>
       </div>
     </section>
 

@@ -47,9 +47,11 @@ export const workCategoryLabels: Record<string, string> = {
  * 값은 리디자인 이전 홈에 있던 그대로다. 최신값이 확인되면 여기만 고치면 두 페이지에 반영된다.
  * short 는 About 의 짧은 영문 라벨.
  */
+/** 파트너사 수 — 수치 카드와 홈 파트너 섹션 문구가 함께 쓴다 (2026-11-13 대표: 300+) */
+export const partnerCount = 300;
 export const homeStats = [
   { value: 500, label: "PROJECTS 프로젝트", short: "Projects" },
-  { value: 50, label: "PARTNERS 파트너사", short: "Partners" },
+  { value: partnerCount, label: "PARTNERS 파트너사", short: "Partners" },
   { value: 10, label: "AI AGENTS 운영 중인 AI 에이전트", short: "AI Agents" },
 ];
 /** 설립 연도 (홈의 "SINCE 2016") */
