@@ -2,6 +2,7 @@
 import PageLayout from "../layouts/PageLayout.astro";
 import Hero from "../components/Hero.astro";
 import CTABanner from "../components/CTABanner.astro";
+import { clientBusiness, ownBusiness } from "../data/business";
 
 const stats = [
   { value: "500+", label: "Services" },
@@ -27,6 +28,61 @@ const stats = [
         IP 비즈니스의 전 과정을 아우르는 전문 기업입니다. 크리에이터와 브랜드의 IP를
         현실의 상품과 경험으로 전환하여, 팬과 소비자에게 새로운 가치를 전달합니다.
       </p>
+    </div>
+  </section>
+
+  <!-- 사업·브랜드: 데이터 src/data/business.ts -->
+  <section class="biz-section">
+    <div class="biz-inner">
+      <header class="biz-head">
+        <p class="biz-eyebrow">BUSINESS</p>
+        <h2 class="biz-heading">고객사의 프로젝트를 만들고,<br />자체 브랜드와 서비스를 운영합니다.</h2>
+      </header>
+
+      <div class="biz-group">
+        <div class="biz-group-title">
+          <h3>함께 만드는 일</h3>
+          <p>CLIENT WORK</p>
+        </div>
+        <ol class="biz-list">
+          {clientBusiness.map((b, i) => (
+            <li>
+              <a class="biz-row" href={b.href}>
+                <span class="biz-num">{String(i + 1).padStart(2, "0")}</span>
+                <span class="biz-name">{b.name}</span>
+                <span class="biz-desc">{b.desc}</span>
+                <span class="biz-go" aria-hidden="true">→</span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      <div class="biz-group">
+        <div class="biz-group-title">
+          <h3>직접 운영하는 브랜드와 서비스</h3>
+          <p>OWN BRANDS &amp; SERVICES</p>
+        </div>
+        <ol class="biz-list">
+          {ownBusiness.map((b, i) => {
+            const inner = (
+              <>
+                <span class="biz-num">{String(i + 1).padStart(2, "0")}</span>
+                <span class="biz-name">{b.name}</span>
+                <span class="biz-desc">{b.desc}</span>
+                <span class="biz-tag">{b.tag}</span>
+              </>
+            );
+            return (
+              <li>
+                {b.href
+                  ? <a class="biz-row" href={b.href} target="_blank" rel="noopener">{inner}</a>
+                  : <div class="biz-row">{inner}</div>}
+              </li>
+            );
+          })}
+        </ol>
+      </div>
     </div>
   </section>
 
@@ -78,6 +134,124 @@ const stats = [
     margin: 0 auto;
   }
 
+  /* ── Business Section — 괘선 목록 ── */
+  .biz-section {
+    padding: 88px 20px 96px;
+    background: var(--hc-gray-50);
+  }
+
+  .biz-inner {
+    max-width: var(--content-max);
+    margin: 0 auto;
+  }
+
+  .biz-head {
+    margin-bottom: 56px;
+  }
+
+  .biz-eyebrow {
+    font-size: var(--t-micro-size);
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: var(--hc-accent-on-light);
+    margin-bottom: 16px;
+  }
+
+  .biz-heading {
+    font-family: var(--font-display);
+    font-size: 2.25rem;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--hc-ink);
+  }
+
+  .biz-group {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 40px;
+    padding-top: 28px;
+    border-top: 2px solid var(--hc-ink);
+  }
+
+  .biz-group + .biz-group {
+    margin-top: 64px;
+  }
+
+  .biz-group-title h3 {
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--hc-ink);
+  }
+
+  .biz-group-title p {
+    margin-top: 8px;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    color: var(--fg-tertiary);
+  }
+
+  .biz-list li {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .biz-list li:first-child .biz-row {
+    padding-top: 0;
+  }
+
+  .biz-row {
+    display: grid;
+    grid-template-columns: 36px 190px 1fr auto;
+    gap: 16px;
+    align-items: baseline;
+    padding: 18px 0;
+    color: var(--hc-ink);
+  }
+
+  .biz-num {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--hc-accent-on-light);
+  }
+
+  .biz-name {
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    font-weight: 700;
+  }
+
+  .biz-desc {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--fg-secondary);
+  }
+
+  .biz-go,
+  .biz-tag {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    color: var(--fg-tertiary);
+    white-space: nowrap;
+  }
+
+  .biz-go {
+    font-size: 1rem;
+    transition: transform 0.2s var(--ease-std), color 0.2s;
+  }
+
+  a.biz-row:hover .biz-name {
+    color: var(--hc-accent-on-light);
+  }
+
+  a.biz-row:hover .biz-go {
+    transform: translateX(4px);
+    color: var(--hc-accent-on-light);
+  }
+
   /* ── Stats Section ── */
   .stats-section {
     padding: 72px 20px;
@@ -117,6 +291,38 @@ const stats = [
 
   /* ── Responsive ── */
   @media (max-width: 768px) {
+    .biz-section {
+      padding: 64px 20px 72px;
+    }
+
+    .biz-heading {
+      font-size: 1.625rem;
+    }
+
+    .biz-head {
+      margin-bottom: 40px;
+    }
+
+    .biz-group {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .biz-group + .biz-group {
+      margin-top: 48px;
+    }
+
+    .biz-row {
+      grid-template-columns: 30px 1fr auto;
+      gap: 4px 12px;
+    }
+
+    .biz-desc {
+      grid-column: 2 / -1;
+      grid-row: 2;
+      font-size: 0.875rem;
+    }
+
     .intro-heading {
       font-size: 1.75rem;
     }
