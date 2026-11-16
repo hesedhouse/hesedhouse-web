@@ -279,7 +279,9 @@ html.rd-cursor, html.rd-cursor * { cursor: none !important; }
 .cta p { position: relative; margin-top: 32px; font-size: 20px; color: var(--fg2); }
 .cta .actions { position: relative; margin-top: 48px; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
 
-/* ---------- 배경 FX 강도 토글 (검토용) ---------- */
+/* ---------- 배경 FX 강도 토글 (검토용) ----------
+   발행본에서는 숨긴다(2026-11-17 대표 결정). 강도는 기본값 "진하게". 다시 보려면 아래 display:none 한 줄을 지운다 */
+.fx-toggle { display: none !important; }
 .fx-toggle { position: fixed; right: 20px; bottom: 20px; z-index: 8000; display: flex; align-items: center; gap: 4px; padding: 4px 4px 4px 12px; border-radius: 999px; background: rgba(14, 14, 16, .85); border: 1px solid var(--line2); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); font-family: inherit; }
 .fx-toggle .fx-lbl { font-size: 10px; letter-spacing: .16em; color: var(--muted); font-weight: 700; margin-right: 6px; }
 .fx-toggle button { height: 28px; padding: 0 12px; border-radius: 999px; border: 0; background: transparent; color: var(--fg2); font: 600 12px/1 var(--rd-font); transition: background .25s, color .25s; }

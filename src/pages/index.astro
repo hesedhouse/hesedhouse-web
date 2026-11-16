@@ -179,7 +179,9 @@ const marquee = [...marqueeWords, ...marqueeWords.slice(0, 2)];
       </div>
     </section>
 
-    <!-- PARTNERS (PLACEHOLDER: data/home.ts 의 homePartners 를 실제 파트너사로 교체) -->
+    <!-- PARTNERS: 자리표시자(partnersArePlaceholder)인 동안은 발행본에서 렌더하지 않는다 (2026-11-17 대표 결정).
+         data/home.ts 의 homePartners 를 실제 파트너사로 채우고 partnersArePlaceholder 를 false 로 바꾸면 다시 나온다 -->
+    {!partnersArePlaceholder && (
     <section class="section flush wrap partners">
       <div class="head">
         <div>
@@ -202,6 +204,7 @@ const marquee = [...marqueeWords, ...marqueeWords.slice(0, 2)];
         <span class="mono">{partnerCount}+ partners · {sinceYear}–2026</span>
       </div>
     </section>
+    )}
 
     <!-- STATS -->
     <section class="section flush wrap stats">
@@ -279,7 +282,8 @@ const marquee = [...marqueeWords, ...marqueeWords.slice(0, 2)];
           <p class="lead">더 궁금한 점은 카카오톡 @헤세드하우스 또는 031.994.7740으로 문의하세요.</p>
         </div>
         <div class="faq-list">
-          {homeFaq.map((f, i) => (
+          {/* 예시 문구(placeholder) 답변은 발행본에 내보내지 않는다. 실제 답변으로 바꾸고 placeholder 를 지우면 나온다 */}
+          {homeFaq.filter((f) => !f.placeholder).map((f, i) => (
             <div class="faq-item">
               <button class="q" type="button" aria-expanded="false" aria-controls={`faq-a-${i}`}><span>{f.q}</span><span class="pm" aria-hidden="true">+</span></button>
               <div class="a" id={`faq-a-${i}`}>{f.a}{f.placeholder && <em class="ph">(예시 문구)</em>}</div>
