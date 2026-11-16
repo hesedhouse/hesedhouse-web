@@ -21,10 +21,11 @@ const inquiryTypes = [
 ];
 ---
 
-<PageLayout title="CONTACT" description="프로젝트 문의부터 파트너십 제안까지, 편하게 연락주세요.">
+<PageLayout title="CONTACT" description="프로젝트 문의부터 파트너십 제안까지, 편하게 연락주세요." theme="dark">
   <Hero
-    dark={false}
-    eyebrow="CONTACT"
+    dark
+    dot
+    eyebrow="Contact"
     title="Get in Touch"
     subtitle="프로젝트 문의부터 파트너십 제안까지, 편하게 연락주세요."
   />
@@ -99,16 +100,16 @@ const inquiryTypes = [
 <style>
   /* ── Contact Section ── */
   .contact-section {
-    padding: 72px 20px 96px;
-    background: var(--bg-page, #fff);
+    padding: clamp(64px, 8vw, 112px) var(--gut) clamp(80px, 10vw, 136px);
+    background: var(--bg);
   }
 
   .contact-inner {
     max-width: var(--content-max);
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 1fr 1.4fr;
-    gap: 64px;
+    grid-template-columns: 1fr 1.6fr;
+    gap: clamp(40px, 7vw, 112px);
     align-items: start;
   }
 
@@ -116,10 +117,11 @@ const inquiryTypes = [
   .info-heading,
   .form-heading {
     font-family: var(--font-display);
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: var(--hc-ink);
-    margin-bottom: 32px;
+    font-size: clamp(24px, 2.6vw, 36px);
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    color: var(--fg);
+    margin-bottom: 36px;
   }
 
   .info-list {
@@ -136,7 +138,7 @@ const inquiryTypes = [
     flex-direction: column;
     gap: 4px;
     padding-bottom: 24px;
-    border-bottom: 1px solid var(--hc-gray-50);
+    border-bottom: 1px solid var(--line);
   }
 
   .info-item:last-child {
@@ -145,11 +147,11 @@ const inquiryTypes = [
   }
 
   .info-label {
-    font-size: 0.8125rem;
+    font-size: 11px;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--fg-secondary, #6e6e73);
+    letter-spacing: 0.16em;
+    color: var(--muted);
   }
 
   .info-value {
@@ -159,7 +161,7 @@ const inquiryTypes = [
   }
 
   .info-link {
-    color: var(--hc-navy);
+    color: var(--fg);
     text-decoration: none;
     transition: color 0.2s;
   }
@@ -188,9 +190,10 @@ const inquiryTypes = [
   }
 
   .form-field label {
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: var(--hc-ink);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--fg2);
   }
 
   .required {
@@ -204,8 +207,9 @@ const inquiryTypes = [
     font-size: 1rem;
     color: var(--hc-ink);
     background: transparent;
+    color-scheme: dark;
     border: none;
-    border-bottom: 1.5px solid #d2d2d7;
+    border-bottom: 1px solid var(--line2);
     padding: 10px 0;
     outline: none;
     transition: border-color 0.2s;
@@ -214,13 +218,13 @@ const inquiryTypes = [
 
   .form-field input::placeholder,
   .form-field textarea::placeholder {
-    color: #a1a1a6;
+    color: var(--muted);
   }
 
   .form-field input:focus,
   .form-field select:focus,
   .form-field textarea:focus {
-    border-bottom-color: var(--hc-navy);
+    border-bottom-color: var(--accent);
   }
 
   .form-field select {
@@ -228,7 +232,7 @@ const inquiryTypes = [
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%236e6e73' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%238a8a86' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 0 center;
   }
@@ -236,36 +240,37 @@ const inquiryTypes = [
   .form-field textarea {
     resize: vertical;
     min-height: 100px;
-    border: 1.5px solid #d2d2d7;
-    border-radius: 8px;
+    border: 1px solid var(--line2);
+    border-radius: 10px;
     padding: 12px 14px;
   }
 
   .form-field textarea:focus {
-    border-color: var(--hc-navy);
+    border-color: var(--accent);
   }
 
   .submit-btn {
     align-self: flex-start;
     font-family: var(--font-display);
-    font-size: 1rem;
+    font-size: 15px;
     font-weight: 600;
-    color: #fff;
-    background: var(--hc-navy);
+    color: #0a0a0a;
+    background: var(--fg);
     border: none;
     border-radius: var(--r-pill, 100px);
-    padding: 14px 40px;
+    height: 52px;
+    padding: 0 32px;
     cursor: pointer;
-    transition: background 0.2s, transform 0.2s;
+    transition: background 0.3s, color 0.3s;
   }
 
   .submit-btn:hover {
-    background: var(--hc-ink);
-    transform: scale(1.03);
+    background: var(--accent);
+    color: var(--on-accent);
   }
 
   /* ── Responsive ── */
-  @media (max-width: 768px) {
+  @media (max-width: 900px) {
     .contact-inner {
       grid-template-columns: 1fr;
       gap: 48px;

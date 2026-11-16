@@ -1,4 +1,6 @@
 ---
+// 리디자인 2026 3차: 다크 톤(rd-page). 글 데이터·분류 필터 동작은 그대로
+import "../../assets/styles/rd-page.css";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
@@ -12,7 +14,7 @@ const posts = (await getCollection("blog", ({ data }) => !data.draft))
 const categoryList = Object.values(categories);
 ---
 
-<BaseLayout title="궁궐 서고" description="헤세드왕조 10인의 AI 신하들이 전하는 IP 라이선스, 굿즈 제작, 팝업스토어 운영의 실전 인사이트">
+<BaseLayout title="궁궐 서고" description="헤세드왕조 10인의 AI 신하들이 전하는 IP 라이선스, 굿즈 제작, 팝업스토어 운영의 실전 인사이트" bodyClass="rd rd-page">
   <Header />
 
   <main class="blog-page">
@@ -20,8 +22,9 @@ const categoryList = Object.values(categories);
     <section class="blog-hero">
       <div class="blog-hero-inner">
         <p class="hero-eyebrow">HESED DYNASTY CHRONICLES</p>
-        <h1 class="hero-title">궁궐 서고</h1>
+        <h1 class="hero-title">궁궐 서고<span class="rdp-dot">.</span></h1>
         <p class="hero-subtitle">왕조의 신하들이 각자의 전문 분야에서 전하는 실전 인사이트</p>
+        <p class="hero-meta">{posts.length} Posts</p>
       </div>
     </section>
 
@@ -69,43 +72,84 @@ const categoryList = Object.values(categories);
 
 <style>
   .blog-page {
-    background: #F5F1E8;
+    background: var(--bg);
     min-height: 100vh;
   }
 
   /* ── Hero ── */
   .blog-hero {
-    background: #1A1614;
-    padding: 120px 22px 64px;
-    text-align: center;
-    color: #fff;
+    position: relative;
+    overflow: hidden;
+    background: var(--bg);
+    padding: calc(var(--rd-nav-h) + clamp(72px, 9vw, 136px)) var(--gut) clamp(40px, 5vw, 72px);
+    color: var(--fg);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .blog-hero::before {
+    content: "";
+    position: absolute;
+    right: -12%;
+    top: -30%;
+    width: min(760px, 70vw);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(0, 180, 152, 0.3), rgba(0, 180, 152, 0.06) 55%, transparent 70%);
+    pointer-events: none;
   }
 
   .blog-hero-inner {
-    max-width: 640px;
+    position: relative;
+    max-width: var(--content-max);
     margin: 0 auto;
   }
 
   .hero-eyebrow {
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 2px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: #C89B2A;
-    margin-bottom: 16px;
+    color: var(--muted);
+    margin-bottom: clamp(20px, 2.4vw, 34px);
+  }
+
+  .hero-eyebrow::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex: none;
   }
 
   .hero-title {
-    font-size: 2.75rem;
-    font-weight: 600;
-    letter-spacing: -0.5px;
-    margin-bottom: 12px;
+    font-size: clamp(40px, 7.6vw, 112px);
+    font-weight: 780;
+    letter-spacing: -0.05em;
+    line-height: 0.98;
   }
 
   .hero-subtitle {
-    font-size: 1.0625rem;
-    color: rgba(255,255,255,0.64);
+    margin-top: clamp(22px, 2.8vw, 40px);
+    font-size: clamp(17px, 1.8vw, 24px);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--fg2);
     line-height: 1.5;
+  }
+
+  .hero-meta {
+    margin-top: clamp(28px, 3.4vw, 48px);
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
   }
 
   /* ── Category bar ── */
@@ -113,15 +157,15 @@ const categoryList = Object.values(categories);
     position: sticky;
     top: var(--rd-nav-h, 72px);
     z-index: 100;
-    background: rgba(245,241,232,0.92);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(26,22,20,0.08);
-    padding: 0 22px;
+    background: rgba(7, 7, 8, 0.86);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--line);
+    padding: 0 var(--gut);
   }
 
   .category-bar-inner {
-    max-width: 960px;
+    max-width: var(--content-max);
     margin: 0 auto;
     display: flex;
     gap: 6px;
@@ -136,38 +180,38 @@ const categoryList = Object.values(categories);
 
   .cat-btn {
     flex-shrink: 0;
-    font-size: 0.8125rem;
-    font-weight: 500;
-    padding: 6px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 16px;
     border-radius: 50px;
-    background: rgba(26,22,20,0.05);
-    color: rgba(26,22,20,0.62);
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.55);
     cursor: pointer;
     transition: all 0.15s;
     border: 1px solid transparent;
   }
 
   .cat-btn:hover {
-    background: rgba(26,22,20,0.1);
-    color: rgba(26,22,20,0.82);
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.9);
   }
 
   .cat-btn.active {
-    background: #1A1614;
-    color: #fff;
+    background: #fff;
+    color: #0a0a0a;
   }
 
   /* ── Grid ── */
   .blog-grid-section {
-    max-width: 960px;
+    max-width: calc(var(--content-max) + 2 * var(--gut));
     margin: 0 auto;
-    padding: 40px 22px 80px;
+    padding: clamp(32px, 4vw, 56px) var(--gut) clamp(72px, 9vw, 128px);
   }
 
   .blog-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
   }
 
   .blog-grid-item {
@@ -191,31 +235,29 @@ const categoryList = Object.values(categories);
   .empty-icon {
     font-size: 2.5rem;
     margin-bottom: 16px;
-    color: rgba(26,22,20,0.2);
+    color: var(--muted);
   }
 
   .empty-text {
     font-size: 1.125rem;
     font-weight: 600;
-    color: rgba(26,22,20,0.52);
+    color: var(--fg2);
     margin-bottom: 8px;
   }
 
   .empty-sub {
     font-size: 0.875rem;
-    color: rgba(26,22,20,0.36);
+    color: var(--muted);
   }
 
   /* ── Responsive ── */
-  @media (max-width: 768px) {
-    .blog-hero {
-      padding: 88px 16px 48px;
+  @media (max-width: 1100px) {
+    .blog-grid {
+      grid-template-columns: repeat(2, 1fr);
     }
+  }
 
-    .hero-title {
-      font-size: 2rem;
-    }
-
+  @media (max-width: 700px) {
     .blog-grid {
       grid-template-columns: 1fr;
     }
