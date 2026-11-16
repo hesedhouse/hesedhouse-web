@@ -34,6 +34,12 @@ const blog = defineCollection({
       'ai-biz',
       'editorial',
       'kpop-monthly',
+      // 2026-11-17 주제 확장: 회사 사업 분야 전반
+      'making-note',
+      'visual-studio',
+      'ai-field-note',
+      'biz-dev',
+      'biz-ops',
     ]),
     tags: z.array(z.string()).default([]),
     author: z.string(),

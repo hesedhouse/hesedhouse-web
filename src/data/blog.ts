@@ -44,18 +44,24 @@ export const categories: Record<string, CategoryInfo> = {
   'ai-biz':           { id: 'ai-biz',           label: 'AI & 비즈니스',     description: 'AI가 비즈니스를 바꾸는 현장과 트렌드',        color: '#764A78', colorLight: '#E6DCE8' },
   'editorial':        { id: 'editorial',        label: '인사이트 칼럼',     description: '옥수의 산업 전망과 경영 인사이트',            color: '#1E3A6E', colorLight: '#D9E0EC' },
   'kpop-monthly':     { id: 'kpop-monthly',     label: 'K-POP 라이브',      description: '이번 달 K-POP 콘서트·팬미팅·페스티벌 라인업', color: '#D63384', colorLight: '#F8DCEB' },
+  // 2026-11-17 주제 확장: 회사 사업 분야 전반 (scripts/blog-schedule.json 의 rotation 과 맞춘다)
+  'making-note':      { id: 'making-note',      label: '제작 노트',         description: '굿즈 제작 공정·사양·검수의 실무 노트',         color: '#8A4B1F', colorLight: '#F0DFD0' },
+  'visual-studio':    { id: 'visual-studio',    label: '비주얼 스튜디오',   description: '촬영·영상·패키지·공간 그래픽 제작 실무',       color: '#A23B72', colorLight: '#F3DCE8' },
+  'ai-field-note':    { id: 'ai-field-note',    label: 'AI 운영 일지',      description: 'AI 에이전트와 함께 일하는 방식과 자동화 실무', color: '#0F766E', colorLight: '#D3EEEA' },
+  'biz-dev':          { id: 'biz-dev',          label: '신사업 & 투자',     description: '사업 제휴·신사업 검토·투자 관점',             color: '#3F4C9A', colorLight: '#DEE1F3' },
+  'biz-ops':          { id: 'biz-ops',          label: '사업 운영',         description: '견적·정산·계약·문서 관리 등 운영 기초',        color: '#55606E', colorLight: '#E1E5EA' },
 };
 
 /** Map author → primary categories */
 export const authorCategories: Record<string, string[]> = {
-  cheongha: ['ip-trend'],
-  mangchi:  ['goods-culture'],
+  cheongha: ['ip-trend', 'biz-dev'],
+  mangchi:  ['goods-culture', 'making-note'],
   ilgak:    ['popup-retail'],
   geumbi:   ['market-insight'],
-  pilbong:  ['brand-story'],
+  pilbong:  ['brand-story', 'visual-studio'],
   baram:    ['k-content-global', 'kpop-monthly'],
-  jupan:    ['fan-economy'],
+  jupan:    ['fan-economy', 'biz-ops'],
   songsa:   ['biz-legal'],
   indeok:   ['ai-biz'],
-  oksu:     ['editorial'],
+  oksu:     ['editorial', 'ai-field-note'],
 };
