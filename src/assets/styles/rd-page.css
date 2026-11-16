@@ -1,0 +1,176 @@
+/* ============================================================
+   HESEDCORP 리디자인 2026 — 내부 페이지 공용 (2차: 서비스·Works)
+   PageLayout theme="dark" 일 때 <body class="rd rd-page"> 로 켜진다.
+   - 옛 토큰(--hc-*, --fg-*, --bg-*)을 다크 값으로 재정의 → 기존 페이지 스타일이 그대로 다크로 바뀐다
+   - 새 마크업용 유틸은 rdp- 접두어
+   - 홈(rd-home.css)과 같은 색·타이포·여백 토큰(.rd)을 쓴다
+   ============================================================ */
+
+body.rd-page {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--rd-font); font-size: 16px; line-height: 1.5; letter-spacing: -0.01em;
+  overflow-x: hidden;
+
+  /* 옛 토큰 → 다크 */
+  --bg-page: var(--bg);
+  --bg-section: var(--bg2);
+  --bg-section-dark: var(--bg);
+  --fg-primary: var(--fg);
+  --fg-secondary: var(--fg2);
+  --fg-tertiary: var(--muted);
+  --hc-ink: var(--fg);
+  --hc-gray-50: var(--bg2);
+  --hc-gray-100: var(--bg3);
+  --hc-navy: var(--bg3);            /* 옛 "짙은 면" 용도. 글자색으로는 쓰지 말 것 */
+  --hc-surface-d1: var(--bg2);
+  --hc-accent-on-light: var(--accent);  /* 이제 바탕이 어두우므로 밝은 민트 그대로 */
+  --font-display: var(--rd-font);
+  --font-text: var(--rd-font);
+  --content-max: 1240px;
+  --shadow-float: 0 18px 48px rgba(0, 0, 0, .45);
+}
+
+/* 옛 .container 는 좌우 여백만 새 값으로 (폭은 각 페이지의 max-width 를 존중: 좁은 가운데 정렬 문단 등) */
+body.rd-page .container { padding-left: var(--gut); padding-right: var(--gut); }
+.rdp-wrap {
+  max-width: calc(var(--content-max) + 2 * var(--gut));
+  margin: 0 auto;
+  padding-left: var(--gut); padding-right: var(--gut);
+}
+
+/* ---------- 섹션·타이포 유틸 ---------- */
+.rdp-section { padding: clamp(72px, 9vw, 128px) 0; }
+.rdp-section--line { border-top: 1px solid var(--line); }
+.rdp-section--alt { background: var(--bg2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+
+.rdp-eyebrow {
+  display: flex; align-items: center; gap: 10px; margin: 0;
+  font-size: 11px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--muted);
+}
+.rdp-eyebrow::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex: none; }
+
+.rdp-h2 { margin: 0; font-size: clamp(32px, 4.4vw, 64px); font-weight: 720; letter-spacing: -0.035em; line-height: 1.06; color: var(--fg); }
+.rdp-h2 .dim { color: var(--muted); }
+.rdp-h2 .acc, .rdp-dot { color: var(--accent); }
+.rdp-lead { margin: 0; font-size: clamp(17px, 1.5vw, 21px); line-height: 1.65; color: var(--fg2); font-weight: 400; }
+.rdp-mono { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+
+/* 좌: 라벨 / 우: 본문 2단 */
+.rdp-split { display: grid; grid-template-columns: minmax(180px, 1fr) 2.4fr; gap: clamp(32px, 5.5vw, 80px); align-items: start; }
+.rdp-split-big { margin: 0; font-size: clamp(24px, 3.1vw, 44px); font-weight: 650; letter-spacing: -0.035em; line-height: 1.28; color: var(--fg); }
+
+/* 섹션 머리: 제목 + 오른쪽 링크 */
+.rdp-head { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: clamp(32px, 4vw, 56px); }
+.rdp-head .rdp-eyebrow { margin-bottom: 20px; }
+
+/* ---------- 번호 리스트 (홈 서비스 행과 같은 문법) ---------- */
+.rdp-list { border-top: 1px solid var(--line); margin: 0; padding: 0; list-style: none; }
+.rdp-row {
+  display: grid; grid-template-columns: minmax(64px, .5fr) 2fr 2.4fr; gap: clamp(20px, 3vw, 40px); align-items: baseline;
+  padding: clamp(24px, 2.6vw, 38px) 0; border-bottom: 1px solid var(--line);
+  transition: padding .45s var(--ease), background .45s;
+}
+.rdp-row-num { font-size: 12px; letter-spacing: .14em; color: var(--accent); font-weight: 700; }
+.rdp-row-title { margin: 0; font-size: clamp(22px, 2.3vw, 32px); font-weight: 650; letter-spacing: -0.03em; line-height: 1.15; color: var(--fg); }
+.rdp-row-desc { margin: 0; font-size: 16px; line-height: 1.65; color: var(--fg2); }
+
+/* ---------- 카드 격자 ---------- */
+.rdp-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.rdp-cards--2 { grid-template-columns: repeat(2, 1fr); }
+.rdp-cards--4 { grid-template-columns: repeat(4, 1fr); }
+.rdp-card {
+  display: flex; flex-direction: column; gap: 14px;
+  background: var(--bg2); border: 1px solid var(--line); border-radius: 12px; padding: 28px;
+  transition: border-color .4s, transform .4s var(--ease);
+}
+.rdp-section--alt .rdp-card { background: var(--bg); }
+.rdp-card-num { font-size: 12px; letter-spacing: .14em; color: var(--accent); font-weight: 700; }
+.rdp-card-title { margin: 0; font-size: 20px; font-weight: 650; letter-spacing: -0.02em; line-height: 1.25; color: var(--fg); }
+.rdp-card-desc { margin: 0; font-size: 14.5px; line-height: 1.65; color: var(--fg2); }
+
+/* ---------- 버튼·링크 ---------- */
+.rdp-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  height: 52px; padding: 0 26px; border-radius: 999px; border: 1px solid transparent;
+  font-family: var(--rd-font); font-size: 15px; font-weight: 600; letter-spacing: -0.01em; white-space: nowrap; text-decoration: none;
+  transition: transform .25s, background .3s, color .3s, border-color .3s;
+}
+.rdp-btn--primary { background: var(--fg); color: #0a0a0a; }
+.rdp-btn--primary:hover { background: var(--accent); color: var(--on-accent); }
+.rdp-btn--ghost { border-color: var(--line2); color: var(--fg); }
+.rdp-btn--ghost:hover { border-color: var(--accent); }
+.rdp-btn--accent { background: var(--accent); color: var(--on-accent); }
+.rdp-btn--accent:hover { background: #fff; color: #0a0a0a; }
+
+.rdp-more {
+  display: inline-flex; align-items: center; gap: 10px; flex: none;
+  font-size: 13px; font-weight: 600; letter-spacing: .08em; color: var(--fg2); text-decoration: none;
+  padding-bottom: 6px; border-bottom: 1px solid var(--line2); transition: color .3s, border-color .3s;
+}
+.rdp-more:hover { color: var(--accent); border-color: var(--accent); }
+
+/* ---------- Works 분야 탭 (링크) ---------- */
+.rdp-tabs {
+  display: flex; gap: 4px; padding: 5px; width: fit-content; max-width: 100%;
+  background: rgba(255, 255, 255, .05); border: 1px solid var(--line); border-radius: 999px;
+  overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+}
+.rdp-tabs::-webkit-scrollbar { display: none; }
+.rdp-tab {
+  flex: none; display: inline-flex; align-items: center; gap: 7px; padding: 10px 18px; border-radius: 999px;
+  font-size: 13.5px; font-weight: 700; color: rgba(255, 255, 255, .5); text-decoration: none; white-space: nowrap;
+  transition: color .25s, background .25s;
+}
+.rdp-tab:hover { color: rgba(255, 255, 255, .9); background: rgba(255, 255, 255, .06); }
+.rdp-tab.is-active { color: #0a0a0a; background: #fff; }
+.rdp-tab b { font-size: 10.5px; font-weight: 700; color: var(--accent); }
+.rdp-tab.is-active b { color: #007a68; }
+
+/* ---------- 다음 서비스 ---------- */
+.rdp-next {
+  display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center;
+  padding: clamp(36px, 5vw, 72px) 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  color: var(--fg); text-decoration: none; transition: padding .45s var(--ease);
+}
+.rdp-next-label { display: block; margin-bottom: 14px; }
+.rdp-next-title { display: block; font-size: clamp(30px, 5vw, 76px); font-weight: 760; letter-spacing: -0.045em; line-height: 1.02; transition: color .3s; }
+.rdp-next-go {
+  width: clamp(48px, 5vw, 72px); height: clamp(48px, 5vw, 72px); border-radius: 50%; border: 1px solid var(--line2);
+  display: flex; align-items: center; justify-content: center; font-size: 22px;
+  transition: background .3s, color .3s, border-color .3s, transform .4s var(--ease);
+}
+
+/* ---------- 스크롤 진입 리빌 (JS가 html.rdp-js 를 붙였을 때만 숨김) ---------- */
+.rdp-js [data-rdp-reveal] { opacity: 0; transform: translateY(32px); transition: opacity .9s var(--ease), transform .9s var(--ease); }
+.rdp-js [data-rdp-reveal].is-in { opacity: 1; transform: none; }
+.rdp-js [data-rdp-reveal="2"] { transition-delay: .08s; }
+.rdp-js [data-rdp-reveal="3"] { transition-delay: .16s; }
+.rdp-js [data-rdp-reveal="4"] { transition-delay: .24s; }
+
+@media (hover: hover) {
+  .rdp-row:hover { padding-left: 20px; padding-right: 20px; background: linear-gradient(90deg, rgba(0, 217, 184, .08), transparent 70%); }
+  .rdp-card:hover { border-color: rgba(0, 217, 184, .55); transform: translateY(-4px); }
+  .rdp-next:hover .rdp-next-title { color: var(--accent); }
+  .rdp-next:hover .rdp-next-go { background: var(--accent); border-color: var(--accent); color: var(--on-accent); transform: rotate(-45deg); }
+}
+
+@media (max-width: 1100px) {
+  .rdp-cards--4 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 900px) {
+  .rdp-split { grid-template-columns: 1fr; gap: 24px; }
+  .rdp-row { grid-template-columns: 1fr; gap: 8px; }
+  .rdp-row-desc { font-size: 15px; }
+  .rdp-cards, .rdp-cards--2 { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .rdp-card { padding: 22px; }
+  .rdp-head { flex-direction: column; align-items: flex-start; }
+  .rdp-btn { height: 48px; font-size: 14px; }
+}
+@media (max-width: 560px) {
+  .rdp-cards, .rdp-cards--2, .rdp-cards--4 { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rdp-js [data-rdp-reveal] { opacity: 1; transform: none; transition: none; }
+  .rdp-row, .rdp-card, .rdp-next, .rdp-next-go { transition: none; }
+}

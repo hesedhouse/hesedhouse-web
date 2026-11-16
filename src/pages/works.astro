@@ -23,7 +23,7 @@ const years = all.map((p) => Number(p.data.year)).filter((y) => y > 0);
 const yearRange = `${Math.min(...years)}–${Math.max(...years)}`;
 ---
 
-<PageLayout title="WORKS — 포트폴리오" description="헤세드코퍼레이션 포트폴리오 — IP 라이선스, 굿즈 제작, 팝업 운영, 유통, 비주얼, AI 솔루션">
+<PageLayout title="WORKS — 포트폴리오" description="헤세드코퍼레이션 포트폴리오 — IP 라이선스, 굿즈 제작, 팝업 운영, 유통, 비주얼, AI 솔루션" theme="dark">
 
   <!-- Hero -->
   <section class="works-hero">
@@ -133,14 +133,14 @@ const yearRange = `${Math.min(...years)}–${Math.max(...years)}`;
 <style>
   /* ── Shared container ── */
   .works-inner {
-    max-width: 1200px;
+    max-width: var(--content-max);
     margin: 0 auto;
   }
 
   /* ── Hero — dark archive header ── */
   .works-hero {
-    padding: 108px 24px 20px;
-    background: #0a0a0a;
+    padding: clamp(72px, 9vw, 136px) var(--gut) 20px;
+    background: var(--bg);
   }
   .hero-index {
     font-family: var(--font-mono);
@@ -152,10 +152,10 @@ const yearRange = `${Math.min(...years)}–${Math.max(...years)}`;
   }
   .hero-title {
     font-family: var(--font-display);
-    font-size: clamp(2.2rem, 5vw, 3.6rem);
-    font-weight: 800;
-    line-height: 1.14;
-    letter-spacing: -1px;
+    font-size: clamp(40px, 7vw, 104px);
+    font-weight: 780;
+    line-height: 1.02;
+    letter-spacing: -0.05em;
     color: #ffffff;
     margin: 0 0 18px;
     word-break: keep-all;
@@ -185,8 +185,8 @@ const yearRange = `${Math.min(...years)}–${Math.max(...years)}`;
 
   /* ── Main ── */
   .works-main {
-    padding: 36px 24px 88px;
-    background: #0a0a0a;
+    padding: 36px var(--gut) clamp(72px, 9vw, 128px);
+    background: var(--bg);
   }
 
   /* ── Tab Bar ── */
@@ -273,8 +273,6 @@ const yearRange = `${Math.min(...years)}–${Math.max(...years)}`;
     .pf-grid { grid-template-columns: repeat(2, 1fr); }
   }
   @media (max-width: 768px) {
-    .works-hero { padding: 88px 20px 16px; }
-    .works-main { padding: 28px 20px 64px; }
     .hero-sub { font-size: 0.95rem; margin-bottom: 28px; }
   }
   @media (max-width: 640px) {

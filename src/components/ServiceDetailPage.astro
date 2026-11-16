@@ -1,0 +1,118 @@
+---
+// 서비스 상세(단순형) 페이지 본체 — 리디자인 2026 2차.
+// IP 라이선스·머천다이징·유통·팝업·비주얼 5개 페이지가 함께 쓴다. 콘텐츠는 data/services.ts
+import PageLayout from "../layouts/PageLayout.astro";
+import Hero from "./Hero.astro";
+import CTABanner from "./CTABanner.astro";
+import PortfolioCard from "./PortfolioCard.astro";
+import { getCollection } from "astro:content";
+import { serviceDetails } from "../data/services";
+import { homeServices } from "../data/home";
+
+interface Props {
+  /** data/services.ts 의 serviceDetails 키 */
+  service: keyof typeof serviceDetails;
+}
+
+const svc = serviceDetails[Astro.props.service];
+
+// 번호·한글명·다음 서비스는 홈의 7개 서비스 목록 기준
+const idx = homeServices.findIndex((s) => s.href === svc.slug);
+const home = homeServices[idx];
+const next = homeServices[(idx + 1) % homeServices.length];
+const total = String(homeServices.length).padStart(2, "0");
+
+// 관련 작업: 같은 분야 공개 포트폴리오에서 이미지 있는 것 우선 3건
+const related = (await getCollection("portfolio"))
+  .filter((p) => p.data.category === svc.category && !p.data.draft)
+  .sort((a, b) => Number(Boolean(b.data.image)) - Number(Boolean(a.data.image)) || a.data.order - b.data.order)
+  .slice(0, 3);
+---
+
+<PageLayout title={svc.title} description={svc.tagline} theme="dark">
+  <Hero dark dot eyebrow={`Service ${home.num} / ${total} · ${home.title}`} title={svc.title} subtitle={svc.tagline} />
+
+  <section class="rdp-section">
+    <div class="rdp-wrap rdp-split">
+      <p class="rdp-eyebrow" data-rdp-reveal>Overview</p>
+      <p class="rdp-split-big" data-rdp-reveal="2">{svc.lead}</p>
+    </div>
+  </section>
+
+  <section class="rdp-section rdp-section--line">
+    <div class="rdp-wrap">
+      <div class="rdp-head" data-rdp-reveal>
+        <div>
+          <p class="rdp-eyebrow">What we do</p>
+          <h2 class="rdp-h2">맡는 일<span class="rdp-dot">.</span></h2>
+        </div>
+      </div>
+      <ol class="rdp-list">
+        {svc.items.map((item, i) => (
+          <li class="rdp-row" data-rdp-reveal>
+            <span class="rdp-row-num">{String(i + 1).padStart(2, "0")}</span>
+            <h3 class="rdp-row-title">{item.title}</h3>
+            <p class="rdp-row-desc">{item.desc}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  {related.length > 0 && (
+    <section class="rdp-section rdp-section--alt">
+      <div class="rdp-wrap">
+        <div class="rdp-head" data-rdp-reveal>
+          <div>
+            <p class="rdp-eyebrow">Selected works</p>
+            <h2 class="rdp-h2">관련 작업<span class="rdp-dot">.</span></h2>
+          </div>
+          <a class="rdp-more" href={svc.worksHref}>전체 보기 →</a>
+        </div>
+        <div class="related-grid">
+          {related.map((item, i) => (
+            <div data-rdp-reveal={String(i + 1)}>
+              <PortfolioCard
+                category={item.data.category}
+                client={item.data.client}
+                title={item.data.title}
+                description={item.data.description || undefined}
+                year={item.data.year}
+                tag={item.data.tag || undefined}
+                image={item.data.image}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <div class="rdp-wrap">
+    <a class="rdp-next" href={next.href}>
+      <span>
+        <span class="rdp-mono rdp-next-label">Next service · {next.num}</span>
+        <span class="rdp-next-title">{next.title}</span>
+      </span>
+      <span class="rdp-next-go" aria-hidden="true">→</span>
+    </a>
+  </div>
+
+  <CTABanner title={svc.cta.title} subtitle={svc.cta.subtitle} buttonText="문의하기" buttonHref="/contact" />
+</PageLayout>
+
+<style>
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  @media (max-width: 1024px) {
+    .related-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .related-grid { grid-template-columns: 1fr; gap: 14px; }
+  }
+  /* 다음 서비스 줄이 CTA 위에서 겹선이 되지 않게 아래 선은 뺀다 */
+  .rdp-next { border-bottom: 0; }
+</style>

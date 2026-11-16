@@ -12,15 +12,15 @@ const stats = [
 ];
 
 const categories = [
-  { icon: "🧸", title: "키링 · 액세서리", desc: "아크릴, 메탈, 러버, 우드 등 다양한 소재의 키링과 뱃지, 마그넷" },
-  { icon: "👕", title: "의류 · 단체복", desc: "티셔츠, 후드, 맨투맨, 유니폼, 행사 스태프복" },
-  { icon: "🖊️", title: "문구 · 스티커", desc: "노트, 다이어리, 볼펜, 스티커, 마스킹 테이프" },
-  { icon: "☕", title: "텀블러 · 리빙", desc: "텀블러, 머그컵, 쿠션, 담요, 파우치" },
-  { icon: "📦", title: "패키지 · 키트", desc: "웰컴키트, VIP기프트, 언박싱 패키지 풀구성" },
-  { icon: "🖼️", title: "인쇄 · 디자인", desc: "포토카드, 엽서, 포스터, 아트프린트, 액자" },
-  { icon: "💻", title: "디지털 · 테크", desc: "보조배터리, 마우스패드, 폰케이스, USB" },
-  { icon: "🎁", title: "프리미엄 기프트", desc: "가죽 제품, 향초, 디퓨저, 프리미엄 세트" },
-  { icon: "🌿", title: "에코 · 친환경", desc: "리사이클 소재, 친환경 패키징, 에코백" },
+  { icon: "01", title: "키링 · 액세서리", desc: "아크릴, 메탈, 러버, 우드 등 다양한 소재의 키링과 뱃지, 마그넷" },
+  { icon: "02", title: "의류 · 단체복", desc: "티셔츠, 후드, 맨투맨, 유니폼, 행사 스태프복" },
+  { icon: "03", title: "문구 · 스티커", desc: "노트, 다이어리, 볼펜, 스티커, 마스킹 테이프" },
+  { icon: "04", title: "텀블러 · 리빙", desc: "텀블러, 머그컵, 쿠션, 담요, 파우치" },
+  { icon: "05", title: "패키지 · 키트", desc: "웰컴키트, VIP기프트, 언박싱 패키지 풀구성" },
+  { icon: "06", title: "인쇄 · 디자인", desc: "포토카드, 엽서, 포스터, 아트프린트, 액자" },
+  { icon: "07", title: "디지털 · 테크", desc: "보조배터리, 마우스패드, 폰케이스, USB" },
+  { icon: "08", title: "프리미엄 기프트", desc: "가죽 제품, 향초, 디퓨저, 프리미엄 세트" },
+  { icon: "09", title: "에코 · 친환경", desc: "리사이클 소재, 친환경 패키징, 에코백" },
 ];
 
 const process = [
@@ -39,7 +39,7 @@ const useCases = [
 ];
 ---
 
-<PageLayout title="GOODS — 굿즈 기획·제작" description="아이디어만 주세요. 기획부터 납품까지, 원스톱으로." transparentHeader>
+<PageLayout title="GOODS — 굿즈 기획·제작" description="아이디어만 주세요. 기획부터 납품까지, 원스톱으로." transparentHeader theme="dark">
   <!-- Hero: Fullscreen -->
   <Hero
     dark
@@ -192,31 +192,35 @@ const useCases = [
 <style>
   /* ── Stats Bar ── */
   .stats-bar {
-    background: var(--hc-navy);
-    padding: 40px 20px;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--line);
+    padding: 44px 0;
   }
 
   .stats-inner {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 24px;
-    text-align: center;
+    text-align: left;
   }
 
   .stat-number {
     display: block;
     font-family: var(--font-display);
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--hc-accent);
-    line-height: 1.2;
+    font-size: clamp(28px, 3.4vw, 48px);
+    font-weight: 760;
+    letter-spacing: -0.04em;
+    color: var(--fg);
+    line-height: 1.05;
   }
 
   .stat-label {
     display: block;
-    font-size: 0.8125rem;
-    color: rgba(255, 255, 255, 0.7);
-    margin-top: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    margin-top: 12px;
   }
 
   /* ── Intro ── */
@@ -245,9 +249,10 @@ const useCases = [
 
   .section-title {
     font-family: var(--font-display);
-    font-size: 2.75rem;
-    font-weight: 600;
-    line-height: 1.2;
+    font-size: clamp(32px, 4.4vw, 64px);
+    font-weight: 720;
+    letter-spacing: -0.035em;
+    line-height: 1.1;
     color: var(--hc-ink);
     margin-bottom: 16px;
   }
@@ -288,7 +293,9 @@ const useCases = [
   /* ── Categories ── */
   .categories {
     padding: 96px 20px;
-    background: var(--hc-gray-50);
+    background: var(--bg2);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
     text-align: center;
   }
 
@@ -306,22 +313,25 @@ const useCases = [
   }
 
   .cat-card {
-    background: #fff;
-    border-radius: 16px;
-    padding: 32px 24px;
-    border: 1px solid rgba(0, 0, 0, 0.06);
+    background: var(--bg);
+    border-radius: 12px;
+    padding: 28px;
+    border: 1px solid var(--line);
     transition: transform 0.25s ease, box-shadow 0.25s ease;
   }
 
   .cat-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    transform: translateY(-4px);
+    border-color: rgba(0, 217, 184, 0.55);
   }
 
   .cat-icon {
-    font-size: 2rem;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: var(--accent);
     display: block;
-    margin-bottom: 16px;
+    margin-bottom: 36px;
   }
 
   .cat-title {
@@ -341,7 +351,7 @@ const useCases = [
   /* ── Process ── */
   .process {
     padding: 96px 20px;
-    background: var(--hc-navy);
+    background: var(--bg);
   }
 
   .process-inner {
@@ -461,7 +471,9 @@ const useCases = [
   /* ── Quote CTA ── */
   .quote-section {
     padding: 96px 20px;
-    background: var(--hc-gray-50);
+    background: var(--bg2);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
   }
 
   .quote-inner {
@@ -511,17 +523,17 @@ const useCases = [
     font-family: var(--font-display);
     font-size: 1rem;
     font-weight: 600;
-    color: var(--hc-navy);
-    background: #fff;
-    border: 1.5px solid var(--hc-navy);
+    color: var(--fg);
+    background: transparent;
+    border: 1.5px solid var(--line2);
     padding: 13px 36px;
     border-radius: var(--r-pill);
     transition: background 0.2s, transform 0.2s;
   }
 
   .btn-secondary:hover {
-    background: var(--hc-navy);
-    color: #fff;
+    border-color: var(--accent);
+    color: var(--fg);
     transform: scale(1.03);
   }
 

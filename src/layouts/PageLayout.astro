@@ -1,19 +1,25 @@
 ---
+import "../assets/styles/rd-page.css";
 import BaseLayout from "./BaseLayout.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import RevealScript from "../components/RevealScript.astro";
 
 interface Props {
   title: string;
   description?: string;
   ogImage?: string;
   transparentHeader?: boolean;
+  /** "dark" = 리디자인 2026 내부 페이지 톤(rd-page.css). 생략하면 옛 밝은 본문 그대로 */
+  theme?: "light" | "dark";
 }
 
-const { title, description, ogImage, transparentHeader = false } = Astro.props;
+const { title, description, ogImage, transparentHeader = false, theme = "light" } = Astro.props;
+const dark = theme === "dark";
 ---
 
-<BaseLayout title={title} description={description} ogImage={ogImage}>
+<BaseLayout title={title} description={description} ogImage={ogImage} bodyClass={dark ? "rd rd-page" : undefined}>
+  {dark && <RevealScript />}
   <Header transparent={transparentHeader} />
   <main class:list={[{ "main--with-header-offset": !transparentHeader }]}>
     <slot />

@@ -1,0 +1,90 @@
+---
+// Works 분야 페이지 본체 — 리디자인 2026 2차. works-* 6개 페이지가 함께 쓴다. 콘텐츠는 data/services.ts
+import PageLayout from "../layouts/PageLayout.astro";
+import Hero from "./Hero.astro";
+import CTABanner from "./CTABanner.astro";
+import PortfolioCard from "./PortfolioCard.astro";
+import { getCollection } from "astro:content";
+import { worksCategories, type WorkCategory } from "../data/services";
+
+interface Props {
+  category: WorkCategory;
+}
+
+const { category } = Astro.props;
+const info = worksCategories.find((c) => c.key === category)!;
+
+const all = (await getCollection("portfolio"))
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => a.data.order - b.data.order);
+const items = all.filter((p) => p.data.category === category);
+const count = (key: WorkCategory) => all.filter((p) => p.data.category === key).length;
+---
+
+<PageLayout title={`WORKS - ${info.title}`} description={info.description} theme="dark">
+  <Hero dark dot eyebrow="Works · Project archive" title={info.title} subtitle={info.subtitle} meta={`${items.length} Projects`} />
+
+  <section class="wc-main">
+    <div class="rdp-wrap">
+      <nav class="rdp-tabs" aria-label="작업 분야">
+        <a class="rdp-tab" href="/works">전체 <b>{all.length}</b></a>
+        {worksCategories.map((c) => (
+          <a class:list={["rdp-tab", { "is-active": c.key === category }]} href={c.href} aria-current={c.key === category ? "page" : undefined}>
+            {c.label} <b>{count(c.key)}</b>
+          </a>
+        ))}
+      </nav>
+
+      {items.length > 0 ? (
+        <div class="wc-grid">
+          {items.map((item) => (
+            <div data-rdp-reveal>
+              <PortfolioCard
+                category={item.data.category}
+                client={item.data.client}
+                title={item.data.title}
+                description={item.data.description || undefined}
+                year={item.data.year}
+                tag={item.data.tag || undefined}
+                image={item.data.image}
+              />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p class="wc-empty">해당 분야에 등록된 프로젝트가 없습니다.</p>
+      )}
+      <p class="rdp-mono wc-soon">More projects coming soon.</p>
+    </div>
+  </section>
+
+  <CTABanner title="프로젝트를 함께 만들어요" buttonText="CONTACT US" buttonHref="/contact" />
+</PageLayout>
+
+<style>
+  .wc-main {
+    padding: clamp(32px, 4vw, 56px) 0 clamp(72px, 9vw, 128px);
+  }
+  .wc-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: clamp(28px, 3vw, 40px);
+  }
+  .wc-empty {
+    padding: 80px 0;
+    text-align: center;
+    color: var(--muted);
+    font-size: 15px;
+  }
+  .wc-soon {
+    margin-top: 48px;
+    text-align: center;
+  }
+  @media (max-width: 1024px) {
+    .wc-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .wc-grid { grid-template-columns: 1fr; gap: 14px; }
+  }
+</style>

@@ -5,10 +5,11 @@ import ServiceCard from '../components/ServiceCard.astro';
 import CTABanner from '../components/CTABanner.astro';
 ---
 
-<PageLayout title="INVESTMENT & BIZ DEV" description="IP·콘텐츠·테크 분야의 성장 가능성을 발굴하고, 전략적 투자와 사업개발로 가치를 만듭니다.">
+<PageLayout title="INVESTMENT & BIZ DEV" description="IP·콘텐츠·테크 분야의 성장 가능성을 발굴하고, 전략적 투자와 사업개발로 가치를 만듭니다." theme="dark">
   <Hero
     dark
-    eyebrow="SERVICE"
+    dot
+    eyebrow="Service 07 / 07 · 투자 & 사업개발"
     title="INVESTMENT & BIZ DEV"
     subtitle="IP·콘텐츠·테크 분야의 성장 가능성을 발굴하고, 전략적 투자와 사업개발로 새로운 가치를 만듭니다."
   />
@@ -48,22 +49,22 @@ import CTABanner from '../components/CTABanner.astro';
 
       <div class="focus-grid">
         <div class="focus-card">
-          <span class="focus-icon">🎯</span>
+          <span class="focus-icon">01</span>
           <h3 class="focus-card-title">IP · 콘텐츠</h3>
           <p class="focus-card-desc">캐릭터, 웹툰, 애니메이션 등 IP 기반 비즈니스와 팬덤 플랫폼</p>
         </div>
         <div class="focus-card">
-          <span class="focus-icon">🤖</span>
+          <span class="focus-icon">02</span>
           <h3 class="focus-card-title">AI · 테크</h3>
           <p class="focus-card-desc">AI 에이전트, 자동화 솔루션, 커머스 테크놀로지</p>
         </div>
         <div class="focus-card">
-          <span class="focus-icon">🌏</span>
+          <span class="focus-icon">03</span>
           <h3 class="focus-card-title">글로벌 유통</h3>
           <p class="focus-card-desc">크로스보더 커머스, 해외 라이선싱, 글로벌 팬덤 비즈니스</p>
         </div>
         <div class="focus-card">
-          <span class="focus-icon">🏪</span>
+          <span class="focus-icon">04</span>
           <h3 class="focus-card-title">리테일 · D2C</h3>
           <p class="focus-card-desc">팝업스토어, 셀렉트샵, D2C 브랜드 커머스</p>
         </div>
@@ -82,7 +83,7 @@ import CTABanner from '../components/CTABanner.astro';
 <style>
   /* ── Services Section ── */
   .invest-services {
-    padding: 72px 20px;
+    padding: clamp(56px, 7vw, 96px) var(--gut);
   }
 
   .invest-inner {
@@ -111,8 +112,10 @@ import CTABanner from '../components/CTABanner.astro';
 
   /* ── Focus Section ── */
   .invest-focus {
-    padding: 96px 20px;
-    background: var(--hc-gray-50);
+    padding: clamp(72px, 9vw, 128px) var(--gut);
+    background: var(--bg2);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
   }
 
   .invest-focus-inner {
@@ -140,9 +143,10 @@ import CTABanner from '../components/CTABanner.astro';
 
   .focus-title {
     font-family: var(--font-display);
-    font-size: 2.75rem;
-    font-weight: 600;
-    line-height: 1.15;
+    font-size: clamp(34px, 4.6vw, 64px);
+    font-weight: 720;
+    letter-spacing: -0.035em;
+    line-height: 1.06;
     color: var(--hc-ink);
     margin-bottom: 12px;
   }
@@ -160,23 +164,26 @@ import CTABanner from '../components/CTABanner.astro';
   }
 
   .focus-card {
-    background: #fff;
-    border-radius: 16px;
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    padding: 32px 24px;
-    text-align: center;
+    background: var(--bg);
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    padding: 28px;
+    text-align: left;
     transition: transform 0.25s ease, box-shadow 0.25s ease;
   }
 
   .focus-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    transform: translateY(-4px);
+    border-color: rgba(0, 217, 184, 0.55);
   }
 
   .focus-icon {
-    font-size: 2rem;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: var(--accent);
     display: block;
-    margin-bottom: 16px;
+    margin-bottom: 40px;
   }
 
   .focus-card-title {
@@ -200,10 +207,6 @@ import CTABanner from '../components/CTABanner.astro';
   }
 
   @media (max-width: 768px) {
-    .invest-focus {
-      padding: 64px 20px;
-    }
-
     .focus-title {
       font-size: 2rem;
     }

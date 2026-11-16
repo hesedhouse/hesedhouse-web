@@ -7,9 +7,13 @@ interface Props {
   accentWord?: string;
   backgroundImage?: string;
   fullscreen?: boolean;
+  /** 제목 끝에 민트 마침표를 붙인다 (리디자인 내부 페이지용) */
+  dot?: boolean;
+  /** 부제 아래 작은 메타 줄 (예: "12 PROJECTS") */
+  meta?: string;
 }
 
-const { eyebrow, title, subtitle, dark = true, accentWord, backgroundImage, fullscreen = false } = Astro.props;
+const { eyebrow, title, subtitle, dark = true, accentWord, backgroundImage, fullscreen = false, dot = false, meta } = Astro.props;
 
 function renderTitle(text: string, accent?: string) {
   if (!accent) return text;
@@ -18,7 +22,7 @@ function renderTitle(text: string, accent?: string) {
   return `${text.slice(0, idx)}<span class="accent">${accent}</span>${text.slice(idx + accent.length)}`;
 }
 
-const titleHtml = renderTitle(title, accentWord);
+const titleHtml = renderTitle(title, accentWord) + (dot ? '<span class="accent">.</span>' : "");
 ---
 
 <section
@@ -26,10 +30,12 @@ const titleHtml = renderTitle(title, accentWord);
   style={backgroundImage ? `--hero-bg: url(${backgroundImage})` : undefined}
 >
   {backgroundImage && <div class="hero-overlay"></div>}
+  <div class="hero-deco" aria-hidden="true"></div>
   <div class="container hero-inner">
     {eyebrow && <p class="eyebrow">{eyebrow}</p>}
     <h1 class="title" set:html={titleHtml} />
     {subtitle && <p class="subtitle">{subtitle}</p>}
+    {meta && <p class="meta">{meta}</p>}
   </div>
 </section>
 
@@ -152,5 +158,110 @@ const titleHtml = renderTitle(title, accentWord);
     .subtitle {
       font-size: 1.0625rem;
     }
+  }
+
+  .hero-deco { display: none; }
+  .meta { display: none; }
+
+  /* ============================================================
+     리디자인 2026 내부 페이지 (body.rd-page) — 왼쪽 정렬 디스플레이 타이포
+     ============================================================ */
+  :global(body.rd-page) .hero,
+  :global(body.rd-page) .hero.dark {
+    padding: clamp(72px, 9vw, 136px) 0 clamp(48px, 6vw, 88px);
+    text-align: left;
+    background: var(--bg);
+    color: var(--fg);
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+  }
+
+  :global(body.rd-page) .hero.fullscreen {
+    min-height: 100vh;
+    min-height: 100svh;
+    padding: calc(var(--rd-nav-h) + 48px) 0 clamp(56px, 9vh, 104px);
+    align-items: flex-end;
+    justify-content: flex-start;
+    background-image: var(--hero-bg);
+  }
+
+  /* 홈 히어로와 같은 격자 + 민트 글로우 */
+  :global(body.rd-page) .hero-deco {
+    display: block;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    background-size: 120px 120px;
+    opacity: 0.6;
+  }
+  :global(body.rd-page) .hero-deco::after {
+    content: "";
+    position: absolute;
+    right: -12%;
+    top: -30%;
+    width: min(760px, 70vw);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(0, 180, 152, 0.3), rgba(0, 180, 152, 0.06) 55%, transparent 70%);
+  }
+
+  :global(body.rd-page) .hero .hero-inner {
+    width: 100%;
+    max-width: calc(var(--content-max) + 2 * var(--gut));
+  }
+
+  :global(body.rd-page) .hero .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    color: var(--muted);
+    margin-bottom: clamp(20px, 2.4vw, 34px);
+  }
+  :global(body.rd-page) .hero .eyebrow::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex: none;
+  }
+
+  :global(body.rd-page) .hero .title {
+    font-size: clamp(40px, 7.6vw, 112px);
+    font-weight: 780;
+    letter-spacing: -0.05em;
+    line-height: 0.98;
+    text-shadow: none;
+    text-wrap: balance;
+  }
+
+  :global(body.rd-page) .hero .subtitle {
+    margin-top: clamp(22px, 2.8vw, 40px);
+    max-width: 780px;
+    font-size: clamp(17px, 1.8vw, 24px);
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: -0.02em;
+    color: var(--fg2);
+    opacity: 1;
+    text-shadow: none;
+  }
+
+  :global(body.rd-page) .hero .meta {
+    display: block;
+    margin-top: clamp(28px, 3.4vw, 48px);
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
   }
 </style>

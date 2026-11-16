@@ -1,0 +1,26 @@
+---
+// 내부 페이지(rd-page) 스크롤 진입 리빌. [data-rdp-reveal] 요소가 화면에 들어오면 .is-in 을 붙인다.
+// 모션을 쓸 수 있을 때만 html.rdp-js 로 "처음엔 숨김"을 걸고, 4초 안에 관찰자가 못 붙으면 되돌린다.
+---
+
+<script is:inline>
+  (function () {
+    var d = document.documentElement;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) return;
+    d.classList.add("rdp-js");
+    var done = false;
+    var start = function () {
+      if (done) return;
+      done = true;
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); }
+        });
+      }, { rootMargin: "0px 0px -8% 0px", threshold: 0.05 });
+      document.querySelectorAll("[data-rdp-reveal]").forEach(function (el) { io.observe(el); });
+    };
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start);
+    else start();
+    setTimeout(function () { if (!done) d.classList.remove("rdp-js"); }, 4000);
+  })();
+</script>

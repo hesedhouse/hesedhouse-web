@@ -75,4 +75,62 @@ const Tag = href ? "a" : "div";
   .tile.accent .tile-desc {
     opacity: 0.72;
   }
+
+  /* ── 리디자인 2026 내부 페이지 (body.rd-page): 선으로 구분한 다크 카드 ── */
+  :global(body.rd-page) .tile,
+  :global(body.rd-page) .tile.dark {
+    display: flex;
+    flex-direction: column;
+    min-height: 220px;
+    border-radius: 12px;
+    padding: 30px 28px;
+    background: var(--bg2);
+    border: 1px solid var(--line);
+    color: var(--fg);
+    transition: border-color 0.4s, transform 0.4s var(--ease);
+  }
+
+  :global(body.rd-page) .tile.accent {
+    background: linear-gradient(160deg, rgba(0, 217, 184, 0.14), var(--bg2) 62%);
+    border-color: rgba(0, 217, 184, 0.45);
+  }
+
+  :global(body.rd-page) .tile:hover {
+    border-color: rgba(0, 217, 184, 0.55);
+    transform: translateY(-4px);
+    box-shadow: none;
+  }
+
+  :global(body.rd-page) .tile .tile-eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    color: var(--accent);
+    margin-bottom: auto;
+    padding-bottom: 36px;
+  }
+
+  :global(body.rd-page) .tile .tile-title {
+    font-size: clamp(22px, 2vw, 28px);
+    font-weight: 650;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+  }
+
+  :global(body.rd-page) .tile .tile-desc {
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--fg2);
+    opacity: 1;
+  }
+
+  @media (max-width: 900px) {
+    :global(body.rd-page) .tile,
+    :global(body.rd-page) .tile.dark {
+      min-height: 0;
+      padding: 24px 22px;
+    }
+    :global(body.rd-page) .tile .tile-eyebrow {
+      padding-bottom: 24px;
+    }
+  }
 </style>
